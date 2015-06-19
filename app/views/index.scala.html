@@ -2,264 +2,622 @@
 
 @main("Welcome to Play") {
 
-<nav class="navbar navbar-default">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" id="mylogo" href="#">Logo</a>
+        <header class="main-header">
+                <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-fixed-top navbar-default">
+                <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="index.scala.html" class="navbar-brand">
+                                <!-- logo for regular state and mobile devices -->
+                            <span class="logo-lg">SigView</span>
+                        </a>
+                    </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">Link</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#">Link</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+
+        </header>
+            <!-- Content Wrapper. Contains page content -->
+        <div><!-- Main content -->
+            <section class="content">
+                    <!-- Info boxes -->
+                <div class="row main_header ">
+                    <div class="row" >
+                        <div class="info-box col-md-12">
+                            <span class="info-box-icon bg-yellow"><i class="ion ion-ios-gear-outline"></i></span>
+                            <div class="info-box-content">
+                                <h1 >Dashboard</h1>
+                            </div><!-- /.info-box-content -->
+                        </div><!-- /.info-box -->
+                        <!--<div class="col-md-1"></div>-->
+                        <!--<div class="info-box bg-yellow col-md-2">-->
+                        <!--<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>-->
+                        <!--<div class="info-box-content">-->
+                        <!--<span class="info-box-text">Inventory</span>-->
+                        <!--<span class="info-box-number">5,200</span>-->
+                        <!--<div class="progress">-->
+                        <!--<div class="progress-bar" style="width: 50%"></div>-->
+                        <!--</div>-->
+                        <!--<span class="progress-description">-->
+                        <!--50% Increase in 30 Days-->
+                        <!--</span>-->
+                        <!--</div>&lt;!&ndash; /.info-box-content &ndash;&gt;-->
+                        <!--</div>&lt;!&ndash; /.info-box &ndash;&gt;-->
+                        <!--<div class="col-md-1"></div>-->
+                        <!--<div class="info-box bg-yellow col-md-2">-->
+                        <!--<span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>-->
+                        <!--<div class="info-box-content">-->
+                        <!--<span class="info-box-text">Inventory</span>-->
+                        <!--<span class="info-box-number">5,200</span>-->
+                        <!--<div class="progress">-->
+                        <!--<div class="progress-bar" style="width: 50%"></div>-->
+                        <!--</div>-->
+                        <!--<span class="progress-description">-->
+                        <!--50% Increase in 30 Days-->
+                        <!--</span>-->
+                        <!--</div>&lt;!&ndash; /.info-box-content &ndash;&gt;-->
+                        <!--</div>&lt;!&ndash; /.info-box &ndash;&gt;-->
+                    </div><!-- /.col -->
+                    <div>
+                        <ol class="breadcrumb">
+                            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li class="active">Dashboard</li>
+                        </ol>
+                    </div>
+                    <div class="clearfix visible-sm-block"></div>
+                </div><!-- /.row -->
+
+
+                <!-- Main row -->
+                <div class="row">
+                        <!-- Left col -->
+                    <div class="col-md-6">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green"><i class="ion ion-ios-pricetag-outline"></i></span>
+                            <div class="info-box-content">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 ">
+                                        <h3>Metrics</h3>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 ">
+                                        <ul class="options nav nav-pills">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Custom <span class="caret"></span></a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">Action</a></li>
+                                                    <li><a href="#">Another action</a></li>
+                                                    <li><a href="#">Something else here</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">Separated link</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">One more separated link</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">hour <span class="caret"></span></a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">Action</a></li>
+                                                    <li><a href="#">Another action</a></li>
+                                                    <li><a href="#">Something else here</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">Separated link</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">One more separated link</a></li>
+                                                </ul>
+                                            </li>
+                                            <li role="presentation"><a class="btn btn-default" href="#">Messages</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.info-box -->
+                        <!-- MAP & BOX PANE -->
+                        <div class="box box-success">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Visitors Report</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <div class="row">
+                                    <div class="col-md-9 col-sm-8">
+                                        <div class="pad">
+                                                <!-- Map will be created here -->
+                                            <div id="world-map-markers" style="height: 325px;"></div>
+                                        </div>
+                                    </div><!-- /.col -->
+                                    <div class="col-md-3 col-sm-4">
+                                        <div class="pad box-pane-right bg-green" style="min-height: 280px">
+                                            <div class="description-block margin-bottom">
+                                                <div class="sparkbar pad" data-color="#fff">90,70,90,70,75,80,70</div>
+                                                <h5 class="description-header">8390</h5>
+                                                <span class="description-text">Visits</span>
+                                            </div><!-- /.description-block -->
+                                            <div class="description-block margin-bottom">
+                                                <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
+                                                <h5 class="description-header">30%</h5>
+                                                <span class="description-text">Referrals</span>
+                                            </div><!-- /.description-block -->
+                                            <div class="description-block">
+                                                <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
+                                                <h5 class="description-header">70%</h5>
+                                                <span class="description-text">Organic</span>
+                                            </div><!-- /.description-block -->
+                                        </div>
+                                    </div><!-- /.col -->
+                                </div><!-- /.row -->
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                        <!-- BAR CHART -->
+                        <div class="box box-success">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Bar Chart</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <canvas id="barChart" height="230"></canvas>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                        <div class="box box-success">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Visitors Report</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <div class="row">
+                                    <div class="col-md-9 col-sm-8">
+                                        <div class="pad">
+                                                <!-- Map will be created here -->
+                                            <div id="world-map-markers" style="height: 325px;"></div>
+                                        </div>
+                                    </div><!-- /.col -->
+                                    <div class="col-md-3 col-sm-4">
+                                        <div class="pad box-pane-right bg-green" style="min-height: 280px">
+                                            <div class="description-block margin-bottom">
+                                                <div class="sparkbar pad" data-color="#fff">90,70,90,70,75,80,70</div>
+                                                <h5 class="description-header">8390</h5>
+                                                <span class="description-text">Visits</span>
+                                            </div><!-- /.description-block -->
+                                            <div class="description-block margin-bottom">
+                                                <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
+                                                <h5 class="description-header">30%</h5>
+                                                <span class="description-text">Referrals</span>
+                                            </div><!-- /.description-block -->
+                                            <div class="description-block">
+                                                <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
+                                                <h5 class="description-header">70%</h5>
+                                                <span class="description-text">Organic</span>
+                                            </div><!-- /.description-block -->
+                                        </div>
+                                    </div><!-- /.col -->
+                                </div><!-- /.row -->
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    </div><!-- /.col -->
+
+                    <div class="col-md-6">
+                            <!-- Info Boxes Style 2 -->
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-pricetag-outline"></i></span>
+                            <div class="info-box-content">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 col-sm-4 ">
+                                        <h3>Dimensions</h3>
+                                    </div>
+                                    <div class="col-lg-6 col-md-7 col-sm-7 ">
+                                        <ul class="options nav nav-pills">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Custom <span class="caret"></span></a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">Action</a></li>
+                                                    <li><a href="#">Another action</a></li>
+                                                    <li><a href="#">Something else here</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">Separated link</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">One more separated link</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">hour <span class="caret"></span></a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">Action</a></li>
+                                                    <li><a href="#">Another action</a></li>
+                                                    <li><a href="#">Something else here</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">Separated link</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="#">One more separated link</a></li>
+                                                </ul>
+                                            </li>
+                                            <li role="presentation"><a class="btn btn-default" href="#">Messages</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.info-box -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="box box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Inventory Source</h3>
+                                        <div class="box-tools pull-right">
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order ID</th>
+                                                        <th>Item</th>
+                                                        <th>Popularity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>Call of Duty IV</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>Call of Duty IV</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.table-responsive -->
+                                    </div><!-- /.box-body -->
+                                    <div class="box-footer clearfix">
+                                        <a href="javascript::;" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+                                        <a href="javascript::;" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                                    </div><!-- /.box-footer -->
+                                </div><!-- /.box -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Inventory Type</h3>
+                                        <div class="box-tools pull-right">
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order ID</th>
+                                                        <th>Item</th>
+                                                        <th>Popularity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.table-responsive -->
+                                    </div><!-- /.box-body -->
+                                    <div class="box-footer clearfix">
+                                        <a href="javascript::;" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+                                        <a href="javascript::;" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                                    </div><!-- /.box-footer -->
+                                </div><!-- /.box -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Inventory Source</h3>
+                                        <div class="box-tools pull-right">
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order ID</th>
+                                                        <th>Item</th>
+                                                        <th>Popularity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>Call of Duty IV</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>Call of Duty IV</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.table-responsive -->
+                                    </div><!-- /.box-body -->
+                                    <div class="box-footer clearfix">
+                                        <a href="javascript::;" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+                                        <a href="javascript::;" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                                    </div><!-- /.box-footer -->
+                                </div><!-- /.box -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Inventory Type</h3>
+                                        <div class="box-tools pull-right">
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order ID</th>
+                                                        <th>Item</th>
+                                                        <th>Popularity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>Samsung Smart TV</td>
+                                                        <td><div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                        <td>iPhone 6 Plus</td>
+                                                        <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.table-responsive -->
+                                    </div><!-- /.box-body -->
+                                    <div class="box-footer clearfix">
+                                        <a href="javascript::;" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+                                        <a href="javascript::;" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                                    </div><!-- /.box-footer -->
+                                </div><!-- /.box -->
+                            </div>
+                        </div>
+
+                            <!-- PRODUCT LIST -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Recently Added Products</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <ul class="products-list product-list-in-box">
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="dist/img/default-50x50.gif" alt="Product Image"/>
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="javascript::;" class="product-title">Samsung TV <span class="label label-warning pull-right">$1800</span></a>
+                                            <span class="product-description">
+                                                Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                            </span>
+                                        </div>
+                                    </li><!-- /.item -->
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="dist/img/default-50x50.gif" alt="Product Image"/>
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="javascript::;" class="product-title">Bicycle <span class="label label-info pull-right">$700</span></a>
+                                            <span class="product-description">
+                                                26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+                                            </span>
+                                        </div>
+                                    </li><!-- /.item -->
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="dist/img/default-50x50.gif" alt="Product Image"/>
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="javascript::;" class="product-title">Xbox One <span class="label label-danger pull-right">$350</span></a>
+                                            <span class="product-description">
+                                                Xbox One Console Bundle with Halo Master Chief Collection.
+                                            </span>
+                                        </div>
+                                    </li><!-- /.item -->
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="dist/img/default-50x50.gif" alt="Product Image"/>
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="javascript::;" class="product-title">PlayStation 4 <span class="label label-success pull-right">$399</span></a>
+                                            <span class="product-description">
+                                                PlayStation 4 500GB Console (PS4)
+                                            </span>
+                                        </div>
+                                    </li><!-- /.item -->
+                                </ul>
+                            </div><!-- /.box-body -->
+                            <div class="box-footer text-center">
+                                <a href="javascript::;" class="uppercase">View All Products</a>
+                            </div><!-- /.box-footer -->
+                        </div><!-- /.box -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </section><!-- /.content -->
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-<div class="container">
-    <div class="row " id="body_head">
-        <div class="col-lg-12">
-            <div class="col-lg-4">
-                <div>
-                    <h1>Dashboard</h1>
-                </div>
-                <div>
-                    <ul class="nav nav-pills">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Custom <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">hour <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                        <li role="presentation"><a class="btn btn-default" href="#">Messages</a></li>
-                    </ul>
-                </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.0
             </div>
-            <div class="col-lg-3 "></div>
-            <div class="col-lg-5 ">
-                <br>
-                <br>
-                <br>
-                <div>
-                    <ul class="pull-right nav nav-pills">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Custom <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">hour <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">hour <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                        <li role="presentation"><a class="btn btn-default" href="#">Messages</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row " id="main_body">
-        <div class="col-lg-12">
-            <div class="col-lg-6 col-md-12 well" id="graph_side">
-                <div class="col-lg-12">
-                    <div class="col-lg-12 graphs ">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h4>Panel</h4>
-                            </div>
-                            <div class="panel-body">
-                                <ul class = "specs">
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 metrics ">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h4>Panel</h4>
-                            </div>
-                            <div class="panel-body">
-                                <ul class = "specs">
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 metrics ">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h4>Panel</h4>
-                            </div>
-                            <div class="panel-body">
-                                <ul class = "specs">
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-12 pull-right well" id="metric_side">
-                <div class="col-lg-12">
-                    <div class="col-lg-6 metrics col-md-6  col-xs-12 col-sm-6">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h4>Panel</h4>
-                            </div>
-                            <div class="panel-body">
-                                <ul class = "specs">
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 metrics col-md-6  col-xs-12  col-sm-6">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h4>Panel</h4>
-                            </div>
-                            <div class="panel-body">
-                                <ul class = "specs">
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6  metrics col-md-6  col-xs-12 col-sm-6">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h4>Panel</h4>
-                            </div>
-                            <div class="panel-body">
-                                <ul class = "specs">
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 metrics col-md-6  col-xs-12  col-sm-6">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <h4>Panel</h4>
-                            </div>
-                            <div class="panel-body">
-                                <ul class = "specs">
-                                    <li><b>Current State : </b></li>
-                                    <li><b>Last Hard State : </b></li>
-                                    <li><b>Last Check</b> : </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        </footer>
 
 }

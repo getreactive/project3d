@@ -1,0 +1,27 @@
+.content{
+    margin-top:36px;
+}
+
+body {
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 400
+}
+
+h1,h2,h3,h4,h5,h6,.navbar-brand,.brand-name {
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 400
+}
+
+p.lead {
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 400
+}
+
+.options{
+    margin-top:10px;
+}
+
+.main_header{
+    margin-bottom: 30px;
+}
+
