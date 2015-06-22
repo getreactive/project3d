@@ -97,4 +97,9 @@ class Application extends Controller {
     MyWebSocketActor.props(out)
   }
 
+  def app = Action {
+
+    Ok(views.html.app())
+  }
+
 }

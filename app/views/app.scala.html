@@ -1,12 +1,106 @@
 @main("Welcome to Play") {
 
+  <header class="main-header">
+      <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-fixed-top navbar-default">
+      <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="index.scala.html" class="navbar-brand">
+              <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">SigView</span>
+          </a>
+        </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+@*          <ul class="nav navbar-nav">
+           <li><a href="#">Link <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Link</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>*@
+@*          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Link</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+              </ul>
+            </li>
+          </ul>*@
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+  </header>
 
   <section ng-controller="demoAppCtrl" ng-init="init()">
 
+    <div><!-- Main content -->
+      <section class="content">
 
+
+          <!-- Info boxes -->
+        <div class="row main_header ">
+@*          <div class="row" >
+            <div class="info-box col-md-12">
+              <span class="info-box-icon bg-yellow"><i class="ion ion-ios-gear-outline"></i></span>
+              <div class="info-box-content">
+                <h1 >Dashboard</h1>
+              </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+          </div><!-- /.col -->*@
+          <div>
+            <ol class="breadcrumb">
+              <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+              <li class="active">Dashboard</li>
+            </ol>
+          </div>
+          <div class="clearfix visible-sm-block"></div>
+        </div><!-- /.row -->
+
+        <!-- Main row -->
+        <div class="row">
+            <!-- Left Chart Section -->
+          <div class="col-md-6">
+
+            <h1>Chart Section</h1>
+
+          </div><!-- /.col -->
+
+          <div class="col-md-6">
+            <h1>Table Section</h1>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+
+      </section><!-- /.content -->
+    </div>
+
+    <footer class="main-footer">
+      <div class="pull-right hidden-xs">
+        <b>&copy;&nbsp;Sigmoid</b>&nbsp; 1.0&nbsp;&nbsp;
+      </div>
+    </footer>
   </section>
-
-
-
-
 }
