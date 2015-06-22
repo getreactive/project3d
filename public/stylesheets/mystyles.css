@@ -25,3 +25,14 @@ p.lead {
     margin-bottom: 30px;
 }
 
+.ng-table th{
+    text-align: left;
+}
+
+td{
+    padding: 6px;
+}
+
+.pagination{
+    margin:0px;
+}
