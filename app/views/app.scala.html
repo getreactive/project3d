@@ -84,13 +84,19 @@
         <div class="row">
             <!-- Left Chart Section -->
           <div class="col-md-6">
-
-            <h1>Chart Section</h1>
-
+              <h1>Metrics</h1>
+               <div class="row" id="viz-place-holder" ng-init="getVizData()">
+                   <div class="box box-success" ng-repeat="graph in graphDataArr" ng-include="'@routes.Assets.versioned("templates/vizBlockTemplate.html")'" >
+                   </div><!-- /.box -->
+               </div>
           </div><!-- /.col -->
 
           <div class="col-md-6">
-            <h1>Table Section</h1>
+              <h1>Dimensions</h1>
+               <div class="row" id="table-place-holder" ng-init="getTableData()">
+                   <div class="col-md-6" ng-repeat="table in tableDataArr" ng-include="'@routes.Assets.versioned("templates/tableTemplate.html")'">
+                   </div>
+               </div>
           </div><!-- /.col -->
         </div><!-- /.row -->
 
