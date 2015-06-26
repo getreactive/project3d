@@ -30,7 +30,15 @@ p.lead {
 }
 
 td{
+    padding: 5px !important;
+}
+
+.box-header{
     padding: 6px;
+}
+
+.box-footer{
+    padding: 2px;
 }
 
 .pagination{
