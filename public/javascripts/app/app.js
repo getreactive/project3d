@@ -4,7 +4,6 @@ var project3dApp = angular.module('demoApp',['ngTable']);
 
 project3dApp.controller('demoAppCtrl',function($scope,$http){
 
-
     $scope.init= function() {
         $scope.getTableData = function(){
              $scope.tableDataArr = [

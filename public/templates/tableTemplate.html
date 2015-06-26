@@ -8,7 +8,7 @@
     </div><!-- /.box-header -->
     <div class="box-body">
         <div class="table-responsive">
-            <table ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
+            <table ng-table="tableParams" class="table ng-table-rowselected">
                 <tr ng-repeat="data in table.data"
                     ng-click="data.$selected = !data.$selected; changeSelection(data)"
                     ng-class="{'active': data.$selected}">

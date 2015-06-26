@@ -7,6 +7,8 @@ GET        /                     controllers.Application.index()
 
 GET        /app                  controllers.Application.app()
 
+GET        /demo                  controllers.Application.demo()
+
 GET        /wsstring             controllers.Application.socket()
 
 GET        /ws                   controllers.Application.socket1()

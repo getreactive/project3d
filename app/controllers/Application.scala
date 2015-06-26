@@ -102,4 +102,8 @@ class Application extends Controller {
     Ok(views.html.app())
   }
 
+  def demo = Action {
+
+    Ok(views.html.demo())
+  }
 }
