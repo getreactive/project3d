@@ -1,4 +1,4 @@
-<div class="box box-info">
+<div class="box box-info" id = "table{{$index}}">
     <div class="box-header with-border">
         <h3 class="box-title">{{table.title}}</h3>
         <div class="box-tools pull-right">
@@ -8,14 +8,14 @@
     </div><!-- /.box-header -->
     <div class="box-body">
         <div class="table-responsive">
-            <table ng-table="tableParams" class="table ng-table-rowselected">
-                <tr ng-repeat="data in table.data"
-                    ng-click="data.$selected = !data.$selected; changeSelection(data)"
-                    ng-class="{'active': data.$selected}">
-                    <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
+            <table ng-table="tableParams"  class="table ng-table-rowselected">
+                <tr style="cursor:pointer" ng-repeat="data in table.data"
+                    ng-click="data.$selected = !data.$selected; selectedData(data,$parent.$index) ; changeSelection(data)"
+                    ng-class="{'selecteditems': data.$selected}">
+                    <td data-title="'Name'">
                         {{data.name}}
                     </td>
-                    <td data-title="'Value'" sortable="'value'" filter="{ 'value': 'text' }">
+                    <td data-title="'Value'">
                         {{data.value}}
                     </td>
                 </tr>

@@ -5,11 +5,18 @@ import akka.util.Timeout
 import scala.concurrent.duration._
 import play.api._
 import play.api.libs.iteratee.{Enumerator, Iteratee, Concurrent}
-import play.api.libs.json.JsValue
+import play.api.libs.json.{Json, JsValue}
 import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Play.current
 import akka.pattern.ask
+import controllers.data.QueryEngine._
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+
+case class Para(id:String)
+case class RequestParam(country: Array[String], browser: Array[String], device: Array[String])
+case class RequestStatsParam(metrics:String,country: Array[String], browser: Array[String], device: Array[String])
 
 class MyWebSocketActor(out: ActorRef) extends Actor {
 
@@ -50,9 +57,20 @@ object MyWebSocketActor {
 class Application extends Controller {
 
   val (dataEnumerator, dataChannel) = Concurrent.broadcast[JsValue]
-
   implicit val timeout = 5.seconds
 
+  implicit val RequestParamReads: Reads[RequestParam] = (
+    (JsPath \ "country").read[Array[String]] and
+      (JsPath \ "browser").read[Array[String]] and
+       (JsPath \ "device").read[Array[String]]
+    )(RequestParam.apply _)
+
+  implicit val RequestStatsParamReads: Reads[RequestStatsParam] = (
+    (JsPath \ "metrics").read[String] and
+    (JsPath \ "country").read[Array[String]] and
+      (JsPath \ "browser").read[Array[String]] and
+      (JsPath \ "device").read[Array[String]]
+    )(RequestStatsParam.apply _)
 
   def indexsession = Action { request =>
     request.session.get("connected").map { user =>
@@ -61,8 +79,6 @@ class Application extends Controller {
       Unauthorized("Oops, you are not connected")
     }
   }
-
-
 
   def saveInSession = Action {
 
@@ -106,4 +122,151 @@ class Application extends Controller {
 
     Ok(views.html.demo())
   }
+
+  def getGlobalTotalRevenueAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RequestParam]
+
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val currentValue = getGlobalTotalRevenue(_country,_browser,_device)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  }
+
+  def getGlobalTotalFilledImpressionAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RequestParam]
+
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val currentValue = getGlobalTotalFilledImpression(_country,_browser,_device)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  }
+
+  def getGlobalTotaleCPMAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RequestParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val currentValue = getGlobalTotaleCPM(_country,_browser,_device)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  }
+
+  def getGlobalBrowserStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RequestStatsParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _metrics = requestparam.metrics.toString
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val currentValue = getGlobalBrowserStats(_metrics,_country,_browser,_device)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  }
+
+
+
+  def getGlobalDeviceStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RequestStatsParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _metrics = requestparam.metrics.toString
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val currentValue = getGlobalDeviceStats(_metrics,_country,_browser,_device)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  }
+
+  def getGlobalCountryStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RequestStatsParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _metrics = requestparam.metrics.toString
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val currentValue = getGlobalCountryStats(_metrics,_country,_browser,_device)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  }
+
+
 }

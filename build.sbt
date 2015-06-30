@@ -21,8 +21,15 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery-ui" % "1.11.4",
   "org.webjars" % "bootstrap" % "3.1.1-2",
   "org.webjars" % "angularjs" % "2.0.0-alpha.19",
-  "org.webjars" % "d3js" % "3.5.5-1"
+  "org.webjars" % "d3js" % "3.5.5-1",
+  "org.webjars" % "underscorejs" % "1.8.3"
 )
+
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.35"
+
+libraryDependencies += "org.apache.commons" % "commons-dbcp2" % "2.1"
+
+libraryDependencies += "com.google.guava" % "guava" % "18.0"
 
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.

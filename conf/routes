@@ -3,21 +3,34 @@
 # ~~~~
 
 # Home page
-GET        /                     controllers.Application.index()
+GET         /                     controllers.Application.index()
 
-GET        /app                  controllers.Application.app()
+GET         /app                  controllers.Application.app()
 
-GET        /demo                  controllers.Application.demo()
+GET         /demo                 controllers.Application.demo()
 
-GET        /wsstring             controllers.Application.socket()
+GET         /wsstring             controllers.Application.socket()
 
-GET        /ws                   controllers.Application.socket1()
+GET         /ws                   controllers.Application.socket1()
 
-GET        /indexsession         controllers.Application.indexsession()
+GET         /indexsession         controllers.Application.indexsession()
 
-GET        /savesession          controllers.Application.saveInSession()
+GET         /savesession          controllers.Application.saveInSession()
+
+POST        /totalrevenue         controllers.Application.getGlobalTotalRevenueAction
+
+POST        /totalimpressions     controllers.Application.getGlobalTotalFilledImpressionAction
+
+POST        /totalecpm         controllers.Application.getGlobalTotaleCPMAction
+
+POST        /browserstats         controllers.Application.getGlobalBrowserStatsAction
+
+POST        /devicestats          controllers.Application.getGlobalDeviceStatsAction
+
+POST        /countrystats         controllers.Application.getGlobalCountryStatsAction
+
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)
 
-GET        /webjars/*file        controllers.WebJarAssets.at(file)
+GET         /webjars/*file        controllers.WebJarAssets.at(file)

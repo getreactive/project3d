@@ -21,18 +21,50 @@ p.lead {
     margin-top:10px;
 }
 
-.main_header{
-    margin-bottom: 30px;
-}
+
 
 .ng-table th{
     text-align: left;
 }
 
 td{
+    padding: 5px !important;
+}
+
+.box-header{
     padding: 6px;
+}
+
+.box-footer{
+    padding: 2px;
 }
 
 .pagination{
     margin:0px;
+}
+
+.form_line{
+    padding-top: 20px;
+}
+
+.tagholder{
+    padding:15px;
+    margin-bottom: 10px;
+}
+
+.selecteditems{
+    background-color: rgb(208, 242, 255);
+}
+
+.tags{
+    display:inline;
+    max-width: 150px;
+    padding: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.tags>button{
+    margin-left: 5px;
+    border:none;
 }
