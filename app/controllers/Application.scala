@@ -38,7 +38,6 @@ class MyWebSocketActor(out: ActorRef) extends Actor {
   }
 
   def receive = {
-
     case msg: String =>
       implicit val timeout = 5.seconds
       if(msg=="Rahul") out ! getDatafromDB
@@ -118,10 +117,6 @@ class Application extends Controller {
     Ok(views.html.app())
   }
 
-  def demo = Action {
-
-    Ok(views.html.demo())
-  }
 
   def getGlobalTotalRevenueAction = Action(BodyParsers.parse.json) { request =>
 
@@ -145,7 +140,7 @@ class Application extends Controller {
         Ok(Json.toJson(currentValue.toSeq))
       }
     )
-  }
+  };
 
   def getGlobalTotalFilledImpressionAction = Action(BodyParsers.parse.json) { request =>
 
@@ -169,7 +164,7 @@ class Application extends Controller {
         Ok(Json.toJson(currentValue.toSeq))
       }
     )
-  }
+  };
 
   def getGlobalTotaleCPMAction = Action(BodyParsers.parse.json) { request =>
 
@@ -192,7 +187,7 @@ class Application extends Controller {
         Ok(Json.toJson(currentValue.toSeq))
       }
     )
-  }
+  };
 
   def getGlobalBrowserStatsAction = Action(BodyParsers.parse.json) { request =>
 
@@ -216,9 +211,7 @@ class Application extends Controller {
         Ok(Json.toJson(currentValue.toSeq))
       }
     )
-  }
-
-
+  };
 
   def getGlobalDeviceStatsAction = Action(BodyParsers.parse.json) { request =>
 

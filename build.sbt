@@ -21,6 +21,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery-ui" % "1.11.4",
   "org.webjars" % "bootstrap" % "3.1.1-2",
   "org.webjars" % "angularjs" % "2.0.0-alpha.19",
+  "org.webjars" % "angular-strap" % "2.2.3",
   "org.webjars" % "d3js" % "3.5.5-1",
   "org.webjars" % "underscorejs" % "1.8.3"
 )

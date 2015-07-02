@@ -27,8 +27,6 @@ object QueryEngine {
 
   //Get total revnue by country
 
-
-
   def getQueryParam(countryCode: Array[String],browser: Array[String],device: Array[String]): String= {
 
     var queryParam = " "
@@ -198,18 +196,18 @@ object QueryEngine {
 
     println(whereclouse)
 
-    val queryString = "SELECT date,sum(revenue) as revenue from finaldemo "+whereclouse+" group by date"
+    val queryString = "SELECT day,sum(revenue) as revenue from finaldemo "+whereclouse+" group by day"
     println("###### "+queryString)
     //SELECT date,sum(revenue) as revenue from finaldemo where country='IN' and device='PC' and browser='IE' group by date;
 
     val rs = stmt.executeQuery(queryString)
 
     while (rs.next()) {
-      println("Read from DB: " + rs.getString("date") + "\t"+ rs.getString("revenue"))
-      val date = rs.getString("date")
+      println("Read from DB: " + rs.getString("day") + "\t"+ rs.getString("revenue"))
+      val date = rs.getString("day")
       val revenue = rs.getString("revenue")
 
-      val revenueByCountry = Map("date"->date,"value"->revenue)
+      val revenueByCountry = Map("day"->date,"value"->revenue)
       returnData+=revenueByCountry
     }
     connection.close()
@@ -233,18 +231,21 @@ object QueryEngine {
 
     println(whereclouse)
 
-    val queryString = "SELECT date,sum(filledimpressions) as impressions from finaldemo "+whereclouse+" group by date"
+    val queryString = "SELECT day,sum(filledimpressions) as impressions from finaldemo "+whereclouse+" group by day"
     println("###### "+queryString)
     //SELECT date,sum(revenue) as revenue from finaldemo where country='IN' and device='PC' and browser='IE' group by date;
 
     val rs = stmt.executeQuery(queryString)
 
     while (rs.next()) {
-      println("Read from DB: " + rs.getString("date") + "\t"+ rs.getString("impressions"))
-      val date = rs.getString("date")
+      println("Read from DB: " + rs.getString("day") + "\t"+ rs.getString("impressions"))
+      val date = rs.getString("day")
       val impressions = rs.getString("impressions")
+      val _temp = BigDecimal(impressions.toDouble).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
 
-      val revenueByCountry = Map("date"->date,"value"->impressions)
+      val _tm = _temp
+
+      val revenueByCountry = Map("name"->date,"value"->_tm.toString)
       returnData+=revenueByCountry
     }
 
@@ -308,7 +309,7 @@ object QueryEngine {
 
     println(whereclouse)
 
-    val rs = stmt.executeQuery("select browser, sum("+_metrics+") as value from finaldemo "+whereclouse+" group by browser")
+    val rs = stmt.executeQuery("select browser, count(browser) as value from finaldemo "+whereclouse+" group by browser")
 
     while (rs.next()) {
       println("Read from DB: " + rs.getString("browser") + "\t"+ rs.getString("value"))
@@ -346,7 +347,7 @@ object QueryEngine {
 
     println(whereclouse)
 
-    val rs = stmt.executeQuery("select device, sum("+_metrics+") as value from finaldemo "+whereclouse+" group by device")
+    val rs = stmt.executeQuery("select device, count(device) as value from finaldemo "+whereclouse+" group by device")
 
     while (rs.next()) {
       println("Read from DB: " + rs.getString("device") + "\t"+ rs.getString("value"))
@@ -396,5 +397,8 @@ object QueryEngine {
 
     returnData
   }
+
+
+
 
 }

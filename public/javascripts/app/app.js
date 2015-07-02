@@ -1,6 +1,4 @@
-
-
-var project3dApp = angular.module('demoApp',['ngTable']);
+var project3dApp = angular.module('demoApp',['ngTable','mgcrea.ngStrap']);
 
 project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParams){
 
@@ -8,30 +6,141 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
     $scope.parentTag = [];
     $scope.dataArr = [];
     $scope.selectCounter = {};
+    $scope.graphTemp = [];
+    $scope.tableTemp = [];
+    $scope.graphDataArr = [];
+    $scope.tableDataArr = [];
+    $scope.mainData = {};
 
     $scope.paramObj = {
-        "device":[],
+        "country":[],
         "browser":[],
-        "country":[]
+        "device":[],
+        "site":[],
+        "campaign":[],
+        "advertiser":[]
     };
 
     $scope.selectedevice = [];
     $scope.selectedcountry = [];
     $scope.selectedbrowser = [];
-     /*****************************/
+    $scope.selecteadvertiser = [];
+    $scope.selectecampaign = [];
+    $scope.selectesite = [];
 
-    $scope.changeSelection = function(data) {
-        // console.info(user);
+
+    $scope.templateobj = {}
+
+    $scope.init= function() {
+
+        var req = $scope.paramObj;
+
+        $scope.callDSPBrowserStats(req);
+        $scope.callDSPDeviceStats(req);
+        $scope.callDSPAdvertiserStats(req);
+        $scope.callDSPCampaignStats(req);
+        $scope.callDSPCountryStats(req);
+        $scope.callDSPSitesStats(req);
+
+        $scope.callDSPImpressionCount(req);
+        $scope.callDSPclickCount(req);
+        $scope.callDSPConversion(req);
+
     };
 
+    $scope.getLayoutTemplate = function(){
+
+        var result = {
+            "tableDataArr": [
+                {
+                    "id": "country",
+                    "title": "Country",
+                    "data": []
+
+                },
+                {
+                    "id": "browser",
+                    "title": "browser",
+                    "data": []
+
+                },
+                {
+                    "id": "device",
+                    "title": "Device",
+                    "data": [
+
+                    ]
+                },
+                {
+                    "id": "site",
+                    "title": "Site",
+                    "data": []
+
+                },{
+                    "id": "advertiser",
+                    "title": "Advertiser",
+                    "data": []
+                },{
+                    "id": "campaign",
+                    "title": "campaign",
+                    "data": []
+                },
+            ],
+            "graphDataArr": [
+                {
+                    "id": "impressioncount",
+                    "title": "Impression"
+                },
+                {
+                    "id": "clickcount",
+                    "title": "Click"
+                },
+                {
+                    "id": "conversion",
+                    "title": "Conversion"
+                }
+            ]
+        };
+
+        $scope.templateobj = result;
+
+        console.log("******** ",result)
+        $scope.tableDataArr = result.tableDataArr;
+        $scope.graphDataArr = result.graphDataArr;
+
+        console.log("$scope.tableDataArr", $scope.tableDataArr)
+        console.log("$scope.graphDataArr",$scope.graphDataArr)
+
+
+    };
+
+    $scope.changeTableData = function(data) {
+
+
+    };
+
+    $scope.changeSelection = function(data) {
+         console.log(data);
+
+
+
+        var req = $scope.paramObj;
+
+        $scope.callDSPBrowserStats(req);
+        $scope.callDSPDeviceStats(req);
+        $scope.callDSPAdvertiserStats(req);
+        $scope.callDSPCampaignStats(req);
+        $scope.callDSPCountryStats(req);
+        $scope.callDSPSitesStats(req);
+
+        $scope.callDSPImpressionCount(req);
+        $scope.callDSPclickCount(req);
+        $scope.callDSPConversion(req);
+    };
+
+
+
     $scope.createParamObject= function(parent, selectedValue, selected) {
-
-/*        {
-            "country":[],
-            "browser":[],
-            "device":[]
-
-        }*/
 
         if(parent == "country" && selected==true){
 
@@ -59,13 +168,45 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
             $scope.selectedevice = _.without($scope.selectedevice,selectedValue)
         }
+        else if(parent == "site" && selected==true){
+
+            $scope.selectesite.push(selectedValue)
+            $scope.selectesite = $.unique($scope.selectesite)
+        }else if(parent == "site" && selected==false){
+
+            $scope.selectesite = _.without($scope.selectesite,selectedValue)
+        }
+        else if(parent == "campaign" && selected==true){
+
+            $scope.selectecampaign.push(selectedValue)
+            $scope.selectecampaign = $.unique($scope.selectecampaign)
+        }else if(parent == "campaign" && selected==false){
+
+            $scope.selectecampaign = _.without($scope.selectecampaign,selectedValue)
+        }
+        else if(parent == "advertiser" && selected==true){
+
+            $scope.selecteadvertiser.push(selectedValue)
+            $scope.selecteadvertiser = $.unique($scope.selecteadvertiser)
+        }else if(parent == "advertiser" && selected==false){
+
+            $scope.selecteadvertiser = _.without($scope.selecteadvertiser,selectedValue)
+        }
+
 
         $scope.paramObj.country = $scope.selectedcountry
         $scope.paramObj.device = $scope.selectedevice
         $scope.paramObj.browser = $scope.selectedbrowser
+        $scope.paramObj.advertiser=$scope.selecteadvertiser
+        $scope.paramObj.campaign=$scope.selectecampaign
+        $scope.paramObj.site=$scope.selectesite
 
         $scope.updateStats()
         console.log("$scope.paramObj --> ",$scope.paramObj)
+
+
+
+
     };
 
     $scope.selectedData = function(data,parentid){
@@ -120,278 +261,275 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
     /*****************************/
 
 
-/*  POST       /totalrevenue         controllers.Application.getGlobalTotalRevenueAction
-    POST        /totalimpressions     controllers.Application.getGlobalTotalFilledImpressionAction
-    POST        /totalecpm         controllers.Application.getGlobalTotaleCPMAction
-    POST        /browswestats         controllers.Application.getGlobalBrowserStatsAction
-    POST        /devicestats          controllers.Application.getGlobalDeviceStatsAction
-    POST        /countrystats         controllers.Application.getGlobalCountryStatsAction*/
+/*  POST        /dspbrowserstats           controllers.DSPApplication.getGlobalBrowserStatsAction
+    POST        /dspdevicestats            controllers.DSPApplication.getGlobalDeviceStatsAction
+    POST        /dspcountrystats           controllers.DSPApplication.getGlobalCountryStatsAction
+    POST        /dspsitestats              controllers.DSPApplication.getGlobalSiteStatsAction
+    POST        /dspcampaignstats          controllers.DSPApplication.getGlobalCampaignStatsAction
+    POST        /dspadvertiserstats        controllers.DSPApplication.getGlobalAdvertiserStatsAction
+
+    POST        /dspimpression             controllers.DSPApplication.getGlobalTotalImpressionAction
+    POST        /dspclickcount            controllers.DSPApplication.getGlobalClickCountAction
+    POST        /dspconversion             controllers.DSPApplication.getGlobalConversionCountAction*/
+
+    // New DSP Code Start
+
+     $scope.callDSPBrowserStats = function(parmdata){
+
+         var _paramdata = parmdata;
+         _paramdata.metrics="count";
+         var req = {
+             method: 'POST',
+             url: '/dspbrowserstats',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
+
+         $http(req).success(function(data){
+             console.log("callDSPBrowserStats ",data)
+
+             var _d = $scope.templateobj;
+             $.each(_d.tableDataArr,function(i,v){
+
+                 console.log("i",i);
+                 console.log("v",v);
+                 if(v.id=="browser"){
+                     v.data=data;
+                 }
+             });
+
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
 
 
-    //Chart Services
+     };
+     $scope.callDSPDeviceStats = function(parmdata){
 
-    $scope.callGlobalTotalRevenueAction = function(parmdata){
+         var _paramdata = parmdata;
+         _paramdata.metrics="count";
+         var req = {
+             method: 'POST',
+             url: '/dspdevicestats',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-        var _paramdata = parmdata;
-        var req = {
-            method: 'POST',
-            url: '/totalrevenue',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: _paramdata
-        };
+         $http(req).success(function(data){
+             console.log("dspdevicestats ",data)
 
-        $http(req).success(function(data){
-            console.log("callGlobalTotalRevenueAction ",data)
+             var _d = $scope.templateobj;
+             $.each(_d.tableDataArr,function(i,v){
 
-        }).error(function(){
+                 console.log("i",i);
+                 console.log("v",v);
+                 if(v.id=="device"){
+                     v.data=data;
+                 }
+             });
 
-        });
-
-    };
-
-    $scope.callGlobalTotalFilledImpressionAction = function(parmdata) {
-
-        var _paramdata = parmdata;
-        var req = {
-            method: 'POST',
-            url: '/totalimpressions',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: _paramdata
-        };
-
-        $http(req).success(function(data){
-
-            console.log("callGlobalTotalFilledImpressionAction ",data)
-
-        }).error(function(){
-
-        });
-    };
-
-    $scope.callGlobalTotaleCPMAction = function(parmdata) {
-
-        var _paramdata = parmdata;
-        var req = {
-            method: 'POST',
-            url: '/totalecpm',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data:_paramdata
-        };
-
-        $http(req).success(function(data){
-
-            console.log("callGlobalTotaleCPMAction ",data)
-
-        }).error(function(){
-
-        });
-    };
-
-    $scope.callGlobalBrowserStatsAction = function(parmdata) {
-
-        var _paramdata = jQuery.extend(true, {},parmdata);
-        _paramdata.metrics = "revenue"
-        var req = {
-            method: 'POST',
-            url: '/browserstats',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: _paramdata
-        };
-
-        $http(req).success(function(data){
-
-            var _tmpdata = {}
-
-            _tmpdata.id="browser";
-            _tmpdata.title="Browser";
-            _tmpdata.data = data
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
 
 
-            $scope.tableDataArr.push(_tmpdata)
+     };
+     $scope.callDSPCountryStats = function(parmdata){
 
+         var _paramdata = parmdata;
+         _paramdata.metrics="count";
+         var req = {
+             method: 'POST',
+             url: '/dspcountrystats',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-        }).error(function(){
+         $http(req).success(function(data){
+             console.log("dspcountrystats ",data)
 
-        });
+             var _d = $scope.templateobj;
+             $.each(_d.tableDataArr,function(i,v){
 
-    };
+                 console.log("i",i);
+                 console.log("v",v);
+                 if(v.id=="country"){
+                     v.data=data;
+                 }
+             });
 
-    $scope.callGlobalDeviceStatsAction = function(parmdata) {
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
+     };
+     $scope.callDSPSitesStats = function(parmdata){
 
-        var _paramdata = jQuery.extend(true, {},parmdata);
-        _paramdata.metrics = "revenue";
-        var req = {
-            method: 'POST',
-            url: '/devicestats',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: _paramdata
-        };
+         var _paramdata = parmdata;
+         _paramdata.metrics="count";
+         var req = {
+             method: 'POST',
+             url: '/dspsitestats',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-        $http(req).success(function(data){
+         $http(req).success(function(data){
+             console.log("dspsitestats ",data)
 
-            console.log("device data",data)
+             var _d = $scope.templateobj;
+             $.each(_d.tableDataArr,function(i,v){
 
-            /*{"id" : "device",
-                "title" : "Device",
-                "data" :  [
-                {"id":"browser",
-                    "name":"browser",
-                    "value":8000},
-                {"id":"SGH-I337",
-                    "name":"SGH-I337",
-                    "value":2000},
-                {"id":"LT30p",
-                    "name":"LT30p",
-                    "value":2000},
-                {"id":"GT-P5210",
-                    "name":"GT-P5210",
-                    "value":4000},
-                {"id":"Iphone",
-                    "name":"Iphone",
-                    "value":5000}
-            ]
-            }*/
+                 console.log("i",i);
+                 console.log("v",v);
+                 if(v.id=="site"){
+                     v.data=data;
+                 }
+             });
 
-            var _tmpdata = {}
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
 
-            _tmpdata.id="device";
-            _tmpdata.title="Device";
-            _tmpdata.data = data
+     };
+     $scope.callDSPCampaignStats = function(parmdata){
 
+         var _paramdata = parmdata;
+         _paramdata.metrics="count";
+         var req = {
+             method: 'POST',
+             url: '/dspcampaignstats',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-            $scope.tableDataArr.push(_tmpdata)
+         $http(req).success(function(data){
+             console.log("dspcampaignstats ",data)
 
-        }).error(function(){
+             var _d = $scope.templateobj;
+             $.each(_d.tableDataArr,function(i,v){
 
-        });
+                 console.log("i",i);
+                 console.log("v",v);
+                 if(v.id=="campaign"){
+                     v.data=data;
+                 }
+             });
 
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
 
-    };
+     };
+     $scope.callDSPAdvertiserStats = function(parmdata){
 
-    $scope.callGlobalCountryStatsAction = function(parmdata) {
+         var _paramdata = parmdata;
+         _paramdata.metrics="count";
+         var req = {
+             method: 'POST',
+             url: '/dspadvertiserstats',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-        var _paramdata = jQuery.extend(true, {},parmdata);
-        _paramdata.metrics = "revenue";
-        var req = {
-            method: 'POST',
-            url: '/countrystats',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: _paramdata
-        };
+         $http(req).success(function(data){
+             console.log("dspadvertiserstats ",data)
 
-        $http(req).success(function(data){
+             var _d = $scope.templateobj;
+             $.each(_d.tableDataArr,function(i,v){
 
-            var _tmpdata = {}
-            _tmpdata.id="country";
-            _tmpdata.title="Country";
-            _tmpdata.data = data
-            $scope.tableDataArr.push(_tmpdata)
+                 console.log("i",i);
+                 console.log("v",v);
+                 if(v.id=="advertiser"){
+                     v.data=data;
+                 }
+             });
 
-        }).error(function(){
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
+     };
 
-        });
+     $scope.callDSPImpressionCount = function(parmdata){
 
+         var _paramdata = parmdata;
+         var req = {
+             method: 'POST',
+             url: '/dspimpression',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-    };
+         $http(req).success(function(data){
 
+             console.log("callDSPImpressionCount ",data);
 
+             $scope.drawMetricsGraph$scope("#impressioncount","impressioncount",data)
 
-    $scope.tableDataArr = [
+                 //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
 
-        {"id" : "advertisers",
-            "title" : "Advertisers",
-            "data" :  [
-                {"id":"flipkart",
-                    "name":"flipkart.com",
-                    "value":5000},
-                {"id":"redbus",
-                    "name":"redbus.in",
-                    "value":4500},
-                {"id":"truckway",
-                    "name":"truckway.com",
-                    "value":3000},
-                {"id":"cartrade",
-                    "name":"cartrade.com",
-                    "value":4000},
-                {"id":"payZippy",
-                    "name":"payZippy.com",
-                    "value":3000},
-                {"id":"amazon",
-                    "name":"amazon.com",
-                    "value":6000},
-                {"id":"carBuy",
-                    "name":"carBuy.com",
-                    "value":3500},
-                {"id":"goibibo",
-                    "name":"goibibo.com",
-                    "value":5000},
-                {"id":"bookmyshow",
-                    "name":"bookmyshow.com",
-                    "value":4500},
-                {"id":"payu",
-                    "name":"payu.com",
-                    "value":4000},
-                {"id":"trader",
-                    "name":"trader.com",
-                    "value":3000}
-            ]
-        }
+     };
 
-    ];
+     $scope.callDSPclickCount = function(parmdata){
 
-    $scope.getVizData = function(){
-        $scope.graphDataArr = [
-            {"id" : "a",
-                "title" : "Uniques"
-            },
-            {"id" : "b",
-                "title" : "Impressions"
-            },
-            {"id" : "c",
-                "title" : "eCPM"
-            },
-            {"id" : "d",
-                "title" : "Revenue"
-            },
-            {"id" : "e",
-                "title" : "Clicks"
-            },
-            {"id" : "f",
-                "title" : "CTR"
-            }
-        ];
+         var _paramdata = parmdata;
+         var req = {
+             method: 'POST',
+             url: '/dspclickcount',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-        //loop it
-        //
-    };
+         $http(req).success(function(data){
 
-    $scope.init= function() {
+             console.log("callDSPclickCount ",data);
 
-        var req = $scope.paramObj;
-        $scope.callGlobalDeviceStatsAction(req)
-        $scope.callGlobalCountryStatsAction(req)
-        $scope.callGlobalBrowserStatsAction(req)
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
+     };
+     $scope.callDSPConversion = function(parmdata){
 
-        $scope.callGlobalTotalRevenueAction(req)
-        $scope.callGlobalTotalFilledImpressionAction(req)
-        $scope.callGlobalTotaleCPMAction(req)
+         var _paramdata = parmdata;
+         var req = {
+             method: 'POST',
+             url: '/dspconversion',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             data: _paramdata
+         };
 
-    };
+         $http(req).success(function(data){
+
+             console.log("callDSPConversion ",data);
+
+             //$scope.genrateRevChart(data)
+         }).error(function(){
+         });
+     };
+
+    // New DSP code end
 
     $scope.updateStats = function() {
-        var req = $scope.paramObj;
+       /* var req = $scope.paramObj;
         $scope.tableDataArr = [];
         $scope.callGlobalDeviceStatsAction(req)
         $scope.callGlobalCountryStatsAction(req)
@@ -399,16 +537,25 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
         $scope.callGlobalTotalRevenueAction(req)
         $scope.callGlobalTotalFilledImpressionAction(req)
-        $scope.callGlobalTotaleCPMAction(req)
+        $scope.callGlobalTotaleCPMAction(req)*/
 
     };
 
-    $scope.genrateRevChart = function(data){
+    $scope.drawMetricsGraph$scope = function(location,name,data) {
 
-        var chardivwidth = $("#revenue-chart").width();
+        var _location = $(location);
+
+        console.log("_location",_location)
+        _location.html(" ");
+
         var margin = {top: 20, right: 20, bottom: 30, left: 50},
-            width = chardivwidth - margin.left - margin.right,
-            height = 220 - margin.top - margin.bottom;
+            width = _location.width() - margin.left - margin.right,
+            height = 200 ///- margin.top - margin.bottom;
+
+        console.log("Name -> ",name);
+        console.log("location ->",_location);
+        console.log("drawMetricsGraph Data ->",data);
+
 
         var parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -419,60 +566,52 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
             .range([height, 0]);
 
         var xAxis = d3.svg.axis()
-            .scale(x).ticks(d3.time.hour, 6)
+            .scale(x)
             .orient("bottom");
 
         var yAxis = d3.svg.axis()
             .scale(y)
             .tickFormat(function (d) {
-            var array = ['','k','M','G','T','P'];
-            var i=0;
-            while (d > 1000)
-            {
-                i++;
-                d = d/1000;
-            }
+                var array = ['','k','M','G','T','P'];
+                var i=0;
+                while (d > 1000)
+                {
+                    i++;
+                    d = d/1000;
+                }
 
-            d = d+' '+array[i];
+                d = d+' '+array[i];
 
-            return d;}).
-            orient("left")
+                return d;})
+            .orient("left");
 
-        var area = d3.svg.area()
-            .x(function(d) { return x(d.date); })
-            .y0(height)
-            .y1(function(d) { return y(d.revenue); });
+        var line = d3.svg.line()
+            .x(function(d) {
+                console.log("Timestamp ",d)
+                return x(d.timestamp);
+            })
+            .y(function(d) {
+                return y(d.value);
+            });
 
-        $("#revenue-chart").html(" ");
-
-        var svg = d3.select("#revenue-chart").append("svg")
+        var svg = d3.select("#impressioncount").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-        data.forEach(function(d){
+            data.forEach(function(d) {
 
-            var newdate =new Date(Number(d.timestamp)*1000);
-            //console.log("New Data",newdate);
-            d.date = newdate
-            d.revenue = +d.revenue
+                console.log("dd-<",d);
+                var _date = date = new Date(Number(d.timestamp)*1000);
+                console.log("_date ",date);
+                d.timestamp = new Date(Number(_date));
+                d.value = +parseInt(d.value);
+            });
 
-        });
-
-        console.log("Final data -->",data);
-
-            x.domain(d3.extent(data, function(d) { return d.date; }));
-            y.domain([0, d3.max(data, function(d) {
-                    console.log(d.revenue);
-                return d.revenue; }
-            )]);
-
-            svg.append("path")
-                .datum(data)
-                .attr("class", "area")
-                .attr("d", area);
+            x.domain(d3.extent(data, function(d) { return d.timestamp; }));
+            y.domain(d3.extent(data, function(d) { return d.value; }));
 
             svg.append("g")
                 .attr("class", "x axis")
@@ -487,9 +626,230 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text(" ");
+                .text("Count");
 
+            svg.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .attr("d", line);
+
+    };
+
+    $scope.genrateRevChart = function(data) {
+
+        $("#revenue-chart").html(" ")
+
+        var genRows = function() {
+            var a = []
+            for (var i = 0; i < 10; i++) {
+                var o = {
+                    name: 'Item'+i,
+                    value: Math.round(Math.random() * 100)
+                }
+                a.push(o)
+            }
+            return a
+        }
+
+        var data = [
+            {name: 'Layer 1', value: genRows()},
+            {name: 'Layer 2', value: genRows()}
+        ]
+
+        // CHART
+
+        var margin = {top: 20, right: 20, bottom: 30, left: 50},
+            width = $("#revenue-chart").width(),
+            height = 200;
+
+        var xvalues = []
+        var yvalues = []
+        console.log("Data -- >",data)
+        $.each(data[0].value, function(i, v) {
+            console.log(data[0].value)
+            console.log("v -> ",v)
+            xvalues.push(v.name)
+            yvalues.push(v.value)
+        })
+
+        console.log("xvalues--> ",xvalues)
+        console.log("yvalues-- ",yvalues)
+
+        var x = d3.scale.ordinal()
+            .domain(xvalues)
+            .rangeBands([0, (width - margin.left - margin.right)], 0)
+
+        var y = d3.scale.linear()
+            .domain(d3.extent(yvalues))
+            .range([height - margin.top - margin.bottom, 0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .tickFormat(function (d) {
+                var array = ['','k','M','G','T','P'];
+                var i=0;
+                while (d > 1000)
+                {
+                    i++;
+                    d = d/1000;
+                }
+
+                d = d+' '+array[i];
+
+                return d;})
+            .orient("left");
+
+        var area = d3.svg.area()
+            .x(function(d) {
+                console.log("area x --> ",d);
+                return x(d.name);
+            })
+            .y0(height)
+            .y1(function(d) {
+                alert("y1 Called")
+                console.log("In area y1 -> ",d);
+                return y(d.value);
+            });
+
+        var svg = d3.select("#revenue-chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // DRAW CHART
+
+        var layer = svg.selectAll('.layer')
+            .data(data)
+            .enter().append("g")
+            .attr("class", "layer")
+
+        layer.selectAll("path")
+            .data(function(d) {
+                alert("Called")
+                console.log("Import -->",d)
+                return [d]
+            })
+            .enter().append("path")
+            .attr("class", "area")
+            .attr("d", area); // THIS DOESN'T DO ANYTHING :(
+
+        // AXIS
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
 
     }
 
+    $scope.genrateeCPMChart = function(data) {
+
+        $("#ecpm-chart").html(" ")
+
+        var genRows = function() {
+            var a = []
+            for (var i = 0; i < 10; i++) {
+                var o = {
+                    name: 'Item'+i,
+                    value: Math.round(Math.random() * 100)
+                }
+                a.push(o)
+            }
+            return a
+        }
+
+        var data = [
+            {name: 'Layer 1', value: genRows()},
+            {name: 'Layer 2', value: genRows()}
+        ]
+
+        // CHART
+
+        var margin = {top: 20, right: 20, bottom: 30, left: 50},
+            width = $("#ecpm-chart").width(),
+            height = 200;
+
+        var xvalues = []
+        var yvalues = []
+        console.log("Data -- >",data)
+        $.each(data[0].value, function(i, v) {
+            console.log(data[0].value)
+            console.log("v -> ",v)
+            xvalues.push(v.name)
+            yvalues.push(v.value)
+        })
+
+        console.log("xvalues--> ",xvalues)
+        console.log("yvalues-- ",yvalues)
+
+        var x = d3.scale.ordinal()
+            .domain(xvalues)
+            .rangeBands([0, (width - margin.left - margin.right)], 0)
+
+        var y = d3.scale.linear()
+            .domain(d3.extent(yvalues))
+            .range([height - margin.top - margin.bottom, 0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .tickFormat(function (d) {
+                var array = ['','k','M','G','T','P'];
+                var i=0;
+                while (d > 1000)
+                {
+                    i++;
+                    d = d/1000;
+                }
+
+                d = d+' '+array[i];
+
+                return d;})
+            .orient("left");
+
+        var area = d3.svg.area()
+            .x(function(d) { return x(d.name); })
+            .y0(height)
+            .y1(function(d) { return y(d.value); });
+
+        var svg = d3.select("#ecpm-chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // DRAW CHART
+
+        var layer = svg.selectAll('.layer')
+            .data(data)
+            .enter().append("g")
+            .attr("class", "layer")
+
+        layer.selectAll("path")
+            .data(function(d) {return [d.value]})
+            .enter().append("path")
+            .attr("class", "area")
+            .attr("d", area); // THIS DOESN'T DO ANYTHING :(
+
+// AXIS
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+    }
 });
