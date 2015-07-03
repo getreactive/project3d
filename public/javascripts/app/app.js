@@ -120,27 +120,17 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
     };
 
     $scope.changeSelection = function(data) {
-         console.log(data);
-
-
 
         var req = $scope.paramObj;
 
-        $scope.callDSPBrowserStats(req);
-        $scope.callDSPDeviceStats(req);
-        $scope.callDSPAdvertiserStats(req);
-        $scope.callDSPCampaignStats(req);
-        $scope.callDSPCountryStats(req);
-        $scope.callDSPSitesStats(req);
 
-        $scope.callDSPImpressionCount(req);
-        $scope.callDSPclickCount(req);
-        $scope.callDSPConversion(req);
     };
 
 
 
     $scope.createParamObject= function(parent, selectedValue, selected) {
+
+        console.log("Selected Value ",selectedValue)
 
         if(parent == "country" && selected==true){
 
@@ -200,12 +190,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
         $scope.paramObj.advertiser=$scope.selecteadvertiser
         $scope.paramObj.campaign=$scope.selectecampaign
         $scope.paramObj.site=$scope.selectesite
-
-        $scope.updateStats()
         console.log("$scope.paramObj --> ",$scope.paramObj)
 
 
-
+        var _pram = $scope.paramObj;
+        $scope.updateStats(_pram);
 
     };
 
@@ -224,6 +213,9 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
             var currentparent = $scope.tableDataArr[parentid].id;
             var currentvalue = data.name
+
+            console.log("currentparent == ",currentparent)
+            console.log("currentvalue == ",currentvalue)
 
             $scope.createParamObject(currentparent,currentvalue,true)
 
@@ -245,7 +237,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
     };
 
     $scope.closeTag = function(tag){
+        console.log("tag -->",tag)
         var parent = $scope.parentTag.indexOf(tag);
+
+        console.log("&*&*&* ",parent)
         $scope.parentTag.splice(parent,1);
         for(var i=0;i<$scope.tableDataArr.length;i++){
             if($scope.tableDataArr[i].id==tag){
@@ -256,6 +251,37 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
             }
         }
+
+/*        $scope.paramObj = {
+            "country":[],
+            "browser":[],
+            "device":[],
+            "site":[],
+            "campaign":[],
+            "advertiser":[]
+        };*/
+
+        if(tag=="country"){
+            $scope.paramObj.country = [];
+        }else if(tag=="browser"){
+            $scope.paramObj.browser = [];
+        }else if(tag=="device"){
+            $scope.paramObj.device = [];
+        }else if(tag=="site"){
+            $scope.paramObj.site = [];
+        }else if(tag=="campaign"){
+            $scope.paramObj.campaign = [];
+        }else if(tag=="advertiser"){
+            $scope.paramObj.advertiser = [];
+
+        }else {
+
+        }
+
+        var _pram = $scope.paramObj;
+        $scope.updateStats(_pram);
+
+
     };
 
     /*****************************/
@@ -292,9 +318,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
-
-                 console.log("i",i);
-                 console.log("v",v);
                  if(v.id=="browser"){
                      v.data=data;
                  }
@@ -320,13 +343,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
          };
 
          $http(req).success(function(data){
-             console.log("dspdevicestats ",data)
 
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
 
-                 console.log("i",i);
-                 console.log("v",v);
                  if(v.id=="device"){
                      v.data=data;
                  }
@@ -352,13 +372,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
          };
 
          $http(req).success(function(data){
-             console.log("dspcountrystats ",data)
 
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
 
-                 console.log("i",i);
-                 console.log("v",v);
                  if(v.id=="country"){
                      v.data=data;
                  }
@@ -382,13 +399,9 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
          };
 
          $http(req).success(function(data){
-             console.log("dspsitestats ",data)
 
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
-
-                 console.log("i",i);
-                 console.log("v",v);
                  if(v.id=="site"){
                      v.data=data;
                  }
@@ -413,13 +426,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
          };
 
          $http(req).success(function(data){
-             console.log("dspcampaignstats ",data)
 
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
 
-                 console.log("i",i);
-                 console.log("v",v);
                  if(v.id=="campaign"){
                      v.data=data;
                  }
@@ -444,13 +454,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
          };
 
          $http(req).success(function(data){
-             console.log("dspadvertiserstats ",data)
 
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
 
-                 console.log("i",i);
-                 console.log("v",v);
                  if(v.id=="advertiser"){
                      v.data=data;
                  }
@@ -475,9 +482,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
          $http(req).success(function(data){
 
-             console.log("callDSPImpressionCount ",data);
-
-             $scope.drawMetricsGraph$scope("#impressioncount","impressioncount",data)
+             $scope.drawMetricsGraph("#conversion","conversion",data)
 
                  //$scope.genrateRevChart(data)
          }).error(function(){
@@ -499,8 +504,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
          $http(req).success(function(data){
 
-             console.log("callDSPclickCount ",data);
-
+             $scope.drawMetricsGraph("#clickcount","clickcount",data)
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
@@ -519,8 +523,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
          $http(req).success(function(data){
 
-             console.log("callDSPConversion ",data);
-
+             $scope.drawMetricsGraph("#impressioncount","impressioncount",data)
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
@@ -528,24 +531,25 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
     // New DSP code end
 
-    $scope.updateStats = function() {
-       /* var req = $scope.paramObj;
-        $scope.tableDataArr = [];
-        $scope.callGlobalDeviceStatsAction(req)
-        $scope.callGlobalCountryStatsAction(req)
-        $scope.callGlobalBrowserStatsAction(req)
+    $scope.updateStats = function(param) {
+        var req = param;
+        $scope.callDSPBrowserStats(req);
+        $scope.callDSPDeviceStats(req);
+        $scope.callDSPAdvertiserStats(req);
+        $scope.callDSPCampaignStats(req);
+        $scope.callDSPCountryStats(req);
+        $scope.callDSPSitesStats(req);
 
-        $scope.callGlobalTotalRevenueAction(req)
-        $scope.callGlobalTotalFilledImpressionAction(req)
-        $scope.callGlobalTotaleCPMAction(req)*/
+        $scope.callDSPImpressionCount(req);
+        $scope.callDSPclickCount(req);
+        $scope.callDSPConversion(req);
 
     };
 
-    $scope.drawMetricsGraph$scope = function(location,name,data) {
+    $scope.drawMetricsGraph = function(location,name,data) {
 
         var _location = $(location);
 
-        console.log("_location",_location)
         _location.html(" ");
 
         var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -553,9 +557,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
             height = 200 ///- margin.top - margin.bottom;
 
         console.log("Name -> ",name);
-        console.log("location ->",_location);
-        console.log("drawMetricsGraph Data ->",data);
-
+        console.log("location ->",_location)
 
         var parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -587,14 +589,14 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
         var line = d3.svg.line()
             .x(function(d) {
-                console.log("Timestamp ",d)
+
                 return x(d.timestamp);
             })
             .y(function(d) {
                 return y(d.value);
             });
 
-        var svg = d3.select("#impressioncount").append("svg")
+        var svg = d3.select("#"+name).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -603,9 +605,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
             data.forEach(function(d) {
 
-                console.log("dd-<",d);
                 var _date = date = new Date(Number(d.timestamp)*1000);
-                console.log("_date ",date);
                 d.timestamp = new Date(Number(_date));
                 d.value = +parseInt(d.value);
             });
@@ -635,221 +635,4 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
     };
 
-    $scope.genrateRevChart = function(data) {
-
-        $("#revenue-chart").html(" ")
-
-        var genRows = function() {
-            var a = []
-            for (var i = 0; i < 10; i++) {
-                var o = {
-                    name: 'Item'+i,
-                    value: Math.round(Math.random() * 100)
-                }
-                a.push(o)
-            }
-            return a
-        }
-
-        var data = [
-            {name: 'Layer 1', value: genRows()},
-            {name: 'Layer 2', value: genRows()}
-        ]
-
-        // CHART
-
-        var margin = {top: 20, right: 20, bottom: 30, left: 50},
-            width = $("#revenue-chart").width(),
-            height = 200;
-
-        var xvalues = []
-        var yvalues = []
-        console.log("Data -- >",data)
-        $.each(data[0].value, function(i, v) {
-            console.log(data[0].value)
-            console.log("v -> ",v)
-            xvalues.push(v.name)
-            yvalues.push(v.value)
-        })
-
-        console.log("xvalues--> ",xvalues)
-        console.log("yvalues-- ",yvalues)
-
-        var x = d3.scale.ordinal()
-            .domain(xvalues)
-            .rangeBands([0, (width - margin.left - margin.right)], 0)
-
-        var y = d3.scale.linear()
-            .domain(d3.extent(yvalues))
-            .range([height - margin.top - margin.bottom, 0]);
-
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
-
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .tickFormat(function (d) {
-                var array = ['','k','M','G','T','P'];
-                var i=0;
-                while (d > 1000)
-                {
-                    i++;
-                    d = d/1000;
-                }
-
-                d = d+' '+array[i];
-
-                return d;})
-            .orient("left");
-
-        var area = d3.svg.area()
-            .x(function(d) {
-                console.log("area x --> ",d);
-                return x(d.name);
-            })
-            .y0(height)
-            .y1(function(d) {
-                alert("y1 Called")
-                console.log("In area y1 -> ",d);
-                return y(d.value);
-            });
-
-        var svg = d3.select("#revenue-chart").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        // DRAW CHART
-
-        var layer = svg.selectAll('.layer')
-            .data(data)
-            .enter().append("g")
-            .attr("class", "layer")
-
-        layer.selectAll("path")
-            .data(function(d) {
-                alert("Called")
-                console.log("Import -->",d)
-                return [d]
-            })
-            .enter().append("path")
-            .attr("class", "area")
-            .attr("d", area); // THIS DOESN'T DO ANYTHING :(
-
-        // AXIS
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-
-    }
-
-    $scope.genrateeCPMChart = function(data) {
-
-        $("#ecpm-chart").html(" ")
-
-        var genRows = function() {
-            var a = []
-            for (var i = 0; i < 10; i++) {
-                var o = {
-                    name: 'Item'+i,
-                    value: Math.round(Math.random() * 100)
-                }
-                a.push(o)
-            }
-            return a
-        }
-
-        var data = [
-            {name: 'Layer 1', value: genRows()},
-            {name: 'Layer 2', value: genRows()}
-        ]
-
-        // CHART
-
-        var margin = {top: 20, right: 20, bottom: 30, left: 50},
-            width = $("#ecpm-chart").width(),
-            height = 200;
-
-        var xvalues = []
-        var yvalues = []
-        console.log("Data -- >",data)
-        $.each(data[0].value, function(i, v) {
-            console.log(data[0].value)
-            console.log("v -> ",v)
-            xvalues.push(v.name)
-            yvalues.push(v.value)
-        })
-
-        console.log("xvalues--> ",xvalues)
-        console.log("yvalues-- ",yvalues)
-
-        var x = d3.scale.ordinal()
-            .domain(xvalues)
-            .rangeBands([0, (width - margin.left - margin.right)], 0)
-
-        var y = d3.scale.linear()
-            .domain(d3.extent(yvalues))
-            .range([height - margin.top - margin.bottom, 0]);
-
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
-
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .tickFormat(function (d) {
-                var array = ['','k','M','G','T','P'];
-                var i=0;
-                while (d > 1000)
-                {
-                    i++;
-                    d = d/1000;
-                }
-
-                d = d+' '+array[i];
-
-                return d;})
-            .orient("left");
-
-        var area = d3.svg.area()
-            .x(function(d) { return x(d.name); })
-            .y0(height)
-            .y1(function(d) { return y(d.value); });
-
-        var svg = d3.select("#ecpm-chart").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        // DRAW CHART
-
-        var layer = svg.selectAll('.layer')
-            .data(data)
-            .enter().append("g")
-            .attr("class", "layer")
-
-        layer.selectAll("path")
-            .data(function(d) {return [d.value]})
-            .enter().append("path")
-            .attr("class", "area")
-            .attr("d", area); // THIS DOESN'T DO ANYTHING :(
-
-// AXIS
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-    }
 });
