@@ -23,7 +23,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "angularjs" % "2.0.0-alpha.19",
   "org.webjars" % "angular-strap" % "2.2.3",
   "org.webjars" % "d3js" % "3.5.5-1",
-  "org.webjars" % "underscorejs" % "1.8.3"
+  "org.webjars" % "underscorejs" % "1.8.3",
+  "org.webjars" % "jQuery-slimScroll" % "1.3.3"
 )
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.35"

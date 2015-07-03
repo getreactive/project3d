@@ -31,6 +31,14 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
     $scope.templateobj = {}
 
+    $scope.applySlimScroll = function(){
+
+        $('.table-responsive').slimScroll({
+            height: '250px'
+        });
+
+    };
+
     $scope.init= function() {
 
         var req = $scope.paramObj;
@@ -45,6 +53,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
         $scope.callDSPImpressionCount(req);
         $scope.callDSPclickCount(req);
         $scope.callDSPConversion(req);
+
+
+
+
+
 
     };
 
@@ -184,14 +197,13 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
         }
 
 
-        $scope.paramObj.country = $scope.selectedcountry
-        $scope.paramObj.device = $scope.selectedevice
-        $scope.paramObj.browser = $scope.selectedbrowser
-        $scope.paramObj.advertiser=$scope.selecteadvertiser
-        $scope.paramObj.campaign=$scope.selectecampaign
-        $scope.paramObj.site=$scope.selectesite
+        $scope.paramObj.country = $scope.selectedcountry;
+        $scope.paramObj.device = $scope.selectedevice;
+        $scope.paramObj.browser = $scope.selectedbrowser;
+        $scope.paramObj.advertiser=$scope.selecteadvertiser;
+        $scope.paramObj.campaign=$scope.selectecampaign;
+        $scope.paramObj.site=$scope.selectesite;
         console.log("$scope.paramObj --> ",$scope.paramObj)
-
 
         var _pram = $scope.paramObj;
         $scope.updateStats(_pram);
@@ -236,10 +248,16 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
         }
     };
 
+
+    $scope.resetFilterWithTag = function(tag){
+
+        $scope.paramObj
+
+    };
+
     $scope.closeTag = function(tag){
         console.log("tag -->",tag)
         var parent = $scope.parentTag.indexOf(tag);
-
         console.log("&*&*&* ",parent)
         $scope.parentTag.splice(parent,1);
         for(var i=0;i<$scope.tableDataArr.length;i++){
@@ -248,7 +266,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                 $.each($scope.tableDataArr[i].data,function(index){
                     delete $scope.tableDataArr[i].data[index].$selected;
                 })
-
             }
         }
 
@@ -263,24 +280,51 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
         if(tag=="country"){
             $scope.paramObj.country = [];
-        }else if(tag=="browser"){
+        }
+        if(tag=="browser"){
             $scope.paramObj.browser = [];
-        }else if(tag=="device"){
+        }
+        if(tag=="device"){
             $scope.paramObj.device = [];
-        }else if(tag=="site"){
+        }
+        if(tag=="site"){
             $scope.paramObj.site = [];
-        }else if(tag=="campaign"){
+        }
+        if(tag=="campaign"){
             $scope.paramObj.campaign = [];
-        }else if(tag=="advertiser"){
+        }
+        if(tag=="advertiser"){
             $scope.paramObj.advertiser = [];
-
-        }else {
 
         }
 
         var _pram = $scope.paramObj;
-        $scope.updateStats(_pram);
 
+        console.log("Chal Beta selfi la la ra ",$scope.tableDataArr);
+        console.log("Chal  ",$scope.parentTag);
+
+        console.log("Updated parameter--> ",_pram)
+
+        if($scope.parentTag.length == 0){
+
+            $scope.selectedcountry = [];
+            $scope.selectedevice = [];
+            $scope.selectedbrowser = [];
+            $scope.selecteadvertiser = [];
+            $scope.selectecampaign = [];
+            $scope.selectesite = [];
+            $scope.paramObj.advertiser = [];
+            $scope.paramObj.browser = [];
+            $scope.paramObj.campaign = [];
+            $scope.paramObj.country = [];
+            $scope.paramObj.device = [];
+            $scope.paramObj.site = [];
+            var paramdata = $scope.paramObj;
+            $scope.updateStats(paramdata);
+        }else {
+
+            $scope.updateStats(_pram);
+        }
 
     };
 
@@ -323,6 +367,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                  }
              });
 
+             $scope.applySlimScroll();
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
@@ -352,6 +397,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                  }
              });
 
+             $scope.applySlimScroll();
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
@@ -381,6 +427,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                  }
              });
 
+             $scope.applySlimScroll();
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
@@ -407,6 +454,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                  }
              });
 
+             $scope.applySlimScroll();
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
@@ -434,6 +482,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                      v.data=data;
                  }
              });
+             $scope.applySlimScroll();
 
              //$scope.genrateRevChart(data)
          }).error(function(){
@@ -463,6 +512,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                  }
              });
 
+             $scope.applySlimScroll();
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
