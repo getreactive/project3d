@@ -33,14 +33,6 @@
 
           <!-- Info boxes -->
         <div class="row main_header ">
-          <div class="row" >
-            <div class="info-box col-md-12">
-              <span class="info-box-icon bg-yellow"><i class="ion ion-ios-gear-outline"></i></span>
-              <div class="info-box-content">
-                <h1 >Dashboard</h1>
-              </div><!-- /.info-box-content -->
-            </div><!-- /.info-box -->
-          </div><!-- /.col -->
           <div>
             <ol class="breadcrumb">
               <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -50,7 +42,7 @@
           <div class="clearfix visible-sm-block"></div>
         </div><!-- /.row -->
         <div class=" tagholder row">
-          <h2>Selected Filters </h2>
+         @* <h5>Selected Filters </h5>*@
           <br>
           <div class="panel tags" ng-repeat="tag in parentTag track by $index"><b>{{tag}}</b>    <button class=" btn-warning " ng-click="closeTag(tag)"><span class="glyphicon glyphicon-remove"></span></button></div>
         </div>
@@ -60,7 +52,7 @@
           <div class="col-md-6">
             <div class="row">
               <div class="metric_head col-md-3">
-                <h2>Metrics</h2>
+               @* <h2>Metrics</h2>*@
               </div>
             </div>
             <div class="row" id="viz-place-holder" >
@@ -70,7 +62,7 @@
           </div><!-- /.col -->
 
           <div class="col-md-6">
-            <h2>Dimensions</h2>
+            @*<h2>Dimensions</h2>*@
             <div class="row" id="table-place-holder" >
               <div class="col-md-6" ng-repeat="table in tableDataArr" ng-include="'@routes.Assets.versioned("templates/tableTemplate.html")'">
               </div>

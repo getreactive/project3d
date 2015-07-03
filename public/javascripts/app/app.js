@@ -554,7 +554,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
         var margin = {top: 20, right: 20, bottom: 30, left: 50},
             width = _location.width() - margin.left - margin.right,
-            height = 200 ///- margin.top - margin.bottom;
+            height = 200 - margin.top - margin.bottom;
 
         console.log("Name -> ",name);
         console.log("location ->",_location)
@@ -569,6 +569,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
         var xAxis = d3.svg.axis()
             .scale(x)
+            .ticks(5)
+            //.ticks(d3.time.hour, 12)
             .orient("bottom");
 
         var yAxis = d3.svg.axis()
@@ -626,7 +628,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Count");
+                //.text("Count");
 
             svg.append("path")
                 .datum(data)
