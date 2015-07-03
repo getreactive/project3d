@@ -72,12 +72,17 @@ td{
 .axis path,
 .axis line {
     fill: none;
-    stroke: #000;
+    stroke: #545454;
     shape-rendering: crispEdges;
 }
 
 .x.axis path {
     /*display: none;*/
+
+}
+
+.y.axis path {
+
 }
 
 .line {

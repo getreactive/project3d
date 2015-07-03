@@ -40,7 +40,7 @@
 .axis path,
 .axis line {
     fill: none;
-    stroke: #000;
+    stroke: #545454;
     shape-rendering: crispEdges;
 }
 
