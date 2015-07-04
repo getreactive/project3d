@@ -90,3 +90,24 @@ td{
     stroke: steelblue;
     stroke-width: 1.5px;
 }
+
+.dimTitle{
+    text-decoration: none;
+    color:#000;
+}
+
+.division-header{
+    padding:15px;
+}
+
+.metrics-dropdown{
+    min-width: 200px;
+}
+
+.metricWrap{
+    padding: 6px;
+}
+
+.metric-division{
+    margin:2px;
+}

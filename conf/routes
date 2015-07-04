@@ -46,9 +46,14 @@ POST        /dspadvertiserstats        controllers.DSPApplication.getGlobalAdver
 
 POST        /dspimpression             controllers.DSPApplication.getGlobalTotalImpressionAction
 
-POST        /dspclickcount            controllers.DSPApplication.getGlobalClickCountAction
+POST        /dspclickcount             controllers.DSPApplication.getGlobalClickCountAction
 
 POST        /dspconversion             controllers.DSPApplication.getGlobalConversionCountAction
+
+##Dummy Calls
+
+
+GET        /dummy                      controllers.DummyApplication.dummyact
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file              controllers.Assets.versioned(path="/public", file: Asset)

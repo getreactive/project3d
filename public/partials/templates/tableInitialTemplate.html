@@ -1,0 +1,25 @@
+<div class="box box-info" >
+    <div class="box-header with-border">
+        <h3 class="box-title"><a  href="app#/filter" class="dimTitle" ng-click="getIndTable($index)">{{table.title}}</a></h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        <div class="table-responsive">
+            <table ng-table="tableParams"  class="table ng-table-rowselected">
+                    <tr style="cursor:pointer" ng-repeat="data in table.data"
+                        ng-click="data.$selected = !data.$selected; selectedData(data,$parent.$index) ; changeSelection(data)"
+                        ng-class="{'selecteditems': data.$selected}">
+                        <td data-title="'Name'">
+                            {{data.name}}
+                        </td>
+                        <td data-title="'Value'">
+                            {{data.value}}
+                        </td>
+                    </tr>
+            </table>
+        </div><!-- /.table-responsive -->
+    </div><!-- /.box-body -->
+</div><!-- /.box -->
