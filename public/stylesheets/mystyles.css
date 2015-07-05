@@ -111,3 +111,39 @@ td{
 .metric-division{
     margin:2px;
 }
+.time-metrics-filter{
+    margin-bottom: 3px;
+}
+
+.selectbox {
+    position: relative;
+    top: -2px;
+    background: #ffffff;
+    color: #838383;
+    white-space: normal;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+}
+.selectbox span {
+    padding-left: 3px;
+}
+.dropdown-toggle{
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+.dropdown-toggle>.btn>.btn-default{
+    padding-bottom: 3px;
+    padding-top: 3px;
+
+}
