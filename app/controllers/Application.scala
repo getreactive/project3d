@@ -261,5 +261,29 @@ class Application extends Controller {
     )
   }
 
+  def getGlobalCampaignStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RequestStatsParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _metrics = requestparam.metrics.toString
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val currentValue = getGlobalCountryStats(_metrics,_country,_browser,_device)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  }
+
 
 }

@@ -42,7 +42,7 @@ POST        /dspsitestats              controllers.DSPApplication.getGlobalSiteS
 
 POST        /dspcampaignstats          controllers.DSPApplication.getGlobalCampaignStatsAction
 
-POST        /dspadvertiserstats        controllers.DSPApplication.getGlobalAdvertiserStatsAction
+POST        /dspcreativestats        controllers.DSPApplication.getGlobalCreativeStatsAction
 
 POST        /dspimpression             controllers.DSPApplication.getGlobalTotalImpressionAction
 

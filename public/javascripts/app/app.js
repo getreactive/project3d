@@ -18,13 +18,13 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
         "device":[],
         "site":[],
         "campaign":[],
-        "advertiser":[]
+        "creative":[]
     };
 
     $scope.selectedevice = [];
     $scope.selectedcountry = [];
     $scope.selectedbrowser = [];
-    $scope.selecteadvertiser = [];
+    $scope.selectecreative = [];
     $scope.selectecampaign = [];
     $scope.selectesite = [];
 
@@ -140,12 +140,12 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                     "data": []
 
                 },{
-                    "id": "advertiser",
-                    "title": "Advertiser",
+                    "id": "creative",
+                    "title": "Creative",
                     "data": []
                 },{
                     "id": "campaign",
-                    "title": "campaign",
+                    "title": "Campaign",
                     "data": []
                 },
             ],
@@ -237,20 +237,20 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
 
             $scope.selectecampaign = _.without($scope.selectecampaign,selectedValue)
         }
-        else if(parent == "advertiser" && selected==true){
+        else if(parent == "creative" && selected==true){
 
-            $scope.selecteadvertiser.push(selectedValue)
-            $scope.selecteadvertiser = $.unique($scope.selecteadvertiser)
-        }else if(parent == "advertiser" && selected==false){
+            $scope.selectecreative.push(selectedValue)
+            $scope.selectecreative = $.unique($scope.selectecreative)
+        }else if(parent == "creative" && selected==false){
 
-            $scope.selecteadvertiser = _.without($scope.selecteadvertiser,selectedValue)
+            $scope.selectecreative = _.without($scope.selectecreative,selectedValue)
         }
 
 
         $scope.paramObj.country = $scope.selectedcountry;
         $scope.paramObj.device = $scope.selectedevice;
         $scope.paramObj.browser = $scope.selectedbrowser;
-        $scope.paramObj.advertiser=$scope.selecteadvertiser;
+        $scope.paramObj.creative=$scope.selectecreative;
         $scope.paramObj.campaign=$scope.selectecampaign;
         $scope.paramObj.site=$scope.selectesite;
         console.log("$scope.paramObj --> ",$scope.paramObj)
@@ -343,8 +343,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
         if(tag=="campaign"){
             $scope.paramObj.campaign = [];
         }
-        if(tag=="advertiser"){
-            $scope.paramObj.advertiser = [];
+        if(tag=="creative"){
+            $scope.paramObj.creative = [];
 
         }
 
@@ -360,10 +360,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
             $scope.selectedcountry = [];
             $scope.selectedevice = [];
             $scope.selectedbrowser = [];
-            $scope.selecteadvertiser = [];
+            $scope.selectecreative = [];
             $scope.selectecampaign = [];
             $scope.selectesite = [];
-            $scope.paramObj.advertiser = [];
+            $scope.paramObj.creative = [];
             $scope.paramObj.browser = [];
             $scope.paramObj.campaign = [];
             $scope.paramObj.country = [];
@@ -545,7 +545,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
          _paramdata.metrics="count";
          var req = {
              method: 'POST',
-             url: '/dspadvertiserstats',
+             url: '/dspcreativestats',
              headers: {
                  'Content-Type': 'application/json'
              },
@@ -557,7 +557,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
 
-                 if(v.id=="advertiser"){
+                 if(v.id=="creative"){
                      v.data=data;
                  }
              });
@@ -657,7 +657,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
             height = 200 - margin.top - margin.bottom;
 
         console.log("Name -> ",name);
-        console.log("location ->",_location)
+        console.log("location ->",data)
 
         var parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -665,7 +665,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
             .range([0, width]);
 
         var y = d3.scale.linear()
-            .range([height, 0]);
+            .range([height,0]);
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -687,6 +687,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
                 d = d+' '+array[i];
 
                 return d;})
+            .ticks(5)
             .orient("left");
 
         var line = d3.svg.line()
@@ -713,7 +714,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
             });
 
             x.domain(d3.extent(data, function(d) { return d.timestamp; }));
-            y.domain(d3.extent(data, function(d) { return d.value; }));
+            //y.domain(d3.extent(data, function(d) { return d.value; }));
+            y.domain([d3.min(data, function(d) { return (d.value)/1.2; }),d3.max(data, function(d) { return (d.value)/0.9; })]);
 
             svg.append("g")
                 .attr("class", "x axis")
