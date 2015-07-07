@@ -7,7 +7,7 @@
         </div>
     </div><!-- /.box-header -->
     <div class="box-body">
-        <div class="table-responsive">
+        <div class="table-responsive" style="min-height: 250px">
             <table ng-table="tableParams"  class="table ng-table-rowselected">
                 <tr style="cursor:pointer" ng-repeat="data in table.data"
                     ng-click="data.$selected = !data.$selected; selectedData(data,$parent.$index) ; changeSelection(data)"
