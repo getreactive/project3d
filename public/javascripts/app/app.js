@@ -644,6 +644,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
         $scope.callDSPclickCount(req);
         $scope.callDSPConversion(req);
 
+        $scope.applySlimScroll();
+
     };
 
     $scope.drawMetricsGraph = function(location,name,data) {
