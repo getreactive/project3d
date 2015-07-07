@@ -31,6 +31,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.1.1-2",
   "org.webjars.bower" % "angularjs" % "1.4.1",
   "org.webjars.bower" % "angular-route" % "1.4.1",
+  "org.webjars" % "ng-table" % "0.3.3",
   "org.webjars" % "angular-strap" % "2.2.3",
   "org.webjars" % "angular-material" % "0.10.0",
   "org.webjars.bower" % "bootstrap-daterangepicker" % "1.3.22",

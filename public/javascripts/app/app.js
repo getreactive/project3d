@@ -1,6 +1,6 @@
 var project3dApp = angular.module('demoApp',['ngTable','mgcrea.ngStrap']);
 
-project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParams){
+project3dApp.controller('demoAppCtrl',function($scope,$http){
 
     $scope.tags = [];
     $scope.parentTag = [];
@@ -27,8 +27,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$filter,NgTableParam
     $scope.selectecreative = [];
     $scope.selectecampaign = [];
     $scope.selectesite = [];
-
-
     $scope.templateobj = {}
 
     $scope.applySlimScroll = function(){
