@@ -148,8 +148,9 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                 },
             ],
             "graphDataArr": [
+
                 {
-                    "id": "impressioncount",
+                    "id": "conversion",
                     "title": "Impression"
                 },
                 {
@@ -157,7 +158,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                     "title": "Click"
                 },
                 {
-                    "id": "conversion",
+                    "id": "impressioncount",
                     "title": "Conversion"
                 }
             ]
