@@ -121,7 +121,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                 },
                 {
                     "id": "browser",
-                    "title": "browser",
+                    "title": "Browser",
                     "data": []
 
                 },
