@@ -362,7 +362,7 @@ object DSPQueryEngine {
 
     println(whereclouse)
 
-    val rs = stmt.executeQuery("select site, count(site) as value from demofinal "+whereclouse+" group by site")
+    val rs = stmt.executeQuery("select site, sum(site) as value from demofinal "+whereclouse+" group by site")
 
     while (rs.next()) {
       println("Read from DB: " + rs.getString("site") + "\t"+ rs.getString("value"))
