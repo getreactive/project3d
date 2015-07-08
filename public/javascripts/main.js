@@ -68,7 +68,7 @@ $.AdminLTE.options = {
  * functions and plugins as specified by the
  * options above.
  */
-$(function (){
+/*$(function (){
 
 //Easy access to options
     var o = $.AdminLTE.options;
@@ -78,7 +78,7 @@ $(function (){
         $.AdminLTE.boxWidget.activate();
     }
 
-});
+});*/
 
 function _init() {
     /* BoxWidget

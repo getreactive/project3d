@@ -103,10 +103,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $scope.callDSPConversion(req);
         $scope.datetimecheck();
 
-
-
-
-
     };
 
     $scope.getLayoutTemplate = function(){
@@ -148,7 +144,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                 },
             ],
             "graphDataArr": [
-
                 {
                     "id": "conversion",
                     "title": "Impression"
@@ -450,8 +445,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
              //$scope.genrateRevChart(data)
          }).error(function(){
          });
-
-
      };
      $scope.callDSPCountryStats = function(parmdata){
 
@@ -642,8 +635,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $scope.callDSPImpressionCount(req);
         $scope.callDSPclickCount(req);
         $scope.callDSPConversion(req);
-
-        $scope.applySlimScroll();
 
     };
 
