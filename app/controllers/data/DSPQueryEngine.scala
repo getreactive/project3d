@@ -1,5 +1,7 @@
 package controllers.data
 
+import java.util.Random
+
 import org.h2.api.Aggregate
 
 import scala.collection.mutable
@@ -368,7 +370,10 @@ object DSPQueryEngine {
       println("Read from DB: " + rs.getString("site") + "\t"+ rs.getString("value"))
       val site = rs.getString("site")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->site,"name"->site,"value"->value)
+      var randomno = new Random()
+      var aa = value.toInt + randomno.nextInt(10000)
+      var _val = aa.toString
+      val revenueByCountry = Map("id"->site,"name"->site,"value"->_val)
       returnData+=revenueByCountry
     }
 
