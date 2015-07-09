@@ -3,59 +3,65 @@
 # ~~~~
 
 # Home page
-GET         /                          controllers.Application.index()
+GET         /                        controllers.Application.index()
 
-GET         /app                       controllers.Application.app()
+GET         /app                     controllers.Application.app()
 
-GET         /wsstring                  controllers.Application.socket()
+GET         /wsstring                controllers.Application.socket()
 
-GET         /ws                        controllers.Application.socket1()
+GET         /ws                      controllers.Application.socket1()
 
-GET         /indexsession              controllers.Application.indexsession()
+GET         /indexsession            controllers.Application.indexsession()
 
-GET         /savesession               controllers.Application.saveInSession()
+GET         /savesession             controllers.Application.saveInSession()
 
-POST        /totalrevenue              controllers.Application.getGlobalTotalRevenueAction
+POST        /totalrevenue            controllers.Application.getGlobalTotalRevenueAction
 
-POST        /totalimpressions          controllers.Application.getGlobalTotalFilledImpressionAction
+POST        /totalimpressions        controllers.Application.getGlobalTotalFilledImpressionAction
 
-POST        /totalecpm                 controllers.Application.getGlobalTotaleCPMAction
+POST        /totalecpm               controllers.Application.getGlobalTotaleCPMAction
 
-POST        /browserstats              controllers.Application.getGlobalBrowserStatsAction
+POST        /browserstats            controllers.Application.getGlobalBrowserStatsAction
 
-POST        /devicestats               controllers.Application.getGlobalDeviceStatsAction
+POST        /devicestats             controllers.Application.getGlobalDeviceStatsAction
 
-POST        /countrystats              controllers.Application.getGlobalCountryStatsAction
+POST        /countrystats            controllers.Application.getGlobalCountryStatsAction
 
 
 #DSPApplication routers
 
-GET         /demo                      controllers.DSPApplication.demo()
+GET         /demo                    controllers.DSPApplication.demo()
 
-POST        /dspbrowserstats           controllers.DSPApplication.getGlobalBrowserStatsAction
+POST        /dspbrowserstats         controllers.DSPApplication.getGlobalBrowserStatsAction
 
-POST        /dspdevicestats            controllers.DSPApplication.getGlobalDeviceStatsAction
+POST        /dspdevicestats          controllers.DSPApplication.getGlobalDeviceStatsAction
 
-POST        /dspcountrystats           controllers.DSPApplication.getGlobalCountryStatsAction
+POST        /dspcountrystats         controllers.DSPApplication.getGlobalCountryStatsAction
 
-POST        /dspsitestats              controllers.DSPApplication.getGlobalSiteStatsAction
+POST        /dspsitestats            controllers.DSPApplication.getGlobalSiteStatsAction
 
-POST        /dspcampaignstats          controllers.DSPApplication.getGlobalCampaignStatsAction
+POST        /dspcampaignstats        controllers.DSPApplication.getGlobalCampaignStatsAction
 
 POST        /dspcreativestats        controllers.DSPApplication.getGlobalCreativeStatsAction
 
-POST        /dspimpression             controllers.DSPApplication.getGlobalTotalImpressionAction
+POST        /dspimpression           controllers.DSPApplication.getGlobalTotalImpressionAction
 
-POST        /dspclickcount             controllers.DSPApplication.getGlobalClickCountAction
+POST        /dspclickcount           controllers.DSPApplication.getGlobalClickCountAction
 
-POST        /dspconversion             controllers.DSPApplication.getGlobalConversionCountAction
+POST        /dspconversion           controllers.DSPApplication.getGlobalConversionCountAction
+
+POST        /impressiondata          controllers.DSPApplication.getImpressionAction
+
+POST        /clickdata               controllers.DSPApplication.getClickAction
+
+POST        /conversiondata          controllers.DSPApplication.getConversionAction
 
 ##Dummy Calls
 
 
-GET        /dummy                      controllers.DummyApplication.dummyact
+GET         /dummy                   controllers.DummyApplication.dummyact
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file              controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file            controllers.Assets.versioned(path="/public", file: Asset)
 
-GET         /webjars/*file             controllers.WebJarAssets.at(file)
+GET         /webjars/*file           controllers.WebJarAssets.at(file)

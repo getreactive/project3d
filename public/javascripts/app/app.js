@@ -12,6 +12,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
     $scope.tableDataArr = [];
     $scope.mainData = {};
 
+
+
     $scope.paramObj = {
         "country":[],
         "browser":[],
@@ -27,7 +29,12 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
     $scope.selectecreative = [];
     $scope.selectecampaign = [];
     $scope.selectesite = [];
-    $scope.templateobj = {}
+    $scope.templateobj = {};
+
+
+    $scope.clickdata= 0;
+    $scope.impressiondata =0;
+    $scope.conversiondata =0;
 
     $scope.applySlimScroll = function(){
 
@@ -91,6 +98,12 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
 
         var req = $scope.paramObj;
 
+
+
+        $scope.callClickStats(req);
+        $scope.callConversionStats(req);
+        $scope.callImpressionStats(req);
+
         $scope.callDSPBrowserStats(req);
         $scope.callDSPDeviceStats(req);
         $scope.callDSPAdvertiserStats(req);
@@ -101,6 +114,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $scope.callDSPImpressionCount(req);
         $scope.callDSPclickCount(req);
         $scope.callDSPConversion(req);
+
+
+
+
         $scope.datetimecheck();
 
     };
@@ -621,10 +638,94 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
          });
      };
 
+    $scope.callImpressionStats = function(parmdata){
+
+        var _paramdata = parmdata;
+        _paramdata.metrics="count";
+        var req = {
+            method: 'POST',
+            url: '/impressiondata',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: _paramdata
+        };
+
+        $http(req).success(function(data){
+
+            console.log("callImpressionStats ",data);
+            $scope.impressiondata =parseInt(data[0].value);
+
+
+        }).error(function(){
+        });
+    };
+
+
+
+    $scope.callClickStats = function(parmdata){
+
+        var _paramdata = parmdata;
+        _paramdata.metrics="count";
+        var req = {
+            method: 'POST',
+            url: '/clickdata',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: _paramdata
+        };
+
+        $http(req).success(function(data){
+
+            console.log("callClickStats ",data);
+
+            $scope.clickdata= parseInt(data[0].value);
+
+            console.log("$scope.clickdata",$scope.clickdata )
+
+
+        }).error(function(){
+        });
+    };
+
+    $scope.callConversionStats = function(parmdata){
+
+        var _paramdata = parmdata;
+        _paramdata.metrics="count";
+        var req = {
+            method: 'POST',
+            url: '/conversiondata',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: _paramdata
+        };
+
+        $http(req).success(function(data){
+
+            console.log("callConversionStats ",data);
+            $scope.conversiondata =parseInt(data[0].value);
+
+        }).error(function(){
+        });
+    };
+
+
+
+
+
     // New DSP code end
 
     $scope.updateStats = function(param) {
         var req = param;
+
+
+        $scope.callClickStats(req);
+        $scope.callConversionStats(req);
+        $scope.callImpressionStats(req);
+
+
         $scope.callDSPBrowserStats(req);
         $scope.callDSPDeviceStats(req);
         $scope.callDSPAdvertiserStats(req);

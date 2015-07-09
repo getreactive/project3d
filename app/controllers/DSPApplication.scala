@@ -347,4 +347,91 @@ class DSPApplication extends Controller{
       }
     )
   };
+
+
+  def getImpressionAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[DSPRequestParam]
+
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val _site = requestparam.site.toList.toArray
+        val _campaign = requestparam.campaign.toList.toArray
+        val _creative = requestparam.creative.toList.toArray
+        val currentValue = getImpression("sum",_country,_browser,_device,_site,_campaign,_creative)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  };
+
+  def getClickAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[DSPRequestParam]
+
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val _site = requestparam.site.toList.toArray
+        val _campaign = requestparam.campaign.toList.toArray
+        val _creative = requestparam.creative.toList.toArray
+        val currentValue = getClick("sum",_country,_browser,_device,_site,_campaign,_creative)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  };
+  def getConversionAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[DSPRequestParam]
+
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        println(requestparam.browser.toSeq)
+        println(requestparam.country.toSeq)
+        println(requestparam.device.toSeq)
+
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val _site = requestparam.site.toList.toArray
+        val _campaign = requestparam.campaign.toList.toArray
+        val _creative = requestparam.creative.toList.toArray
+        val currentValue = getConversion("sum",_country,_browser,_device,_site,_campaign,_creative)
+
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
+  };
+
+
+
+
+
+
 }

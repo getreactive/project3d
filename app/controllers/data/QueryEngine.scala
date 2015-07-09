@@ -398,6 +398,110 @@ object QueryEngine {
     returnData
   }
 
+  // Three div box
+
+  //1. Box
+
+  def getImpressionCount (metrics: String,countryCode: Array[String],browser: Array[String],device: Array[String]):mutable.Seq[Map[String,String]] = {
+
+    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _metrics = metrics
+    var _countryCode = countryCode
+    var _browser = browser
+    var _device = device
+
+    if(_metrics==null && _countryCode==null){
+      _metrics = "revenue"
+    }else{
+      _metrics = metrics
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device)
+
+    println(whereclouse)
+
+    val rs = stmt.executeQuery("select sum(impression) as value from finaldemo "+whereclouse)
+
+    while (rs.next()) {
+      val value = rs.getString("value")
+      val revenueByCountry = Map("id"->"impression","name"->"impression","value"->value)
+      returnData+=revenueByCountry
+    }
+    connection.close()
+    returnData
+  }
+  //2. Box
+
+  def getClickCount (metrics: String,countryCode: Array[String],browser: Array[String],device: Array[String]):mutable.Seq[Map[String,String]] = {
+
+    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _metrics = metrics
+    var _countryCode = countryCode
+    var _browser = browser
+    var _device = device
+
+    if(_metrics==null && _countryCode==null){
+      _metrics = "revenue"
+    }else{
+      _metrics = metrics
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device)
+
+    println(whereclouse)
+
+    val rs = stmt.executeQuery("select sum(click) as value from finaldemo "+whereclouse)
+
+    while (rs.next()) {
+      val value = rs.getString("value")
+      val revenueByCountry = Map("id"->"click","name"->"click","value"->value)
+      returnData+=revenueByCountry
+    }
+    connection.close()
+    returnData
+  }
+
+  //3. Box
+
+
+  def getConversion (metrics: String,countryCode: Array[String],browser: Array[String],device: Array[String]):mutable.Seq[Map[String,String]] = {
+
+    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _metrics = metrics
+    var _countryCode = countryCode
+    var _browser = browser
+    var _device = device
+
+    if(_metrics==null && _countryCode==null){
+      _metrics = "revenue"
+    }else{
+      _metrics = metrics
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device)
+
+    println(whereclouse)
+
+    val rs = stmt.executeQuery("select sum(conversion) as value from finaldemo "+whereclouse)
+
+    while (rs.next()) {
+      val value = rs.getString("value")
+      val revenueByCountry = Map("id"->"conversion","name"->"conversion","value"->value)
+      returnData+=revenueByCountry
+    }
+    connection.close()
+    returnData
+
+  }
 
 
 

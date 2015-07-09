@@ -14,18 +14,18 @@ object DSPQueryEngine {
   def main(args: Array[String]) {
     //val a = getRevenueByCountry("IN")
    //     getGlobalTotalRevenue
-     val a =getGlobalBrowserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
-     val b =getGlobalCountryStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
-     val c =getGlobalDeviceStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
-     val d = getGlobalCampaignStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
+     val a =getConversion("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
+     val b =getImpression("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
+     val c =getClick("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
+   /*  val d = getGlobalCampaignStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
      val e = getGlobalSiteStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
-     val f = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
+     val f = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))*/
     println(a)
     println(b)
     println(c)
-    println(d)
+/*    println(d)
     println(e)
-    println(f)
+    println(f)*/
     /*    getGlobalDeviceStats("revenue")
     getGlobalTotalRevenue(Array(),Array(),Array())
     getGlobalTotalRevenue(Array("IN","US"),Array("safari","opera","IE"),Array())
@@ -494,6 +494,127 @@ object DSPQueryEngine {
       val campaign = rs.getString("campaign")
       val value = rs.getString("value")
       val revenueByCountry = Map("id"->campaign,"name"->campaign,"value"->value)
+      returnData+=revenueByCountry
+    }
+
+    connection.close()
+
+    returnData
+  }
+
+  //1. Box
+
+  def getImpression(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String]):mutable.Seq[Map[String,String]] ={
+
+    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _aggregate = aggregate
+    var _countryCode = countryCode
+    val _browser = browser
+    val _device = device
+    val _site = site
+    val _campaign = campaign
+    val _creative = creative
+
+    if(_aggregate==null && _countryCode==null){
+      _aggregate = "count"
+    }else{
+      _aggregate = aggregate
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative)
+
+    println(whereclouse)
+
+    val rs = stmt.executeQuery("select sum(impressioncount) as value from demofinal "+whereclouse)
+
+    while (rs.next()) {
+      println("Read from DB: " + rs.getString("value"))
+      val value = rs.getString("value")
+      val revenueByCountry = Map("id"->"impressioncount","name"->"impressioncount","value"->value)
+      returnData+=revenueByCountry
+    }
+
+    connection.close()
+
+    returnData
+  }
+
+  //2. Box
+
+  def getClick(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String]):mutable.Seq[Map[String,String]] ={
+
+    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _aggregate = aggregate
+    var _countryCode = countryCode
+    val _browser = browser
+    val _device = device
+    val _site = site
+    val _campaign = campaign
+    val _creative = creative
+
+    if(_aggregate==null && _countryCode==null){
+      _aggregate = "count"
+    }else{
+      _aggregate = aggregate
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative)
+
+    println(whereclouse)
+
+    val rs = stmt.executeQuery("select sum(clickcount) as value from demofinal "+whereclouse)
+
+    while (rs.next()) {
+      println("Read from DB: " + rs.getString("value"))
+      val value = rs.getString("value")
+      val revenueByCountry = Map("id"->"clickcount","name"->"clickcount","value"->value)
+      returnData+=revenueByCountry
+    }
+
+    connection.close()
+
+    returnData
+  }
+
+  //3. Box
+
+
+  def getConversion(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String]):mutable.Seq[Map[String,String]] ={
+
+    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _aggregate = aggregate
+    var _countryCode = countryCode
+    val _browser = browser
+    val _device = device
+    val _site = site
+    val _campaign = campaign
+    val _creative = creative
+
+    if(_aggregate==null && _countryCode==null){
+      _aggregate = "count"
+    }else{
+      _aggregate = aggregate
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative)
+
+    println(whereclouse)
+
+    val rs = stmt.executeQuery("select sum(conversioncount) as value from demofinal "+whereclouse)
+
+    while (rs.next()) {
+      println("Read from DB: " +  rs.getString("value"))
+      val value = rs.getString("value")
+      val revenueByCountry = Map("id"->"conversioncount","name"->"conversioncount","value"->value)
       returnData+=revenueByCountry
     }
 
