@@ -8,7 +8,18 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
     $scope.selectCounter = {};
     $scope.graphTemp = [];
     $scope.tableTemp = [];
-    $scope.graphDataArr = [];
+    $scope.graphDataArr = [{
+        "id": "conversion",
+        "title": "Impression"
+    },
+        {
+            "id": "clickcount",
+            "title": "Click"
+        },
+        {
+            "id": "impressioncount",
+            "title": "Conversion"
+        }];
     $scope.tableDataArr = [];
     $scope.mainData = {};
 
@@ -114,9 +125,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $scope.callDSPImpressionCount(req);
         $scope.callDSPclickCount(req);
         $scope.callDSPConversion(req);
-
-
-
 
         $scope.datetimecheck();
 
@@ -596,7 +604,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                  //$scope.genrateRevChart(data)
          }).error(function(){
          });
-
      };
 
      $scope.callDSPclickCount = function(parmdata){
