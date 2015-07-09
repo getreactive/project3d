@@ -156,8 +156,51 @@
               </div>
             </div>
             <div class="row" id="viz-place-holder" >
-              <div class="box box-success" ng-repeat="graph in graphDataArr"
-              ng-include="'@routes.Assets.versioned("templates/vizBlockTemplate.html")'" >
+
+              <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Impression</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <div class="chart">
+                    <div id="conversion" height="60"></div>
+                  </div>
+                </div>
+              </div><!-- /.box -->
+
+              <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Click</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <div class="chart">
+                    <div id="clickcount" height="60"></div>
+                  </div>
+                </div>
+              </div><!-- /.box -->
+
+
+              <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Conversion</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <div class="chart">
+                    <div id="impressioncount" height="60"></div>
+                  </div>
+                </div>
               </div><!-- /.box -->
             </div>
           </div><!-- /.col -->
