@@ -23,15 +23,14 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
     $scope.tableDataArr = [];
     $scope.mainData = {};
 
-
-
     $scope.paramObj = {
         "country":[],
         "browser":[],
         "device":[],
         "site":[],
         "campaign":[],
-        "creative":[]
+        "creative":[],
+        "timerange":[]
     };
 
     $scope.selectedevice = [];
@@ -41,8 +40,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
     $scope.selectecampaign = [];
     $scope.selectesite = [];
     $scope.templateobj = {};
-
-
     $scope.clickdata= 0;
     $scope.impressiondata =0;
     $scope.conversiondata =0;
@@ -56,13 +53,18 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
     };
 
 
-    $scope.startDate = null;//new Date();
-    $scope.endDate = null;//new Date();
+    $scope.startDate = new Date(1433117400000);
+    $scope.endDate = new Date(1435708800000);//null;//
+    $scope.starttime = "1433117400";
+    $scope.endtime = "1435708800";
+    var _timetange = [];
+    _timetange.push("1433117400","1435708800");
+    $scope.paramObj.timerange = _timetange;
+
 
     $scope.datetimecheck = function(){
 
         $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
         $('#reportrange').daterangepicker({
             format: 'MM/DD/YYYY',
             startDate: moment().subtract(29, 'days'),
@@ -101,6 +103,15 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
             }
         }, function(start, end, label) {
             console.log(start.toISOString(), end.toISOString(), label);
+
+            var startDate = new Date(start.toISOString());
+            var endDate = new Date(end.toISOString())
+            console.log("Start--> ", startDate.getTime()/1000);
+            console.log("End--> ", endDate.getTime()/1000);
+            $scope.starttime = Math.round(0.0 + startDate.getTime()/1000);
+            $scope.endtime = Math.round(0.0 + endDate.getTime()/1000);
+            $scope.createParamObject("datetime",null,true)
+            //Math.round(new Date().getTime()/1000.0) getTime() returns time in milliseconds
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         });
     };
@@ -109,7 +120,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
 
         var req = $scope.paramObj;
 
-
+        console.log("Init function --> ",req);
 
         $scope.callClickStats(req);
         $scope.callConversionStats(req);
@@ -185,14 +196,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         };
 
         $scope.templateobj = result;
-
-        console.log("******** ",result)
+        console.log("******** ",result);
         $scope.tableDataArr = result.tableDataArr;
         $scope.graphDataArr = result.graphDataArr;
-
-        console.log("$scope.tableDataArr", $scope.tableDataArr)
-        console.log("$scope.graphDataArr",$scope.graphDataArr)
-
+        console.log("$scope.tableDataArr", $scope.tableDataArr);
+        console.log("$scope.graphDataArr",$scope.graphDataArr);
 
     };
 
@@ -205,10 +213,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
 
         var req = $scope.paramObj;
 
-
     };
-
-
 
     $scope.createParamObject= function(parent, selectedValue, selected) {
 
@@ -263,6 +268,12 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         }else if(parent == "creative" && selected==false){
 
             $scope.selectecreative = _.without($scope.selectecreative,selectedValue)
+        }else if(parent == "datetime" && selected==true){
+
+            var timerange = [];
+            timerange.push($scope.starttime.toString());
+            timerange.push($scope.endtime.toString());
+            $scope.paramObj.timerange = timerange;
         }
 
 
@@ -272,6 +283,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $scope.paramObj.creative=$scope.selectecreative;
         $scope.paramObj.campaign=$scope.selectecampaign;
         $scope.paramObj.site=$scope.selectesite;
+        var timerange = [];
+        timerange.push($scope.starttime.toString());
+        timerange.push($scope.endtime.toString());
+        $scope.paramObj.timerange = timerange;
         console.log("$scope.paramObj --> ",$scope.paramObj)
 
         var _pram = $scope.paramObj;
@@ -661,7 +676,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $http(req).success(function(data){
 
             console.log("callImpressionStats ",data);
-            $scope.impressiondata =parseInt(data[0].value);
+            $scope.impressiondata = new Intl.NumberFormat().format(parseInt(data[0].value));
 
 
         }).error(function(){
@@ -687,7 +702,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
 
             console.log("callClickStats ",data);
 
-            $scope.clickdata= parseInt(data[0].value);
+            $scope.clickdata=  new Intl.NumberFormat().format(parseInt(data[0].value));
 
             console.log("$scope.clickdata",$scope.clickdata )
 
@@ -712,15 +727,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $http(req).success(function(data){
 
             console.log("callConversionStats ",data);
-            $scope.conversiondata =parseInt(data[0].value);
+            $scope.conversiondata = new Intl.NumberFormat().format(parseInt(data[0].value));
 
         }).error(function(){
         });
     };
-
-
-
-
 
     // New DSP code end
 
@@ -754,10 +765,12 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
 
         var margin = {top: 20, right: 20, bottom: 30, left: 50},
             width = _location.width() - margin.left - margin.right,
-            height = 200 - margin.top - margin.bottom;
+            height = 230 - margin.top - margin.bottom;
 
         console.log("Name -> ",name);
         console.log("location ->",data)
+
+        console.log($scope.endtime - $scope.starttime)
 
         var parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -769,9 +782,18 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
 
         var xAxis = d3.svg.axis()
             .scale(x)
-            .ticks(5)
-            //.ticks(d3.time.hour, 12)
-            .orient("bottom");
+            //.ticks(20)
+           // .ticks(d3.time.day, 1)
+            //.tickFormat(d3.time.format("%Y-%m-%d"));
+
+
+        var diff = $scope.endtime - $scope.starttime;
+        if(diff <= 96400){
+
+           xAxis.ticks(d3.time.hours, 1);
+        } else{
+            xAxis.ticks(d3.time.day, 1);
+        }
 
         var yAxis = d3.svg.axis()
             .scale(y)
@@ -787,7 +809,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                 d = d+' '+array[i];
 
                 return d;})
-            .ticks(5)
+            .ticks(7)
             .orient("left");
 
         var line = d3.svg.line()
@@ -801,10 +823,9 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
 
         var svg = d3.select("#"+name).append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("height", height + margin.top + margin.bottom + 10)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
             data.forEach(function(d) {
 
@@ -820,7 +841,14 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", function(d) {
+                    return "rotate(-25)"
+                });
 
             svg.append("g")
                 .attr("class", "y axis")
@@ -830,6 +858,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "11px")
                 //.text("Count");
 
             svg.append("path")

@@ -24,7 +24,8 @@ case class DSPRequestParam(country: Array[String],
                            device: Array[String],
                            site: Array[String],
                            campaign: Array[String],
-                           creative: Array[String])
+                           creative: Array[String],
+                           timerange: Array[String])
 
 case class DSPRequestStatsParam(metrics:String,
                                 country: Array[String],
@@ -32,7 +33,8 @@ case class DSPRequestStatsParam(metrics:String,
                                 device: Array[String],
                                  site: Array[String],
                                 campaign: Array[String],
-                                creative: Array[String])
+                                creative: Array[String],
+                                timerange: Array[String])
 
 
 class DSPApplication extends Controller{
@@ -43,7 +45,8 @@ class DSPApplication extends Controller{
       (JsPath \ "device").read[Array[String]] and
       (JsPath \ "site").read[Array[String]] and
       (JsPath \ "campaign").read[Array[String]] and
-      (JsPath \ "creative").read[Array[String]]
+      (JsPath \ "creative").read[Array[String]] and
+      (JsPath \ "timerange").read[Array[String]]
     )(DSPRequestParam.apply _)
 
   implicit val DSPRequestStatsParamReads: Reads[DSPRequestStatsParam] = (
@@ -53,7 +56,8 @@ class DSPApplication extends Controller{
       (JsPath \ "device").read[Array[String]] and
       (JsPath \ "site").read[Array[String]] and
       (JsPath \ "campaign").read[Array[String]] and
-      (JsPath \ "creative").read[Array[String]]
+      (JsPath \ "creative").read[Array[String]] and
+      (JsPath \ "timerange").read[Array[String]]
     )(DSPRequestStatsParam.apply _)
 
   def demo = Action {
@@ -76,10 +80,6 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _metrics = requestparam.metrics.toString
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
@@ -87,7 +87,8 @@ class DSPApplication extends Controller{
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalBrowserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalBrowserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -105,10 +106,6 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _metrics = requestparam.metrics.toString
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
@@ -116,7 +113,8 @@ class DSPApplication extends Controller{
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalDeviceStats(_metrics,_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalDeviceStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -134,10 +132,6 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _metrics = requestparam.metrics.toString
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
@@ -145,7 +139,8 @@ class DSPApplication extends Controller{
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalCountryStats(_metrics,_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalCountryStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -163,10 +158,6 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _metrics = requestparam.metrics.toString
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
@@ -174,7 +165,8 @@ class DSPApplication extends Controller{
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalSiteStats(_metrics,_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalSiteStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -192,9 +184,6 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
 
         val _metrics = requestparam.metrics.toString
         val _browser = requestparam.browser.toList.toArray
@@ -203,7 +192,8 @@ class DSPApplication extends Controller{
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalCampaignStats(_metrics,_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalCampaignStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -221,9 +211,6 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
 
         val _metrics = requestparam.metrics.toString
         val _browser = requestparam.browser.toList.toArray
@@ -232,7 +219,8 @@ class DSPApplication extends Controller{
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalAdvertiserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalAdvertiserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -250,17 +238,14 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
         val _device  = requestparam.device.toList.toArray
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalTotalImpression(_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalTotalImpression(_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -276,18 +261,14 @@ class DSPApplication extends Controller{
         BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
       },
       requestparam => {
-
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
         val _device  = requestparam.device.toList.toArray
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalClickCount(_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalClickCount(_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -303,18 +284,14 @@ class DSPApplication extends Controller{
         BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
       },
       requestparam => {
-
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
         val _device  = requestparam.device.toList.toArray
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalConversionCount(_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalConversionCount(_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -331,17 +308,14 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
         val _device  = requestparam.device.toList.toArray
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getGlobalConversionCount(_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getGlobalConversionCount(_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -359,17 +333,14 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
         val _device  = requestparam.device.toList.toArray
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getImpression("sum",_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getImpression("sum",_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -385,18 +356,14 @@ class DSPApplication extends Controller{
         BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
       },
       requestparam => {
-
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
         val _device  = requestparam.device.toList.toArray
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getClick("sum",_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getClick("sum",_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -412,26 +379,17 @@ class DSPApplication extends Controller{
       },
       requestparam => {
 
-        println(requestparam.browser.toSeq)
-        println(requestparam.country.toSeq)
-        println(requestparam.device.toSeq)
-
         val _browser = requestparam.browser.toList.toArray
         val _country = requestparam.country.toList.toArray
         val _device  = requestparam.device.toList.toArray
         val _site = requestparam.site.toList.toArray
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
-        val currentValue = getConversion("sum",_country,_browser,_device,_site,_campaign,_creative)
+        val _timerange = requestparam.timerange.toList.toArray
+        val currentValue = getConversion("sum",_country,_browser,_device,_site,_campaign,_creative,_timerange)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
     )
   };
-
-
-
-
-
-
 }

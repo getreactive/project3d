@@ -690,12 +690,14 @@ body {
   display: block;
   min-height: 70px;
   /*background: #fff; */
-  background: #e6e6e6;
-  width: 80%;
-  border-radius: 2px;
   margin-left: 5px;
   margin-bottom: 15px;
-  box-shadow: 5px 5px 5px #888888;
+  BOX-SHADOW: NONE;
+  border-radius: 3px;
+  BORDER: black solid;
+  border-width: thin;
+  width: 100%;
+  background-color: #fff;
 }
 .info-box small {
   font-size: 14px;
@@ -745,6 +747,15 @@ body {
   font-size: 18px;
   background: rgba(0, 0, 0, 0.71);
 
+}
+
+span.info-box-number.ng-binding {
+  font-weight: LIGHTER;
+}
+
+.info-box-number-footer {
+  border: rgba(0, 166, 90, 1) solid 4px;
+  background: rgba(0, 166, 90, 1);
 }
 
 .progress-description,
