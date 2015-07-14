@@ -1,6 +1,6 @@
 var project3dApp = angular.module('demoApp',['ngTable','mgcrea.ngStrap']);
 
-project3dApp.controller('demoAppCtrl',function($scope,$http){
+project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
 
     $scope.tags = [];
     $scope.parentTag = [];
@@ -8,10 +8,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
     $scope.selectCounter = {};
     $scope.graphTemp = [];
     $scope.tableTemp = [];
-    $scope.graphDataArr = [{
-        "id": "conversion",
-        "title": "Impression"
-    },
+   // $scope.graphDataArr=[];
+    $scope.graphDataArr = [
         {
             "id": "clickcount",
             "title": "Click"
@@ -19,7 +17,37 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         {
             "id": "impressioncount",
             "title": "Conversion"
-        }];
+        },
+        {
+            "id": "browser",
+            "title": "Browser"
+        },
+        {
+            "id": "country",
+            "title": "Country"
+        },
+        {
+            "id": "site",
+            "title": "Site"
+        },
+        {
+            "id": "browser",
+            "title": "Browser"
+        },
+        {
+            "id": "device",
+            "title": "Device"
+        },
+        {
+            "id": "creative",
+            "title": "Creative"
+        },
+        {
+            "id": "campaign",
+            "title": "Campaign"
+        }
+
+    ];
     $scope.tableDataArr = [];
     $scope.mainData = {};
 
@@ -191,7 +219,35 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
                 {
                     "id": "impressioncount",
                     "title": "Conversion"
-                }
+                },
+                       {
+                           "id": "browser",
+                           "title": "Browser"
+                       },
+                       {
+                           "id": "country",
+                           "title": "Country"
+                       },
+                       {
+                           "id": "site",
+                           "title": "Site"
+                       },
+                       {
+                           "id": "browser",
+                           "title": "Browser"
+                       },
+                       {
+                           "id": "device",
+                           "title": "Device"
+                       },
+                       {
+                           "id": "creative",
+                           "title": "Creative"
+                       },
+                       {
+                           "id": "campaign",
+                           "title": "Campaign"
+                       }
             ]
         };
 
@@ -293,6 +349,62 @@ project3dApp.controller('demoAppCtrl',function($scope,$http){
         $scope.updateStats(_pram);
 
     };
+
+    $scope.parkedDiv = [];
+
+    $scope.unparking = function(data){
+        var id = data;
+        var currentid = "#table"+id;
+        console.log("currentID--> ",currentid);
+        console.log("$scope.parkedDiv-->",$scope.parkedDiv)
+        $scope.parkedDiv.pop(currentid);
+        var _parkid = "#park-"+data;
+        $(_parkid).remove();
+        $(currentid).parent().show();
+    };
+
+    $scope.parking = function(data) {
+
+        console.log("Parking ---> ",data);
+        console.log(data);
+        var currentid = "#table"+data;
+        $scope.parkedDiv.push(currentid);
+        $(currentid).parent().hide();
+        var parkid = "park-"+data;
+
+        var str = "<span class='parking-garage' id="+"'"+parkid+"'"+" ng-click=unparking('"+data+"')>"+data+"&nbsp;<i class='fa fa-times'></i></span>";
+        var htmlTemp = $(str).appendTo("#parking-house");
+        $compile(htmlTemp)($scope);
+        //$("#parking-house").append(htmlTemp);
+        console.log("$(currentid).parent()-->",$(currentid).parents().attr("id"));
+    };
+
+    $scope.removedDimention = [];
+    $scope.statsToggel = function(data){
+
+          if(data=="Country" || data=="Browser" || data=="Click" || data=="Device" || data == "Site" || data =="Creative" || data == "Campaign") {
+              var currentid = "#table" + data;
+              $(currentid).parent().show();
+              $scope.removedDimention.pop(data);
+          }else{
+
+          }
+
+    };
+
+    $scope.statsRemoved =  function(data){
+       console.log(data);
+        if(data=="Country" || data=="Browser" || data=="Click" || data=="Device" || data == "Site" || data =="Creative" || data == "Campaign") {
+            var currentid = "#table" + data;
+            $(currentid).parent().hide();
+            $scope.removedDimention.push(data);
+        }else{
+
+        }
+
+
+    };
+
 
     $scope.selectedData = function(data,parentid){
         console.log("selected",data, " parentId ",parentid)

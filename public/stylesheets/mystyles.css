@@ -5,6 +5,7 @@
 body {
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 400
+    padding:5px;
 }
 
 h1,h2,h3,h4,h5,h6,.navbar-brand,.brand-name {
@@ -12,6 +13,11 @@ h1,h2,h3,h4,h5,h6,.navbar-brand,.brand-name {
     font-weight: 400
 }
 
+
+#main-section{
+    padding-left: 10px;
+    padding-right: 10px;
+}
 p.lead {
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 400
@@ -105,7 +111,7 @@ td{
 }
 
 .metricWrap{
-    padding: 6px;
+    padding-left: 3px;
 }
 
 .metric-division{
@@ -145,5 +151,22 @@ td{
 .dropdown-toggle>.btn>.btn-default{
     padding-bottom: 3px;
     padding-top: 3px;
+
+}
+
+.parking-garage{
+    cursor:pointer;
+    padding:5px;
+    margin:2px;
+    min-height: 12px;
+    border-radius: 25px;
+    color:white;
+    font-size: 12px;
+    font-weight: bold;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    background: #00A65A;
 
 }

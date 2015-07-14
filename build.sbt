@@ -38,7 +38,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "d3js" % "3.5.5-1",
   "org.webjars" % "underscorejs" % "1.8.3",
   "org.webjars" % "jQuery-slimScroll" % "1.3.3",
-  "org.webjars.bower" % "momentjs" % "2.10.3"
+  "org.webjars.bower" % "momentjs" % "2.10.3",
+  "org.webjars" % "gridster.js" % "0.5.6"
 )
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.35"

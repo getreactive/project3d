@@ -25,7 +25,7 @@
     </nav>
 
   </header>
-  <section ng-controller="demoAppCtrl" ng-init="init()">
+  <section id="main-section" ng-controller="demoAppCtrl" ng-init="init()">
     <div><!-- Main content -->
       <section class="content">
           <!-- Info boxes -->
@@ -112,7 +112,7 @@
                             {{metric.title}}
                           </div>
                           <div class="col-xs-7 btn-group ">
-                            <button class="btn btn-default"><i class="fa fa-line-chart"></i></button>
+                            <button class="btn btn-default" ng-click="statsToggel(metric.title)"><i class="fa fa-line-chart"></i></button>
                             <button class="btn btn-default"><i class="fa fa-table"></i></button>
                           </div>
                         </div>
@@ -211,6 +211,12 @@
           </div><!-- /.col -->
         </div><!-- /.row -->
 
+
+        <div class="row">
+          <div class="col-md-12" id="parking-house">
+
+          </div>
+        </div>
       </section><!-- /.content -->
     </div>
 
