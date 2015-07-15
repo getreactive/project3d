@@ -401,10 +401,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
         }else{
 
         }
-
-
     };
-
 
     $scope.selectedData = function(data,parentid){
         console.log("selected",data, " parentId ",parentid)
