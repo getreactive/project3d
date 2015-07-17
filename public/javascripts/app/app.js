@@ -219,7 +219,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                 {
                     "id": "impressioncount",
                     "title": "Conversion"
-                },
+                }/*,
                        {
                            "id": "browser",
                            "title": "Browser"
@@ -247,7 +247,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                        {
                            "id": "campaign",
                            "title": "Campaign"
-                       }
+                       }*/
             ]
         };
 
