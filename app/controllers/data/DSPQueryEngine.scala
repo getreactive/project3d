@@ -400,7 +400,7 @@ object DSPQueryEngine {
       var randomno = new Random()
       var aa = value.toInt + randomno.nextInt(10000)
       var _val = aa.toString
-      val revenueByCountry = Map("id"->site,"name"->site,"value"->_val)
+      val revenueByCountry = Map("id"->site,"name"->site,"value"->value)
       returnData+=revenueByCountry
     }
 
