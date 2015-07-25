@@ -266,16 +266,18 @@ object DSPQueryEngine {
 
     val whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select browser, count(browser) as value from demofinal "+whereclouse+" group by browser")
+    println("select browser, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by browser")
 
-    val rs = stmt.executeQuery("select browser, count(browser) as value from demofinal "+whereclouse+" group by browser")
+    val rs = stmt.executeQuery("select browser, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by browser")
 
     while (rs.next()) {
      // println("Read from DB: " + rs.getString("browser") + "\t"+ rs.getString("value"))
 
       val browser = rs.getString("browser")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->browser,"name"->browser,"value"->value)
+      val clickvalue = rs.getString("clickvalue")
+      val conversionvalue = rs.getString("conversionvalue")
+      val revenueByCountry = Map("id"->browser,"name"->browser,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
       returnData+=revenueByCountry
     }
 
@@ -308,15 +310,17 @@ object DSPQueryEngine {
 
     val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select device, count(device) as value from demofinal "+whereclouse+" group by device")
+    println("select device, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by device")
 
-    val rs = stmt.executeQuery("select device, count(device) as value from demofinal "+whereclouse+" group by device")
+    val rs = stmt.executeQuery("select device, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by device")
 
     while (rs.next()) {
       //println("Read from DB: " + rs.getString("device") + "\t"+ rs.getString("value"))
       val device = rs.getString("device")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->device,"name"->device,"value"->value)
+      val clickvalue = rs.getString("clickvalue")
+      val conversionvalue = rs.getString("conversionvalue")
+      val revenueByCountry = Map("id"->device,"name"->device,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
       returnData+=revenueByCountry
     }
 
@@ -350,13 +354,15 @@ object DSPQueryEngine {
 
     println("select country, count(country) as value from demofinal "+whereclouse+" group by country")
 
-    val rs = stmt.executeQuery("select country, count(country) as value from demofinal "+whereclouse+" group by country")
+    val rs = stmt.executeQuery("select country, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by country")
 
     while (rs.next()) {
       //println("Read from DB: " + rs.getString("country") + "\t"+ rs.getString("value"))
       val country = rs.getString("country")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->country,"name"->country,"value"->value)
+      val clickvalue = rs.getString("clickvalue")
+      val conversionvalue = rs.getString("conversionvalue")
+      val revenueByCountry = Map("id"->country,"name"->country,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
       returnData+=revenueByCountry
     }
 
@@ -391,16 +397,15 @@ object DSPQueryEngine {
 
     println("select site, count(site) as value from demofinal "+whereclouse+" group by site")
 
-    val rs = stmt.executeQuery("select site, count(site) as value from demofinal "+whereclouse+" group by site")
+    val rs = stmt.executeQuery("select site, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by site")
 
     while (rs.next()) {
       //println("Read from DB: " + rs.getString("site") + "\t"+ rs.getString("value"))
       val site = rs.getString("site")
       val value = rs.getString("value")
-      var randomno = new Random()
-      var aa = value.toInt + randomno.nextInt(10000)
-      var _val = aa.toString
-      val revenueByCountry = Map("id"->site,"name"->site,"value"->value)
+      val clickvalue = rs.getString("clickvalue")
+      val conversionvalue = rs.getString("conversionvalue")
+      val revenueByCountry = Map("id"->site,"name"->site,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
       returnData+=revenueByCountry
     }
 
@@ -435,13 +440,15 @@ object DSPQueryEngine {
 
     println("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
 
-    val rs = stmt.executeQuery("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
+    val rs = stmt.executeQuery("select campaign, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by campaign")
 
     while (rs.next()) {
       //println("Read from DB: " + rs.getString("campaign") + "\t"+ rs.getString("value"))
       val campaign = rs.getString("campaign")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->campaign,"name"->campaign,"value"->value)
+      val clickvalue = rs.getString("clickvalue")
+      val conversionvalue = rs.getString("conversionvalue")
+      val revenueByCountry = Map("id"->campaign,"name"->campaign,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
       returnData+=revenueByCountry
     }
 
@@ -476,13 +483,15 @@ object DSPQueryEngine {
 
     println("select creative, count(creative) as value from demofinal "+whereclouse+" group by creative")
 
-    val rs = stmt.executeQuery("select creative, count(creative) as value from demofinal "+whereclouse+" group by creative")
+    val rs = stmt.executeQuery("select creative, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by creative")
 
     while (rs.next()) {
       //println("Read from DB: " + rs.getString("creative") + "\t"+ rs.getString("value"))
       val creative = rs.getString("creative")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->creative,"name"->creative,"value"->value)
+      val clickvalue = rs.getString("clickvalue")
+      val conversionvalue = rs.getString("conversionvalue")
+      val revenueByCountry = Map("id"->creative,"name"->creative,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
       returnData+=revenueByCountry
     }
 
@@ -516,13 +525,15 @@ object DSPQueryEngine {
 
     println("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
 
-    val rs = stmt.executeQuery("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
+    val rs = stmt.executeQuery("select campaign, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by campaign")
 
     while (rs.next()) {
       //println("Read from DB: " + rs.getString("campaign") + "\t"+ rs.getString("value"))
       val campaign = rs.getString("campaign")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->campaign,"name"->campaign,"value"->value)
+      val clickvalue = rs.getString("clickvalue")
+      val conversionvalue = rs.getString("conversionvalue")
+      val revenueByCountry = Map("id"->campaign,"name"->campaign,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
       returnData+=revenueByCountry
     }
 

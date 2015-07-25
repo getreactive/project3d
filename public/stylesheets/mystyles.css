@@ -170,3 +170,7 @@ td{
     background: #00A65A;
 
 }
+
+table.stats th, table.stats td {
+  font-size : 90%;
+ }

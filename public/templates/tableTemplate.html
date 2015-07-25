@@ -7,8 +7,8 @@
         </div>
     </div><!-- /.box-header -->
     <div class="box-body">
-        <div class="table-responsive">
-            <table ng-table="tableParams"  class="table ng-table-rowselected">
+        <div class="table-responsive" style="height:250px;overflow: scroll;">
+            <table ng-table="tableParams"  class="table stats ng-table-rowselected">
                 <tr style="cursor:pointer" ng-repeat="data in table.data"
                     ng-click="data.$selected = !data.$selected; selectedData(data,$parent.$index) ; changeSelection(data)"
                     ng-class="{'selecteditems': data.$selected}">
@@ -17,6 +17,12 @@
                     </td>
                     <td data-title="'Impression'">
                         {{data.value}}
+                    </td>
+                    <td data-title="'Click'">
+                        {{data.clickvalue}}
+                    </td>
+                    <td data-title="'Conversion'">
+                        {{data.conversionvalue}}
                     </td>
                 </tr>
             </table>

@@ -76,8 +76,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
 
         $('.table-responsive').slimScroll({
             height: '250px'
-        });
-
+       });
     };
 
 
@@ -167,6 +166,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
 
         $scope.datetimecheck();
 
+        //$scope.applySlimScroll();
     };
 
     $scope.getLayoutTemplate = function(){
@@ -560,8 +560,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                  }
              });
 
-             $scope.applySlimScroll();
-             //$scope.genrateRevChart(data)
          }).error(function(){
          });
 
@@ -589,9 +587,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                      v.data=data;
                  }
              });
-
-             $scope.applySlimScroll();
-             //$scope.genrateRevChart(data)
          }).error(function(){
          });
      };
@@ -617,9 +612,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                      v.data=data;
                  }
              });
-
-             $scope.applySlimScroll();
-             //$scope.genrateRevChart(data)
          }).error(function(){
          });
      };
@@ -645,8 +637,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                  }
              });
 
-             $scope.applySlimScroll();
-             //$scope.genrateRevChart(data)
          }).error(function(){
          });
 
@@ -673,9 +663,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                      v.data=data;
                  }
              });
-             $scope.applySlimScroll();
-
-             //$scope.genrateRevChart(data)
          }).error(function(){
          });
 
@@ -702,9 +689,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                      v.data=data;
                  }
              });
-
-             $scope.applySlimScroll();
-             //$scope.genrateRevChart(data)
          }).error(function(){
          });
      };
@@ -864,6 +848,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
         $scope.callDSPclickCount(req);
         $scope.callDSPConversion(req);
 
+       // $scope.applySlimScroll();
     };
 
     $scope.drawMetricsGraph = function(location,name,data) {
