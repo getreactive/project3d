@@ -526,6 +526,13 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
             console.log("I am in Conversion block ");
 
             }
+            if(data == "All"){
+                        $scope.selectedmetrics = _.without($scope.selectedmetrics, "conversion");
+                        $scope.selectedmetrics = _.without($scope.selectedmetrics, "click");
+                        $scope.selectedmetrics = _.without($scope.selectedmetrics, "impression");
+                        console.log("I am in Conversion block ");
+
+                        }
             console.log("Show No Data !!")
 
                             $scope.paramObj.argmetrics = $scope.selectedmetrics;
