@@ -174,3 +174,11 @@ td{
 table.stats th, table.stats td {
   font-size : 90%;
  }
+
+ .btn-stats{
+background-color: #fff;
+
+ }
+.btn-clicked{
+background-color: #e6e6e6;
+ }

@@ -3,25 +3,37 @@
         <h3 class="box-title">{{table.title}}</h3>
         <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="remove" ng-click="parking(table.title)"><i class="fa fa-minus"></i></button>
-            <button class="btn btn-box-tool" ng-click="statsRemoved(table.title)"><i class="fa fa-times"></i></button>
+            <!--<button class="btn btn-box-tool" ng-click="statsRemoved(table.title)"><i class="fa fa-times"></i></button>-->
         </div>
     </div><!-- /.box-header -->
     <div class="box-body">
         <div class="table-responsive" style="height:250px;overflow: scroll;">
             <table ng-table="tableParams"  class="table stats ng-table-rowselected">
+                <tr>
+                <th>Name</th>
+                <th ng-if="table.data[0].hasOwnProperty('value')">
+                        Impression
+                </th>
+                <th ng-if="table.data[0].hasOwnProperty('clickvalue')">
+                    Click
+                </th>
+                <th ng-if="table.data[0].hasOwnProperty('conversionvalue')">
+                    Conversion
+                </th>
+                </tr>
                 <tr style="cursor:pointer" ng-repeat="data in table.data"
                     ng-click="data.$selected = !data.$selected; selectedData(data,$parent.$index) ; changeSelection(data)"
                     ng-class="{'selecteditems': data.$selected}">
-                    <td data-title="'Name'">
+                    <td>
                         {{data.name}}
                     </td>
-                    <td data-title="'Impression'">
+                    <td ng-if="data.hasOwnProperty('value')">
                         {{data.value}}
                     </td>
-                    <td data-title="'Click'">
+                    <td ng-if="data.hasOwnProperty('clickvalue')">
                         {{data.clickvalue}}
                     </td>
-                    <td data-title="'Conversion'">
+                    <td ng-if="data.hasOwnProperty('conversionvalue')">
                         {{data.conversionvalue}}
                     </td>
                 </tr>

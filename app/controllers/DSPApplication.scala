@@ -34,7 +34,8 @@ case class DSPRequestStatsParam(metrics:String,
                                  site: Array[String],
                                 campaign: Array[String],
                                 creative: Array[String],
-                                timerange: Array[String])
+                                timerange: Array[String],
+                                argmetrics: Array[String])
 
 
 class DSPApplication extends Controller{
@@ -57,7 +58,8 @@ class DSPApplication extends Controller{
       (JsPath \ "site").read[Array[String]] and
       (JsPath \ "campaign").read[Array[String]] and
       (JsPath \ "creative").read[Array[String]] and
-      (JsPath \ "timerange").read[Array[String]]
+      (JsPath \ "timerange").read[Array[String]] and
+      (JsPath \ "argmetrics").read[Array[String]]
     )(DSPRequestStatsParam.apply _)
 
   def demo = Action {
@@ -88,7 +90,9 @@ class DSPApplication extends Controller{
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
-        val currentValue = getGlobalBrowserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+        println("KLKL -->"+_argmetrics)
+        val currentValue = getGlobalBrowserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -114,7 +118,8 @@ class DSPApplication extends Controller{
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
-        val currentValue = getGlobalDeviceStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+        val currentValue = getGlobalDeviceStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -140,7 +145,8 @@ class DSPApplication extends Controller{
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
-        val currentValue = getGlobalCountryStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+        val currentValue = getGlobalCountryStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -166,7 +172,8 @@ class DSPApplication extends Controller{
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
-        val currentValue = getGlobalSiteStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+        val currentValue = getGlobalSiteStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -193,7 +200,8 @@ class DSPApplication extends Controller{
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
-        val currentValue = getGlobalCampaignStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+        val currentValue = getGlobalCampaignStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
@@ -220,7 +228,8 @@ class DSPApplication extends Controller{
         val _campaign = requestparam.campaign.toList.toArray
         val _creative = requestparam.creative.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
-        val currentValue = getGlobalAdvertiserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange)
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+        val currentValue = getGlobalAdvertiserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
 
         Ok(Json.toJson(currentValue.toSeq))
       }

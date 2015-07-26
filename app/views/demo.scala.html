@@ -112,8 +112,8 @@
                             {{metric.title}}
                           </div>
                           <div class="col-xs-7 btn-group ">
-                            <button class="btn btn-default" ng-click="statsToggel(metric.title)"><i class="fa fa-line-chart"></i></button>
-                            <button class="btn btn-default"><i class="fa fa-table"></i></button>
+                            <button class="btn btn-default"><i class="fa fa-line-chart"></i></button>
+                            <button id="stats-{{metric.title}}" class="btn btn-default btn-stats" ng-click="statsToggel(metric.title)"><i class="fa fa-table"></i></button>
                           </div>
                         </div>
                         <hr class="metric-division">
@@ -125,7 +125,7 @@
                           </div>
                           <div class="col-xs-7 btn-group ">
                             <button class="btn btn-default"><i class="fa fa-line-chart"></i></button>
-                            <button class="btn btn-default"><i class="fa fa-table"></i></button>
+                            <button id="stats-All" class="btn btn-stats btn-default" ng-click="statsToggel('All')"><i class="fa fa-table"></i></button>
                           </div>
                         </div>
                         <hr class="metric-division">

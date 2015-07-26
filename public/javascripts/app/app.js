@@ -8,7 +8,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
     $scope.selectCounter = {};
     $scope.graphTemp = [];
     $scope.tableTemp = [];
-   // $scope.graphDataArr=[];
     $scope.graphDataArr = [
         {
             "id": "clickcount",
@@ -58,9 +57,13 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
         "site":[],
         "campaign":[],
         "creative":[],
-        "timerange":[]
+        "timerange":[],
+        "argmetrics":['impression']
     };
 
+
+
+    $scope.selectedmetrics = ['impression'];
     $scope.selectedevice = [];
     $scope.selectedcountry = [];
     $scope.selectedbrowser = [];
@@ -78,7 +81,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
             height: '250px'
        });
     };
-
 
     $scope.startDate = new Date(1433117400000);
     $scope.endDate = new Date(1435708800000);//null;//
@@ -332,7 +334,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
             $scope.paramObj.timerange = timerange;
         }
 
-
         $scope.paramObj.country = $scope.selectedcountry;
         $scope.paramObj.device = $scope.selectedevice;
         $scope.paramObj.browser = $scope.selectedbrowser;
@@ -380,19 +381,113 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
     };
 
     $scope.removedDimention = [];
+          $scope.clickCount = 0;
+          $scope.conversionCount = 0;
+          $scope.impressionCount = 0;
+          $scope.allCount = 0;
+
+
     $scope.statsToggel = function(data){
+          console.log("Data==> ",data);
+          var id="#stats-"+data;
 
-          if(data=="Country" || data=="Browser" || data=="Click" || data=="Device" || data == "Site" || data =="Creative" || data == "Campaign") {
-              var currentid = "#table" + data;
-              $(currentid).parent().show();
-              $scope.removedDimention.pop(data);
-          }else{
+                       console.log(data);
+                        var currentid = "#table" + data;
+                        $(currentid).parent().show();
+                        $scope.removedDimention.pop(data);
+                        $(id).toggleClass("btn-clicked");
+                        console.log(id);
+                        $("#stats-All").removeClass("btn-clicked");
 
+          if( data=="Conversion" || data=="Impression" || data=="Country" || data=="Browser" || data=="Click" || data=="Device" || data == "Site" || data =="Creative" || data == "Campaign") {
+
+             if(data=='Impression'){
+
+               if($scope.impressionCount > 0){
+                        $scope.selectedmetrics.pop('impression');
+                        $scope.impressionCount = 0;
+                        } else{
+                $scope.impressionCount = $scope.impressionCount + 1
+                $scope.selectedmetrics.push('impression');
+                }
+             }
+             if(data == 'Click'){
+
+              if($scope.clickCount > 0){
+                    $scope.selectedmetrics.pop('click');
+                    $scope.clickCount = 0;
+
+              }else {
+              $scope.clickCount = $scope.clickCount +1
+                $scope.selectedmetrics.push('click');
+              }
+             }
+             if(data == 'Conversion'){
+                if($scope.impressionCount>0){
+                $scope.impressionCount = 0;
+                $scope.selectedmetrics.pop('conversion');
+                }else {
+                $scope.impressionCount = $scope.impressionCount + 1;
+                $scope.selectedmetrics.push('conversion');
+                }
+
+             }
+
+            /* if(! $("#stats-Conversion").hasClass("btn-clicked")){
+
+             console.log("MMM --> ",$("#stats-Conversion").hasClass("btn-clicked"))
+              $scope.selectedmetrics.pop('conversion');
+             }
+                 if(! $("#stats-Click").hasClass("btn-clicked")){
+                           $scope.selectedmetrics.pop('click');
+                          }
+                              if(! $("#stats-Impression").hasClass("btn-clicked")){
+                                        $scope.selectedmetrics.pop('impression');
+                                       }
+*/
+
+             $scope.selectedmetrics = $.unique($scope.selectedmetrics);
+
+             $scope.paramObj.argmetrics = $scope.selectedmetrics;
+                    var req = $scope.paramObj;
+                    $scope.callDSPBrowserStats(req);
+                    $scope.callDSPDeviceStats(req);
+                    $scope.callDSPAdvertiserStats(req);
+                    $scope.callDSPCampaignStats(req);
+                    $scope.callDSPCountryStats(req);
+                    $scope.callDSPSitesStats(req);
+
+
+
+
+
+          }else if(data=="All"){
+
+                $("#stats-Conversion").removeClass("btn-clicked");
+                $("#stats-Impression").removeClass("btn-clicked");
+                $("#stats-Click").removeClass("btn-clicked");
+                $scope.selectedmetrics.push('impression');
+                $scope.selectedmetrics.push('click');
+                $scope.selectedmetrics.push('conversion');
+                $scope.selectedmetrics = $.unique($scope.selectedmetrics);
+                $scope.paramObj.argmetrics = $scope.selectedmetrics;
+
+                                    var req = $scope.paramObj;
+                                    $scope.callDSPBrowserStats(req);
+                                    $scope.callDSPDeviceStats(req);
+                                    $scope.callDSPAdvertiserStats(req);
+                                    $scope.callDSPCampaignStats(req);
+                                    $scope.callDSPCountryStats(req);
+                                    $scope.callDSPSitesStats(req);
+
+
+                console.log(id)
+                $(id).toggleClass("btn-clicked")
           }
 
     };
 
-    $scope.statsRemoved =  function(data){
+/*    $scope.statsRemoved =  function(data){
        console.log(data);
         if(data=="Country" || data=="Browser" || data=="Click" || data=="Device" || data == "Site" || data =="Creative" || data == "Campaign") {
             var currentid = "#table" + data;
@@ -401,7 +496,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
         }else{
 
         }
-    };
+    };*/
 
     $scope.selectedData = function(data,parentid){
         console.log("selected",data, " parentId ",parentid)
@@ -962,5 +1057,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
                 .attr("d", line);
 
     };
+    console.log("Chal Beta selfi la la ra ",$scope.tableDataArr);
 
 });
