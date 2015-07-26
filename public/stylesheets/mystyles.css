@@ -173,7 +173,12 @@ td{
 
 table.stats th, table.stats td {
   font-size : 90%;
+  text-align: center;
  }
+
+table.stats th:first-child,table.stats td:first-child {
+     text-align: left;
+ }​
 
  .btn-stats{
 background-color: #fff;
