@@ -380,110 +380,168 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
         console.log("$(currentid).parent()-->",$(currentid).parents().attr("id"));
     };
 
-    $scope.removedDimention = [];
+          $scope.removedDimention = [];
           $scope.clickCount = 0;
           $scope.conversionCount = 0;
           $scope.impressionCount = 0;
           $scope.allCount = 0;
 
 
+
+    $scope.getClassForMetricsDropDown= function(selectedTitle){
+
+    //btn btn-default btn-stats
+         if(selectedTitle=="Impression")
+                return "btn btn-default btn-stats btn-clicked"
+         else if(selectedTitle=="Click")
+             return "btn btn-default btn-stats";
+         else if(selectedTitle=="Conversion")
+             return "btn btn-default btn-stats";
+          else
+              return "btn btn-default btn-stats"
+
+     }
+
     $scope.statsToggel = function(data){
-          console.log("Data==> ",data);
-          var id="#stats-"+data;
 
-                       console.log(data);
-                        var currentid = "#table" + data;
-                        $(currentid).parent().show();
-                        $scope.removedDimention.pop(data);
-                        $(id).toggleClass("btn-clicked");
-                        console.log(id);
-                        $("#stats-All").removeClass("btn-clicked");
+        console.log(data);
+        var id="#stats-"+data;
+        $(id).toggleClass("btn-clicked");
 
-          if( data=="Conversion" || data=="Impression" || data=="Country" || data=="Browser" || data=="Click" || data=="Device" || data == "Site" || data =="Creative" || data == "Campaign") {
+        console.log(id);
+        if(data == "Impression" && $(id).hasClass("btn-clicked")){
 
-             if(data=='Impression'){
+                if($scope.selectedmetrics.length==3 && $("#stats-All").hasClass("btn-clicked")){
 
-               if($scope.impressionCount > 0){
-                        $scope.selectedmetrics.pop('impression');
-                        $scope.impressionCount = 0;
-                        } else{
-                $scope.impressionCount = $scope.impressionCount + 1
-                $scope.selectedmetrics.push('impression');
-                }
-             }
-             if(data == 'Click'){
+                    $scope.selectedmetrics = [];
 
-              if($scope.clickCount > 0){
-                    $scope.selectedmetrics.pop('click');
-                    $scope.clickCount = 0;
-
-              }else {
-              $scope.clickCount = $scope.clickCount +1
-                $scope.selectedmetrics.push('click');
-              }
-             }
-             if(data == 'Conversion'){
-                if($scope.impressionCount>0){
-                $scope.impressionCount = 0;
-                $scope.selectedmetrics.pop('conversion');
-                }else {
-                $scope.impressionCount = $scope.impressionCount + 1;
-                $scope.selectedmetrics.push('conversion');
                 }
 
-             }
 
-            /* if(! $("#stats-Conversion").hasClass("btn-clicked")){
+            $scope.selectedmetrics.push('impression')
+            console.log("Show Impression Data !!");
+            $("#stats-All").removeClass("btn-clicked");
+            $scope.selectedmetrics = $.unique($scope.selectedmetrics);
 
-             console.log("MMM --> ",$("#stats-Conversion").hasClass("btn-clicked"))
-              $scope.selectedmetrics.pop('conversion');
-             }
-                 if(! $("#stats-Click").hasClass("btn-clicked")){
-                           $scope.selectedmetrics.pop('click');
-                          }
-                              if(! $("#stats-Impression").hasClass("btn-clicked")){
-                                        $scope.selectedmetrics.pop('impression');
-                                       }
-*/
+                            $scope.paramObj.argmetrics = $scope.selectedmetrics;
 
-             $scope.selectedmetrics = $.unique($scope.selectedmetrics);
-
-             $scope.paramObj.argmetrics = $scope.selectedmetrics;
-                    var req = $scope.paramObj;
-                    $scope.callDSPBrowserStats(req);
-                    $scope.callDSPDeviceStats(req);
-                    $scope.callDSPAdvertiserStats(req);
-                    $scope.callDSPCampaignStats(req);
-                    $scope.callDSPCountryStats(req);
-                    $scope.callDSPSitesStats(req);
+                                                var req = $scope.paramObj;
+                                                $scope.callDSPBrowserStats(req);
+                                                $scope.callDSPDeviceStats(req);
+                                                $scope.callDSPAdvertiserStats(req);
+                                                $scope.callDSPCampaignStats(req);
+                                                $scope.callDSPCountryStats(req);
+                                                $scope.callDSPSitesStats(req);
 
 
 
 
+        }else if(data == "Click" && $(id).hasClass("btn-clicked")){
 
-          }else if(data=="All"){
+                        if($scope.selectedmetrics.length==3 && $("#stats-All").hasClass("btn-clicked")){
 
-                $("#stats-Conversion").removeClass("btn-clicked");
-                $("#stats-Impression").removeClass("btn-clicked");
-                $("#stats-Click").removeClass("btn-clicked");
-                $scope.selectedmetrics.push('impression');
-                $scope.selectedmetrics.push('click');
-                $scope.selectedmetrics.push('conversion');
-                $scope.selectedmetrics = $.unique($scope.selectedmetrics);
-                $scope.paramObj.argmetrics = $scope.selectedmetrics;
+                            $scope.selectedmetrics = [];
 
-                                    var req = $scope.paramObj;
-                                    $scope.callDSPBrowserStats(req);
-                                    $scope.callDSPDeviceStats(req);
-                                    $scope.callDSPAdvertiserStats(req);
-                                    $scope.callDSPCampaignStats(req);
-                                    $scope.callDSPCountryStats(req);
-                                    $scope.callDSPSitesStats(req);
+                        }
 
 
-                console.log(id)
-                $(id).toggleClass("btn-clicked")
-          }
+            $scope.selectedmetrics.push('click')
+            console.log("Show Click Data !!")
+            $("#stats-All").removeClass("btn-clicked");
+            $scope.selectedmetrics = $.unique($scope.selectedmetrics);
+
+                            $scope.paramObj.argmetrics = $scope.selectedmetrics;
+
+                                                var req = $scope.paramObj;
+                                                $scope.callDSPBrowserStats(req);
+                                                $scope.callDSPDeviceStats(req);
+                                                $scope.callDSPAdvertiserStats(req);
+                                                $scope.callDSPCampaignStats(req);
+                                                $scope.callDSPCountryStats(req);
+                                                $scope.callDSPSitesStats(req);
+
+
+
+        }else if(data == "Conversion" && $(id).hasClass("btn-clicked")){
+
+                if($scope.selectedmetrics.length==3 && $("#stats-All").hasClass("btn-clicked")){
+
+                    $scope.selectedmetrics = [];
+
+                }
+            $scope.selectedmetrics.push('conversion')
+            console.log("Show Conversion Data !!")
+            $("#stats-All").removeClass("btn-clicked");
+            $scope.selectedmetrics = $.unique($scope.selectedmetrics);
+
+
+                            $scope.paramObj.argmetrics = $scope.selectedmetrics;
+
+                                                var req = $scope.paramObj;
+                                                $scope.callDSPBrowserStats(req);
+                                                $scope.callDSPDeviceStats(req);
+                                                $scope.callDSPAdvertiserStats(req);
+                                                $scope.callDSPCampaignStats(req);
+                                                $scope.callDSPCountryStats(req);
+                                                $scope.callDSPSitesStats(req);
+
+
+
+
+        }else if(data == "All" && $(id).hasClass("btn-clicked")){
+        $scope.selectedmetrics.push('impression')
+        $scope.selectedmetrics.push('click')
+        $scope.selectedmetrics.push('conversion')
+        $("#stats-Conversion").removeClass("btn-clicked");
+        $("#stats-Impression").removeClass("btn-clicked");
+        $("#stats-Click").removeClass("btn-clicked");
+        console.log("Show All Data !!")
+        $scope.selectedmetrics = $.unique($scope.selectedmetrics);
+                        $scope.paramObj.argmetrics = $scope.selectedmetrics;
+
+                                            var req = $scope.paramObj;
+                                            $scope.callDSPBrowserStats(req);
+                                            $scope.callDSPDeviceStats(req);
+                                            $scope.callDSPAdvertiserStats(req);
+                                            $scope.callDSPCampaignStats(req);
+                                            $scope.callDSPCountryStats(req);
+                                            $scope.callDSPSitesStats(req);
+
+
+        }else {
+
+            console.log("Cart Man-->",data);
+            if(data == "Impression"){
+             $scope.selectedmetrics = _.without($scope.selectedmetrics, "impression");
+             console.log("I am in Impression block ");
+
+            }
+            if(data == "Click"){
+
+            console.log("I am in Click block ");
+            $scope.selectedmetrics = _.without($scope.selectedmetrics, "click");
+            }
+            if(data == "Conversion"){
+            $scope.selectedmetrics = _.without($scope.selectedmetrics, "conversion");
+            console.log("I am in Conversion block ");
+
+            }
+            console.log("Show No Data !!")
+
+                            $scope.paramObj.argmetrics = $scope.selectedmetrics;
+
+                                                var req = $scope.paramObj;
+                                                $scope.callDSPBrowserStats(req);
+                                                $scope.callDSPDeviceStats(req);
+                                                $scope.callDSPAdvertiserStats(req);
+                                                $scope.callDSPCampaignStats(req);
+                                                $scope.callDSPCountryStats(req);
+                                                $scope.callDSPSitesStats(req);
+
+        }
+
+
+        console.log($scope.selectedmetrics)
 
     };
 
@@ -497,6 +555,9 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
 
         }
     };*/
+
+
+
 
     $scope.selectedData = function(data,parentid){
         console.log("selected",data, " parentId ",parentid)

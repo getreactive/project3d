@@ -100,7 +100,6 @@
           <!-- Metrics filtering Start //-->
           <div class="col-md-6">
               <div class="pull-right">
-
                 <ul class="options nav nav-pills">
                   <li class="dropdown">
                     <a href="javascript:void(0)" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
@@ -113,7 +112,7 @@
                           </div>
                           <div class="col-xs-7 btn-group ">
                             <button class="btn btn-default"><i class="fa fa-line-chart"></i></button>
-                            <button id="stats-{{metric.title}}" class="btn btn-default btn-stats" ng-click="statsToggel(metric.title)"><i class="fa fa-table"></i></button>
+                            <button id="stats-{{metric.title}}" ng-class="getClassForMetricsDropDown(metric.title)" ng-click="statsToggel(metric.title)"><i class="fa fa-table"></i></button>
                           </div>
                         </div>
                         <hr class="metric-division">
