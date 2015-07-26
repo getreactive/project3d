@@ -229,7 +229,7 @@ class DSPApplication extends Controller{
         val _creative = requestparam.creative.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
         val _argmetrics = requestparam.argmetrics.toList.toArray
-        val currentValue = getGlobalAdvertiserStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
+        val currentValue = getGlobalCreativeStats(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
 
         Ok(Json.toJson(currentValue.toSeq))
       }
