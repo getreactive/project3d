@@ -61,6 +61,9 @@ POST        /clickdata               controllers.DSPApplication.getClickAction
 
 POST        /conversiondata          controllers.DSPApplication.getConversionAction
 
+POST        /getmultiselectdata          controllers.DSPApplication.getMultiSelectDialogData
+
+
 ##Dummy Calls
 
 

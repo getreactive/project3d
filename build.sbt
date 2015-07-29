@@ -40,7 +40,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jQuery-slimScroll" % "1.3.3",
   "org.webjars.bower" % "momentjs" % "2.10.3",
   "org.webjars" % "gridster.js" % "0.5.6",
-  "org.webjars" % "datatables" % "1.10.7"
+  "org.webjars" % "datatables" % "1.10.7",
+  "org.webjars" % "ngDialog" % "0.3.12-1"
 )
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.35"

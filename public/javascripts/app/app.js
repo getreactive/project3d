@@ -1,6 +1,25 @@
-var project3dApp = angular.module('demoApp',['ngTable','mgcrea.ngStrap']);
+var project3dApp = angular.module('demoApp',['ngTable','mgcrea.ngStrap','ngDialog']);
 
-project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
+
+/*
+        project3dApp.config(['ngDialogProvider', function (ngDialogProvider) {
+            ngDialogProvider.setDefaults({
+                className: 'ngdialog-theme-default',
+                plain: false,
+                showClose: true,
+                closeByDocument: true,
+                closeByEscape: true,
+                appendTo: false,
+                preCloseCallback: function () {
+                    console.log('default pre-close callback');
+                }
+            });
+        }]);
+*/
+
+
+
+project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
     $scope.tags = [];
     $scope.parentTag = [];
@@ -610,6 +629,53 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile){
         $scope.paramObj
 
     };
+
+  $scope.multiselectdialogdata = null;
+/*    $scope.mutliselect = function(data) {
+
+    $scope.multiselectdialogdata=data;
+
+    //alert(data);
+
+
+
+    var new_dialog = ngDialog.open({ template: 'assets/templates/dialogTemplate.html', controller: 'demoAppCtrl',data: {foo: 'some data'} });
+
+    }*/
+
+
+    $scope.mutliselect = function(data) {
+
+            var _paramdata = {};
+            _paramdata.id=data.toLowerCase();
+            _paramdata.name=data.toLowerCase();
+            var req = {
+                        method: 'POST',
+                        url: '/getmultiselectdata',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: _paramdata
+                    };
+
+                    $http(req).success(function(data){
+                    $scope.multiselectdialogdata = data;
+                        console.log("getmultiselectdata ",$scope.multiselectdialogdata);
+
+                        ngDialog.open({
+                            template: 'assets/templates/dialogTemplate.html',
+                            className: 'ngdialog-theme-plain',
+                            scope: $scope
+                        });
+
+                    }).error(function(){
+                    });
+
+    	};
+    	   $scope.$on('ngDialog.opened', function (event, $dialog) {
+                $dialog.find('.ngdialog-content').css('width', '400px');
+              });
+
 
     $scope.closeTag = function(tag){
         console.log("tag -->",tag)

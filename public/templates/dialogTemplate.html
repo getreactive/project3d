@@ -1,0 +1,13 @@
+<div class="table-responsive" style="height:250px;overflow: scroll;">
+<table class="table stats ng-table-rowselected">
+    <tr>
+        <th>Name</th>
+        <th>Count</th>
+    </tr>
+    <tr ng-repeat="x in multiselectdialogdata">
+        <td><input type="checkbox" checkbox-group /></td>
+        <td>{{ x.name }}</td>
+        <td>{{ x.value }}</td>
+    </tr>
+</table>
+</div>

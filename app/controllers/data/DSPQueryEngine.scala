@@ -447,6 +447,30 @@ object DSPQueryEngine {
     returnData
   }
 
+
+  def getGlobaDataDialog(dimention: String):mutable.Seq[Map[String,String]]={
+
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var rs:ResultSet = null
+    //select country,count(country) from demofinal group by country;
+    val query = "select "+dimention+" as name ,count("+dimention+") as value from demofinal  group by "+dimention;
+    println("Bla Bla "+query);
+    rs = stmt.executeQuery(query);
+    while (rs.next()) {
+      val name = rs.getString("name")
+      val value = rs.getString("value")
+      val revenueByCountry = Map("name"->name,"value"->value)
+      returnData+=revenueByCountry
+    }
+
+    connection.close()
+    returnData
+  }
+
+
+
   //Table : 3
   def getGlobalCountryStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 

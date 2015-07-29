@@ -18,7 +18,8 @@ import play.api.libs.functional.syntax._
  * Created by rahul on 02/07/15.
  */
 
-case class DSPPara(id:String)
+case class DSPPara(id:String,
+                    name: String)
 case class DSPRequestParam(country: Array[String],
                            browser: Array[String],
                            device: Array[String],
@@ -39,6 +40,12 @@ case class DSPRequestStatsParam(metrics:String,
 
 
 class DSPApplication extends Controller{
+
+  implicit val DSPParaReads: Reads[DSPPara] = (
+    (JsPath \ "id").read[String] and
+      (JsPath \ "name").read[String]
+    )(DSPPara.apply _)
+
 
   implicit val DSPRequestParamReads: Reads[DSPRequestParam] = (
     (JsPath \ "country").read[Array[String]] and
@@ -70,6 +77,24 @@ class DSPApplication extends Controller{
 
 
 // Table Right Side
+
+  def getMultiSelectDialogData = Action(BodyParsers.parse.json) { request =>
+    val requestParamResult = request.body.validate[DSPPara]
+    requestParamResult.fold(
+     errors => {
+       BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+     },
+    requestparam => {
+      val id = requestparam.id.toString
+      val name = requestparam.name.toString
+
+      var currentValue = getGlobaDataDialog(name)
+      Ok(Json.toJson(currentValue.toSeq))
+    }
+    )
+  }
+
+
 
   //Table 1
 
