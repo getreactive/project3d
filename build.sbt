@@ -41,7 +41,8 @@ libraryDependencies ++= Seq(
   "org.webjars.bower" % "momentjs" % "2.10.3",
   "org.webjars" % "gridster.js" % "0.5.6",
   "org.webjars" % "datatables" % "1.10.7",
-  "org.webjars" % "ngDialog" % "0.3.12-1"
+  "org.webjars" % "ngDialog" % "0.3.12-1",
+  "org.webjars" % "angular-local-storage" % "0.2.1"
 )
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.35"

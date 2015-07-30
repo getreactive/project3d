@@ -1,25 +1,6 @@
-var project3dApp = angular.module('demoApp',['ngTable','mgcrea.ngStrap','ngDialog']);
+var project3dApp = angular.module('demoApp',['ngTable','mgcrea.ngStrap','ngDialog','LocalStorageModule']);
 
-
-/*
-        project3dApp.config(['ngDialogProvider', function (ngDialogProvider) {
-            ngDialogProvider.setDefaults({
-                className: 'ngdialog-theme-default',
-                plain: false,
-                showClose: true,
-                closeByDocument: true,
-                closeByEscape: true,
-                appendTo: false,
-                preCloseCallback: function () {
-                    console.log('default pre-close callback');
-                }
-            });
-        }]);
-*/
-
-
-
-project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
+project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,localStorageService){
 
     $scope.tags = [];
     $scope.parentTag = [];
@@ -88,8 +69,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
         "argmetrics":['impression']
     };
 
-
-
     $scope.selectedmetrics = ['impression'];
     $scope.selectedevice = [];
     $scope.selectedcountry = [];
@@ -116,7 +95,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
     var _timetange = [];
     _timetange.push("1433117400","1435708800");
     $scope.paramObj.timerange = _timetange;
-
 
     $scope.datetimecheck = function(){
 
@@ -158,12 +136,12 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                 firstDay: 1
             }
         }, function(start, end, label) {
-            console.log(start.toISOString(), end.toISOString(), label);
+
 
             var startDate = new Date(start.toISOString());
             var endDate = new Date(end.toISOString())
-            console.log("Start--> ", startDate.getTime()/1000);
-            console.log("End--> ", endDate.getTime()/1000);
+           // console.log("Start--> ", startDate.getTime()/1000);
+           // console.log("End--> ", endDate.getTime()/1000);
             $scope.starttime = Math.round(0.0 + startDate.getTime()/1000);
             $scope.endtime = Math.round(0.0 + endDate.getTime()/1000);
             $scope.createParamObject("datetime",null,true)
@@ -175,6 +153,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
     $scope.init= function() {
 
         var req = $scope.paramObj;
+
+        localStorageService.set("centraldashboardobj",null);
 
         console.log("Init function --> ",req);
 
@@ -281,11 +261,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
         };
 
         $scope.templateobj = result;
-        console.log("******** ",result);
+        //console.log("******** ",result);
         $scope.tableDataArr = result.tableDataArr;
         $scope.graphDataArr = result.graphDataArr;
-        console.log("$scope.tableDataArr", $scope.tableDataArr);
-        console.log("$scope.graphDataArr",$scope.graphDataArr);
+        //console.log("$scope.tableDataArr", $scope.tableDataArr);
+        //console.log("$scope.graphDataArr",$scope.graphDataArr);
 
     };
 
@@ -300,73 +280,191 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
     };
 
-    $scope.createParamObject= function(parent, selectedValue, selected) {
+    $scope.createParamObject = function(parent, selectedValue, selected) {
 
-        console.log("Selected Value ",selectedValue)
+        //console.log("Selected Value ",selectedValue)
+
+        console.log("&*&*&*&*-->",localStorageService.get("centraldashboardobj"));
 
         if(parent == "country" && selected==true){
-
-
+            var _localobj = localStorageService.get("centraldashboardobj")
             for(i=0;i<selectedValue.length;i++){
-            $scope.selectedcountry.push(selectedValue[i])
+
+            $scope.selectedcountry.push(selectedValue[i]);
+            if(_localobj != null){
+            _localobj["country"].push(selectedValue[i]);
             }
-            $scope.selectedcountry = $.unique($scope.selectedcountry)
+
+            }
+            $scope.selectedcountry = $.unique($scope.selectedcountry);
+            console.log("$scope.selectedcountry-->",$scope.selectedcountry);
+
+            if(_localobj != null){
+            _localobj["country"] = $.unique(_localobj["country"]);
+
+            localStorageService.set("centraldashboardobj",_localobj);
+            }
 
         }else if(parent == "country" && selected==false){
 
-            $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
+         var _localobj = localStorageService.get("centraldashboardobj")
+                    for(i=0;i<selectedValue.length;i++){
+                    if(_localobj != null){
+                    _localobj["country"]= _.without(_localobj["country"],selectedValue[i]);
+                    }
+                    }
+                    if(_localobj != null){
+         localStorageService.set("centraldashboardobj",_localobj);
+         }
+         $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
 
         }else if(parent == "browser" && selected==true){
-            for(i=0;i<selectedValue.length;i++){
-            $scope.selectedbrowser.push(selectedValue[i])
-            }
-            $scope.selectedbrowser = $.unique($scope.selectedbrowser)
 
+          var _localobj = localStorageService.get("centraldashboardobj")
+                     for(i=0;i<selectedValue.length;i++){
+
+                     $scope.selectedcountry.push(selectedValue[i])
+                     if(_localobj != null){
+                     _localobj["browser"].push(selectedValue[i]);
+                     }
+                     }
+                     $scope.selectedcountry = $.unique($scope.selectedcountry);
+                     if(_localobj != null){
+                     _localobj["browser"] = $.unique(_localobj["browser"]);
+                     localStorageService.set("centraldashboardobj",_localobj);
+                     }
         }else if(parent == "browser" && selected==false){
 
-            $scope.selectedbrowser = _.without($scope.selectedbrowser,selectedValue)
+         var _localobj = localStorageService.get("centraldashboardobj")
+                    for(i=0;i<selectedValue.length;i++){
+        if(_localobj != null){
+                    _localobj["browser"]= _.without(_localobj["browser"],selectedValue[i]);
+                    }
+                    }
+                    if(_localobj != null){
+         localStorageService.set("centraldashboardobj",_localobj);
+         }
+         $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
 
         }else if(parent == "device" && selected==true){
-            for(i=0;i<selectedValue.length;i++){
-            $scope.selectedevice.push(selectedValue[i])
-            }
-            $scope.selectedevice = $.unique($scope.selectedevice)
+           var _localobj = localStorageService.get("centraldashboardobj")
+                                for(i=0;i<selectedValue.length;i++){
+
+                                $scope.selectedcountry.push(selectedValue[i])
+                                if(_localobj != null){
+                                _localobj["device"].push(selectedValue[i]);
+                                }
+                                }
+                                $scope.selectedcountry = $.unique($scope.selectedcountry);
+                                if(_localobj != null){
+                                _localobj["device"] = $.unique(_localobj["device"]);
+                                localStorageService.set("centraldashboardobj",_localobj);
+                                }
         }else if(parent == "device" && selected==false){
 
-            $scope.selectedevice = _.without($scope.selectedevice,selectedValue)
+             var _localobj = localStorageService.get("centraldashboardobj")
+                               for(i=0;i<selectedValue.length;i++){
+                            if(_localobj != null){
+                               _localobj["device"]= _.without(_localobj["device"],selectedValue[i]);
+                               }
+                               }
+                               if(_localobj != null){
+                    localStorageService.set("centraldashboardobj",_localobj);
+                    }
+                    $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
         }
         else if(parent == "site" && selected==true){
-            for(i=0;i<selectedValue.length;i++){
-            $scope.selectesite.push(selectedValue[i])
-            }
-            $scope.selectesite = $.unique($scope.selectesite)
+         var _localobj = localStorageService.get("centraldashboardobj")
+                                         for(i=0;i<selectedValue.length;i++){
+
+                                         $scope.selectedcountry.push(selectedValue[i])
+                                         if(_localobj != null){
+                                         _localobj["site"].push(selectedValue[i]);
+                                         }
+                                         }
+                                         $scope.selectedcountry = $.unique($scope.selectedcountry);
+                                         if(_localobj != null){
+                                         _localobj["site"] = $.unique(_localobj["site"]);
+                                         localStorageService.set("centraldashboardobj",_localobj);
+                                         }
         }else if(parent == "site" && selected==false){
 
-            $scope.selectesite = _.without($scope.selectesite,selectedValue)
+             var _localobj = localStorageService.get("centraldashboardobj")
+                                          for(i=0;i<selectedValue.length;i++){
+                                    if(_localobj != null){
+                                          _localobj["site"]= _.without(_localobj["site"],selectedValue[i]);
+                                          }
+                                          }
+                                          if(_localobj != null){
+                               localStorageService.set("centraldashboardobj",_localobj);
+                               $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
+                               }
         }
         else if(parent == "campaign" && selected==true){
-            for(i=0;i<selectedValue.length;i++){
-            $scope.selectecampaign.push(selectedValue[i]);
-            }
-            $scope.selectecampaign = $.unique($scope.selectecampaign)
+            var _localobj = localStorageService.get("centraldashboardobj")
+                                                   for(i=0;i<selectedValue.length;i++){
+
+                                                   $scope.selectedcountry.push(selectedValue[i])
+                                                   if(_localobj != null){
+                                                   _localobj["campaign"].push(selectedValue[i]);
+                                                   }
+                                                   }
+                                                   $scope.selectedcountry = $.unique($scope.selectedcountry);
+                                                   if(_localobj != null){
+                                                   _localobj["campaign"] = $.unique(_localobj["campaign"]);
+                                                   localStorageService.set("centraldashboardobj",_localobj);
+                                                   }
         }else if(parent == "campaign" && selected==false){
 
-            $scope.selectecampaign = _.without($scope.selectecampaign,selectedValue)
+              var _localobj = localStorageService.get("centraldashboardobj")
+                                                      for(i=0;i<selectedValue.length;i++){
+                                                    if(_localobj != null){
+                                                      _localobj["campaign"]= _.without(_localobj["campaign"],selectedValue[i]);
+                                                      }
+                                                      }
+                                                      if(_localobj != null){
+                                           localStorageService.set("centraldashboardobj",_localobj);
+                                           }
+                                           $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
         }
         else if(parent == "creative" && selected==true){
-            for(i=0;i<selectedValue.length;i++){
-            $scope.selectecreative.push(selectedValue[i])
-            }
-            $scope.selectecreative = $.unique($scope.selectecreative)
+             var _localobj = localStorageService.get("centraldashboardobj")
+                                                              for(i=0;i<selectedValue.length;i++){
+
+                                                              $scope.selectedcountry.push(selectedValue[i])
+                                                              if(_localobj != null){
+                                                              _localobj["creative"].push(selectedValue[i]);
+                                                              }
+                                                              }
+                                                              $scope.selectedcountry = $.unique($scope.selectedcountry);
+                                                              if(_localobj != null){
+                                                              _localobj["creative"] = $.unique(_localobj["creative"]);
+                                                              localStorageService.set("centraldashboardobj",_localobj);
+                                                              }
         }else if(parent == "creative" && selected==false){
 
-            $scope.selectecreative = _.without($scope.selectecreative,selectedValue)
+              var _localobj = localStorageService.get("centraldashboardobj")
+                                                                 for(i=0;i<selectedValue.length;i++){
+                                                                if(_localobj != null){
+                                                                 _localobj["creative"]= _.without(_localobj["creative"],selectedValue[i]);
+                                                                 }
+                                                                 }
+                                                                 if(_localobj != null){
+                                                      localStorageService.set("centraldashboardobj",_localobj);
+                                                      $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
+                                                      }
         }else if(parent == "datetime" && selected==true){
 
             var timerange = [];
             timerange.push($scope.starttime.toString());
             timerange.push($scope.endtime.toString());
             $scope.paramObj.timerange = timerange;
+            var _localobj = localStorageService.get("centraldashboardobj")
+            if(_localobj != null){
+            _localobj.timerange = timerange;
+            localStorageService.set("centraldashboardobj",_localobj);
+            }
+
         }
 
         $scope.paramObj.country = $scope.selectedcountry;
@@ -379,11 +477,20 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
         timerange.push($scope.starttime.toString());
         timerange.push($scope.endtime.toString());
         $scope.paramObj.timerange = timerange;
-        console.log("$scope.paramObj --> ",$scope.paramObj)
+        //console.log("$scope.paramObj --> ",$scope.paramObj)
 
         var _pram = $scope.paramObj;
-        $scope.updateStats(_pram);
-
+        var _localobj = localStorageService.get("centraldashboardobj")
+        if(_localobj != null){
+                console.log("I am Here !!")
+                console.log("Create Objact param",_localobj);
+                $scope.updateStats(_localobj);
+        }else {
+              /*  localStorageService.set("centraldashboardobj",_pram);
+                $scope.updateStats(_pram);*/
+                localStorageService.set("centraldashboardobj",_pram);
+                $scope.updateStats(_pram);
+        }
     };
 
     $scope.parkedDiv = [];
@@ -391,8 +498,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
     $scope.unparking = function(data){
         var id = data;
         var currentid = "#table"+id;
-        console.log("currentID--> ",currentid);
-        console.log("$scope.parkedDiv-->",$scope.parkedDiv)
+        //console.log("currentID--> ",currentid);
+        //console.log("$scope.parkedDiv-->",$scope.parkedDiv)
         $scope.parkedDiv.pop(currentid);
         var _parkid = "#park-"+data;
         $(_parkid).remove();
@@ -401,8 +508,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
     $scope.parking = function(data) {
 
-        console.log("Parking ---> ",data);
-        console.log(data);
+        //console.log("Parking ---> ",data);
+        //console.log(data);
         var currentid = "#table"+data;
         $scope.parkedDiv.push(currentid);
         $(currentid).parent().hide();
@@ -412,7 +519,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
         var htmlTemp = $(str).appendTo("#parking-house");
         $compile(htmlTemp)($scope);
         //$("#parking-house").append(htmlTemp);
-        console.log("$(currentid).parent()-->",$(currentid).parents().attr("id"));
+        //console.log("$(currentid).parent()-->",$(currentid).parents().attr("id"));
     };
 
           $scope.removedDimention = [];
@@ -439,11 +546,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
     $scope.statsToggel = function(data){
 
-        console.log(data);
+        //console.log(data);
         var id="#stats-"+data;
         $(id).toggleClass("btn-clicked");
 
-        console.log(id);
+        //console.log(id);
         if(data == "Impression" && $(id).hasClass("btn-clicked")){
 
                 if($scope.selectedmetrics.length==3 && $("#stats-All").hasClass("btn-clicked")){
@@ -453,7 +560,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                 }
 
             $scope.selectedmetrics.push('impression')
-            console.log("Show Impression Data !!");
+            //console.log("Show Impression Data !!");
             $("#stats-All").removeClass("btn-clicked");
             $scope.selectedmetrics = $.unique($scope.selectedmetrics);
 
@@ -477,7 +584,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
 
             $scope.selectedmetrics.push('click')
-            console.log("Show Click Data !!")
+            //console.log("Show Click Data !!")
             $("#stats-All").removeClass("btn-clicked");
             $scope.selectedmetrics = $.unique($scope.selectedmetrics);
 
@@ -501,7 +608,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
                 }
             $scope.selectedmetrics.push('conversion')
-            console.log("Show Conversion Data !!")
+            //console.log("Show Conversion Data !!")
             $("#stats-All").removeClass("btn-clicked");
             $scope.selectedmetrics = $.unique($scope.selectedmetrics);
 
@@ -526,7 +633,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
         $("#stats-Conversion").removeClass("btn-clicked");
         $("#stats-Impression").removeClass("btn-clicked");
         $("#stats-Click").removeClass("btn-clicked");
-        console.log("Show All Data !!")
+        //console.log("Show All Data !!")
         $scope.selectedmetrics = $.unique($scope.selectedmetrics);
                         $scope.paramObj.argmetrics = $scope.selectedmetrics;
 
@@ -541,20 +648,20 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         }else {
 
-            console.log("Cart Man-->",data);
+            //console.log("Cart Man-->",data);
             if(data == "Impression"){
              $scope.selectedmetrics = _.without($scope.selectedmetrics, "impression");
-             console.log("I am in Impression block ");
+             //console.log("I am in Impression block ");
 
             }
             if(data == "Click"){
 
-            console.log("I am in Click block ");
+            //console.log("I am in Click block ");
             $scope.selectedmetrics = _.without($scope.selectedmetrics, "click");
             }
             if(data == "Conversion"){
             $scope.selectedmetrics = _.without($scope.selectedmetrics, "conversion");
-            console.log("I am in Conversion block ");
+            //console.log("I am in Conversion block ");
 
             }
             if(data == "All"){
@@ -564,7 +671,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                         console.log("I am in Conversion block ");
 
                         }
-            console.log("Show No Data !!")
+            //console.log("Show No Data !!")
 
                             $scope.paramObj.argmetrics = $scope.selectedmetrics;
 
@@ -578,7 +685,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         }
 
-        console.log($scope.selectedmetrics)
+        //console.log($scope.selectedmetrics)
 
     };
 
@@ -595,8 +702,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
     $scope.selectedData = function(data,parentid){
 
-        console.log("selected",data, " parentId ",parentid);
-
+        //console.log("selected",data, " parentId ",parentid);
+        //alert("")
         if(data.$selected) {
             if(($scope.parentTag.indexOf($scope.tableDataArr[parentid].id)) + 1) {
                 $scope.selectCounter[$scope.tableDataArr[parentid].id]++;
@@ -612,8 +719,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             var currentvalue=[];
              currentvalue.push(data.name);
 
-            console.log("currentparent == ",currentparent)
-            console.log("currentvalue == ",currentvalue)
+            //console.log("currentparent == ",currentparent)
+            //console.log("currentvalue == ",currentvalue)
 
             $scope.createParamObject(currentparent,currentvalue,true)
 
@@ -634,7 +741,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         }
 
-        console.log("&*&*&*&*&-->",$scope.parentTag);
+        //console.log("&*&*&*&*&-->",$scope.parentTag);
     };
 
     $scope.resetFilterWithTag = function(tag){
@@ -644,18 +751,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
     };
 
   $scope.multiselectdialogdata = null;
-/*    $scope.mutliselect = function(data) {
-
-    $scope.multiselectdialogdata=data;
-
-    //alert(data);
-
-
-
-    var new_dialog = ngDialog.open({ template: 'assets/templates/dialogTemplate.html', controller: 'demoAppCtrl',data: {foo: 'some data'} });
-
-    }*/
-
 
   $scope.user = {
     select: []
@@ -673,6 +768,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             if(_tmp == "country"){
                 if(isSelected == true){
                 $scope.currentslectedDimentionList.push(data);
+
                 }else{
                 $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
                 }
@@ -715,7 +811,33 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                                 }
 
             }
+
+/*
+                    localStorageService.set("centraldashboardobj",_pram);
+
+                    console.log("fake--> ",localStorageService.get("faking"))
+                    console.log("localStorageService",localStorageService.get("centraldashboardobj"));*/
+
+
+            if(localStorageService.get("centraldashboardobj") != null){
+
+                var _obj = localStorageService.get("centraldashboardobj");
+
+                for(var a=0;a<$scope.currentslectedDimentionList.length;a++){
+
+                    _obj[_tmp].push($scope.currentslectedDimentionList[a]);
+
+                    _obj[_tmp] = _.uniq(_obj[_tmp]);
+                }
+
+                localStorageService.set("centraldashboardobj",_obj);
+                console.log("_obj",_obj)
+
+            }
             console.log("new data-->",$scope.currentslectedDimentionList);
+
+
+
         }
 
 
@@ -739,7 +861,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
                     $http(req).success(function(data){
                     $scope.multiselectdialogdata = data;
-                        console.log("getmultiselectdata ",$scope.multiselectdialogdata);
+                        //console.log("getmultiselectdata ",$scope.multiselectdialogdata);
 
                         ngDialog.openConfirm({
                             template: 'assets/templates/dialogTemplate.html',
@@ -747,7 +869,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                             scope: $scope
                         });
 
-                        console.log($scope.user.select)
+                        //console.log($scope.user.select)
 
                     }).error(function(){
                     });
@@ -762,94 +884,76 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
     $scope.getMultiFilterDataFromDB = function() {
 
-        var _tmp = $scope.currentStats;
+        $scope.currentslectedDimentionList=[];
+        // Tag entry
+        console.log("$scope.currentStats ",$scope.currentStats)
+        $scope.parentTag.push($scope.currentStats)
+        $scope.parentTag=_.uniq($scope.parentTag);
+        console.log("$scope.paramObj -->",$scope.paramObj);
 
-        if(_tmp == "country"){
+           var _obj = localStorageService.get("centraldashboardobj");
+                    if(_obj != null){
 
-            //$scope.paramObj.country = $scope.currentslectedDimentionList;
+                        console.log("in getMultiFilterDataFromDB ",_obj);
+                        $scope.updateStats(_obj);
+                    }
 
-            $scope.createParamObject("country",$scope.currentslectedDimentionList,true)
-        }else if(_tmp == "site"){
-
-            //$scope.paramObj.site = $scope.currentslectedDimentionList;
-            $scope.createParamObject("site",$scope.currentslectedDimentionList,true)
-
-        }else if(_tmp == "browser"){
-
-           // $scope.paramObj.browser = $scope.currentslectedDimentionList;
-           $scope.createParamObject("browser",$scope.currentslectedDimentionList,true)
-
-        }else if(_tmp == "creative"){
-
-           // $scope.paramObj.creative = $scope.currentslectedDimentionList;
-           $scope.createParamObject("creative",$scope.currentslectedDimentionList,true)
-        }else if(_tmp == "campaign"){
-
-            //$scope.paramObj.campaign = $scope.currentslectedDimentionList;
-            $scope.createParamObject("campaign",$scope.currentslectedDimentionList,true)
-        }
-
-        $scope.parentTag.push(_tmp);
-        $scope.tags = _.uniq($scope.tags);
-
-        console.log("got data !!",$scope.paramObj);
-
-        console.log("***** ",$scope.parentTag)
-        $scope.multiselectenable = true;
-        $scope.currentslectedDimentionList = [];
-
-        //$scope.updateStats($scope.paramObj);
     }
 
     $scope.closeTag = function(tag){
-        console.log("tag -->",tag)
+
         var parent = $scope.parentTag.indexOf(tag);
-        console.log("&*&*&* ",parent)
         $scope.parentTag.splice(parent,1);
         for(var i=0;i<$scope.tableDataArr.length;i++){
             if($scope.tableDataArr[i].id==tag){
-                console.log($scope.tableDataArr[i].data);
                 $.each($scope.tableDataArr[i].data,function(index){
                     delete $scope.tableDataArr[i].data[index].$selected;
                 })
             }
         }
 
-/*        $scope.paramObj = {
-            "country":[],
-            "browser":[],
-            "device":[],
-            "site":[],
-            "campaign":[],
-            "advertiser":[]
-        };*/
-
         if(tag=="country"){
             $scope.paramObj.country = [];
+
+            var _obj = localStorageService.get("centraldashboardobj");
+            _obj.country = [];
+            localStorageService.set("centraldashboardobj",_obj);
+
         }
         if(tag=="browser"){
             $scope.paramObj.browser = [];
+                        var _obj = localStorageService.get("centraldashboardobj");
+                        _obj.browser = [];
+                        localStorageService.set("centraldashboardobj",_obj);
         }
         if(tag=="device"){
             $scope.paramObj.device = [];
+                                    var _obj = localStorageService.get("centraldashboardobj");
+                                    _obj.device = [];
+                                    localStorageService.set("centraldashboardobj",_obj);
         }
         if(tag=="site"){
             $scope.paramObj.site = [];
+             var _obj = localStorageService.get("centraldashboardobj");
+             _obj.site = [];
+            localStorageService.set("centraldashboardobj",_obj);
         }
         if(tag=="campaign"){
             $scope.paramObj.campaign = [];
+                         var _obj = localStorageService.get("centraldashboardobj");
+                         _obj.campaign = [];
+                        localStorageService.set("centraldashboardobj",_obj);
         }
         if(tag=="creative"){
             $scope.paramObj.creative = [];
+                                     var _obj = localStorageService.get("centraldashboardobj");
+                                     _obj.creative = [];
+                                    localStorageService.set("centraldashboardobj",_obj);
 
         }
 
         var _pram = $scope.paramObj;
 
-        console.log("Chal Beta selfi la la ra ",$scope.tableDataArr);
-        console.log("Chal  ",$scope.parentTag);
-
-        console.log("Updated parameter--> ",_pram)
 
         if($scope.parentTag.length == 0){
 
@@ -866,10 +970,24 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             $scope.paramObj.device = [];
             $scope.paramObj.site = [];
             var paramdata = $scope.paramObj;
+            localStorageService.set("centraldashboardobj",paramdata);
+
+            var _obj = localStorageService.get("centraldashboardobj");
+            if(_obj != null){
+
+                $scope.updateStats(_obj);
+            }else {
+
             $scope.updateStats(paramdata);
+            }
         }else {
 
+            var _localobj = localStorageService.get("centraldashboardobj");
+            if(_localobj != null){
+                $scope.updateStats(_localobj);
+            }else {
             $scope.updateStats(_pram);
+            }
         }
 
     };
@@ -904,7 +1022,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
          };
 
          $http(req).success(function(data){
-             console.log("callDSPBrowserStats ",data)
+             //console.log("callDSPBrowserStats ",data)
 
              var _d = $scope.templateobj;
              $.each(_d.tableDataArr,function(i,v){
@@ -1121,7 +1239,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         $http(req).success(function(data){
 
-            console.log("callImpressionStats ",data);
+            //console.log("callImpressionStats ",data);
             $scope.impressiondata = new Intl.NumberFormat().format(parseInt(data[0].value));
 
 
@@ -1146,11 +1264,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         $http(req).success(function(data){
 
-            console.log("callClickStats ",data);
+            //console.log("callClickStats ",data);
 
             $scope.clickdata=  new Intl.NumberFormat().format(parseInt(data[0].value));
 
-            console.log("$scope.clickdata",$scope.clickdata )
+            //console.log("$scope.clickdata",$scope.clickdata )
 
 
         }).error(function(){
@@ -1172,7 +1290,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         $http(req).success(function(data){
 
-            console.log("callConversionStats ",data);
+            //console.log("callConversionStats ",data);
             $scope.conversiondata = new Intl.NumberFormat().format(parseInt(data[0].value));
 
         }).error(function(){
@@ -1214,10 +1332,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             width = _location.width() - margin.left - margin.right,
             height = 230 - margin.top - margin.bottom;
 
-        console.log("Name -> ",name);
-        console.log("location ->",data)
+        //console.log("Name -> ",name);
+        //console.log("location ->",data)
 
-        console.log($scope.endtime - $scope.starttime)
+        //console.log($scope.endtime - $scope.starttime)
 
         var parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -1315,6 +1433,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                 .attr("d", line);
 
     };
-    console.log("Chal Beta selfi la la ra ",$scope.tableDataArr);
+    //console.log("Chal Beta selfi la la ra ",$scope.tableDataArr);
 
 });

@@ -82,6 +82,7 @@ object DSPQueryEngine {
 
     finalqueryStr
   }
+
   def getTimeRangeString(name:String,data:Array[String]): String = {
 
     println("CartMan "+data(0)+" "+data(1))
@@ -122,9 +123,17 @@ object DSPQueryEngine {
     result ::= campaignStr
     result ::= creativeStr
     val _tmp = result.filter(_.nonEmpty)
-    println("_tmp ",_tmp)
+   // println("_tmp ",_tmp)
     if(_tmp.length != 0){
-    queryParam = " where "+timerangeStr+" and "+_tmp.mkString(" and ")
+      var str = ""
+      _tmp.foreach{ e=>
+        //println(e)
+        str = str +" ("+e+") and "
+
+      }
+      println(str)
+      str = str.dropRight(4)
+    queryParam = " where "+timerangeStr+" and "+str //_tmp.mkString(" and ")
     }else{
       queryParam=" where "+timerangeStr+" "
     }
