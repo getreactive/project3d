@@ -27,6 +27,14 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
     $scope.selectCounter = {};
     $scope.graphTemp = [];
     $scope.tableTemp = [];
+
+    $scope.multiselectCountry = [];
+    $scope.multiselectSite = [];
+    $scope.multiselectBrowser = [];
+    $scope.multiselectDevice = [];
+    $scope.multiselectCampaigm = [];
+    $scope.multiselectCreative= [];
+
     $scope.graphDataArr = [
         {
             "id": "clickcount",
@@ -298,7 +306,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         if(parent == "country" && selected==true){
 
-            $scope.selectedcountry.push(selectedValue)
+
+            for(i=0;i<selectedValue.length;i++){
+            $scope.selectedcountry.push(selectedValue[i])
+            }
             $scope.selectedcountry = $.unique($scope.selectedcountry)
 
         }else if(parent == "country" && selected==false){
@@ -306,8 +317,9 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             $scope.selectedcountry = _.without($scope.selectedcountry,selectedValue)
 
         }else if(parent == "browser" && selected==true){
-
-            $scope.selectedbrowser.push(selectedValue)
+            for(i=0;i<selectedValue.length;i++){
+            $scope.selectedbrowser.push(selectedValue[i])
+            }
             $scope.selectedbrowser = $.unique($scope.selectedbrowser)
 
         }else if(parent == "browser" && selected==false){
@@ -315,32 +327,36 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             $scope.selectedbrowser = _.without($scope.selectedbrowser,selectedValue)
 
         }else if(parent == "device" && selected==true){
-
-            $scope.selectedevice.push(selectedValue)
+            for(i=0;i<selectedValue.length;i++){
+            $scope.selectedevice.push(selectedValue[i])
+            }
             $scope.selectedevice = $.unique($scope.selectedevice)
         }else if(parent == "device" && selected==false){
 
             $scope.selectedevice = _.without($scope.selectedevice,selectedValue)
         }
         else if(parent == "site" && selected==true){
-
-            $scope.selectesite.push(selectedValue)
+            for(i=0;i<selectedValue.length;i++){
+            $scope.selectesite.push(selectedValue[i])
+            }
             $scope.selectesite = $.unique($scope.selectesite)
         }else if(parent == "site" && selected==false){
 
             $scope.selectesite = _.without($scope.selectesite,selectedValue)
         }
         else if(parent == "campaign" && selected==true){
-
-            $scope.selectecampaign.push(selectedValue)
+            for(i=0;i<selectedValue.length;i++){
+            $scope.selectecampaign.push(selectedValue[i]);
+            }
             $scope.selectecampaign = $.unique($scope.selectecampaign)
         }else if(parent == "campaign" && selected==false){
 
             $scope.selectecampaign = _.without($scope.selectecampaign,selectedValue)
         }
         else if(parent == "creative" && selected==true){
-
-            $scope.selectecreative.push(selectedValue)
+            for(i=0;i<selectedValue.length;i++){
+            $scope.selectecreative.push(selectedValue[i])
+            }
             $scope.selectecreative = $.unique($scope.selectecreative)
         }else if(parent == "creative" && selected==false){
 
@@ -436,7 +452,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
                 }
 
-
             $scope.selectedmetrics.push('impression')
             console.log("Show Impression Data !!");
             $("#stats-All").removeClass("btn-clicked");
@@ -451,9 +466,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                                                 $scope.callDSPCampaignStats(req);
                                                 $scope.callDSPCountryStats(req);
                                                 $scope.callDSPSitesStats(req);
-
-
-
 
         }else if(data == "Click" && $(id).hasClass("btn-clicked")){
 
@@ -566,7 +578,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
 
         }
 
-
         console.log($scope.selectedmetrics)
 
     };
@@ -582,11 +593,10 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
         }
     };*/
 
-
-
-
     $scope.selectedData = function(data,parentid){
-        console.log("selected",data, " parentId ",parentid)
+
+        console.log("selected",data, " parentId ",parentid);
+
         if(data.$selected) {
             if(($scope.parentTag.indexOf($scope.tableDataArr[parentid].id)) + 1) {
                 $scope.selectCounter[$scope.tableDataArr[parentid].id]++;
@@ -599,7 +609,8 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             var parent = $scope.parentTag.indexOf($scope.tableDataArr[parentid].id);
 
             var currentparent = $scope.tableDataArr[parentid].id;
-            var currentvalue = data.name
+            var currentvalue=[];
+             currentvalue.push(data.name);
 
             console.log("currentparent == ",currentparent)
             console.log("currentvalue == ",currentvalue)
@@ -616,13 +627,15 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
             }
 
             var currentparent = $scope.tableDataArr[parentid].id;
-            var currentvalue = data.name
+            var currentvalue = [];
+            currentvalue.push(data.name);
 
-            $scope.createParamObject(currentparent,currentvalue,false)
+            $scope.createParamObject(currentparent,currentvalue,false);
 
         }
-    };
 
+        console.log("&*&*&*&*&-->",$scope.parentTag);
+    };
 
     $scope.resetFilterWithTag = function(tag){
 
@@ -644,11 +657,77 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
     }*/
 
 
+  $scope.user = {
+    select: []
+  };
+
+    $scope.currentStats = null;
+    $scope.currentslectedDimentionList = [];
+
+    $scope.getDimentionSelectedValue = function(data,isSelected){
+
+            var _tmp = $scope.currentStats;
+
+            console.log(isSelected);
+
+            if(_tmp == "country"){
+                if(isSelected == true){
+                $scope.currentslectedDimentionList.push(data);
+                }else{
+                $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                }
+
+            }else if(_tmp == "site"){
+
+                if(isSelected == true){
+                               $scope.currentslectedDimentionList.push(data);
+                               }else{
+                               $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                               }
+
+            }else if(_tmp == "browser"){
+
+                if(isSelected == true){
+                               $scope.currentslectedDimentionList.push(data);
+                               }else{
+                               $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                               }
+
+            }else if(_tmp == "device"){
+
+                 if(isSelected == true){
+                                $scope.currentslectedDimentionList.push(data);
+                                }else{
+                                $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                                }
+            }else if(_tmp == "creative"){
+
+                 if(isSelected == true){
+                                $scope.currentslectedDimentionList.push(data);
+                                }else{
+                                $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                                }
+            }else if(_tmp == "campaign"){
+                 if(isSelected == true){
+                                $scope.currentslectedDimentionList.push(data);
+                                }else{
+                                $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                                }
+
+            }
+            console.log("new data-->",$scope.currentslectedDimentionList);
+        }
+
+
+    $scope.multiselectenable = false;
+
     $scope.mutliselect = function(data) {
 
             var _paramdata = {};
             _paramdata.id=data.toLowerCase();
             _paramdata.name=data.toLowerCase();
+            $scope.currentStats = data.toLowerCase();
+
             var req = {
                         method: 'POST',
                         url: '/getmultiselectdata',
@@ -662,20 +741,65 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog){
                     $scope.multiselectdialogdata = data;
                         console.log("getmultiselectdata ",$scope.multiselectdialogdata);
 
-                        ngDialog.open({
+                        ngDialog.openConfirm({
                             template: 'assets/templates/dialogTemplate.html',
                             className: 'ngdialog-theme-plain',
                             scope: $scope
                         });
 
+                        console.log($scope.user.select)
+
                     }).error(function(){
                     });
 
-    	};
-    	   $scope.$on('ngDialog.opened', function (event, $dialog) {
-                $dialog.find('.ngdialog-content').css('width', '400px');
-              });
+    };
 
+    $scope.$on('ngDialog.opened', function (event, $dialog) {
+                $dialog.find('.ngdialog-content').css('width', '400px');
+
+    });
+
+
+    $scope.getMultiFilterDataFromDB = function() {
+
+        var _tmp = $scope.currentStats;
+
+        if(_tmp == "country"){
+
+            //$scope.paramObj.country = $scope.currentslectedDimentionList;
+
+            $scope.createParamObject("country",$scope.currentslectedDimentionList,true)
+        }else if(_tmp == "site"){
+
+            //$scope.paramObj.site = $scope.currentslectedDimentionList;
+            $scope.createParamObject("site",$scope.currentslectedDimentionList,true)
+
+        }else if(_tmp == "browser"){
+
+           // $scope.paramObj.browser = $scope.currentslectedDimentionList;
+           $scope.createParamObject("browser",$scope.currentslectedDimentionList,true)
+
+        }else if(_tmp == "creative"){
+
+           // $scope.paramObj.creative = $scope.currentslectedDimentionList;
+           $scope.createParamObject("creative",$scope.currentslectedDimentionList,true)
+        }else if(_tmp == "campaign"){
+
+            //$scope.paramObj.campaign = $scope.currentslectedDimentionList;
+            $scope.createParamObject("campaign",$scope.currentslectedDimentionList,true)
+        }
+
+        $scope.parentTag.push(_tmp);
+        $scope.tags = _.uniq($scope.tags);
+
+        console.log("got data !!",$scope.paramObj);
+
+        console.log("***** ",$scope.parentTag)
+        $scope.multiselectenable = true;
+        $scope.currentslectedDimentionList = [];
+
+        //$scope.updateStats($scope.paramObj);
+    }
 
     $scope.closeTag = function(tag){
         console.log("tag -->",tag)

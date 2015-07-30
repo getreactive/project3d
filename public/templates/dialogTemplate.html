@@ -4,10 +4,16 @@
         <th>Name</th>
         <th>Count</th>
     </tr>
-    <tr ng-repeat="x in multiselectdialogdata">
-        <td><input type="checkbox" checkbox-group /></td>
+    <tr style="cursor:pointer" ng-repeat="x in multiselectdialogdata"
+        ng-click="data.$selected = !data.$selected; getDimentionSelectedValue(x.name,data.$selected)"
+        ng-class="{'selecteditems': data.$selected}">
         <td>{{ x.name }}</td>
         <td>{{ x.value }}</td>
     </tr>
 </table>
+    <div>
+
+        <button type="button" class="btn btn-default" ng-click="closeThisDialog(0)">No&nbsp;</button>
+        <button type="button" class="btn btn-primary" ng-click="getMultiFilterDataFromDB(1);closeThisDialog('closed')">Yes</button>
+    </div>
 </div>
