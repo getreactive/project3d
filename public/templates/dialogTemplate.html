@@ -11,9 +11,11 @@
         <td>{{ x.value }}</td>
     </tr>
 </table>
-    <div>
+    <div style="float:right">
 
-        <button type="button" class="btn btn-default" ng-click="closeThisDialog(0)">No&nbsp;</button>
-        <button type="button" class="btn btn-primary" ng-click="getMultiFilterDataFromDB(1);closeThisDialog('closed')">Yes</button>
+        <button type="button" class="btn btn-default" ng-click="closeThisDialog(0)">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="getMultiFilterDataFromDB(1);closeThisDialog('closed')">Submit</button>
+        &nbsp;
     </div>
+
 </div>

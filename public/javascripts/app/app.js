@@ -812,13 +812,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
 
             }
 
-/*
-                    localStorageService.set("centraldashboardobj",_pram);
-
-                    console.log("fake--> ",localStorageService.get("faking"))
-                    console.log("localStorageService",localStorageService.get("centraldashboardobj"));*/
-
-
             if(localStorageService.get("centraldashboardobj") != null){
 
                 var _obj = localStorageService.get("centraldashboardobj");
@@ -833,11 +826,22 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
                 localStorageService.set("centraldashboardobj",_obj);
                 console.log("_obj",_obj)
 
+            }else{
+
+            var _obj = $scope.paramObj;
+             for(var a=0;a<$scope.currentslectedDimentionList.length;a++){
+
+                                _obj[_tmp].push($scope.currentslectedDimentionList[a]);
+
+                                _obj[_tmp] = _.uniq(_obj[_tmp]);
+                            }
+
+                            localStorageService.set("centraldashboardobj",_obj);
+                            console.log("_obj",_obj)
+
+
             }
             console.log("new data-->",$scope.currentslectedDimentionList);
-
-
-
         }
 
 
