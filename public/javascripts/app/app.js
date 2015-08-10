@@ -529,6 +529,18 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
           $scope.allCount = 0;
 
 
+    $scope.hiddenVizDivArray = [];
+    $scope.hideVizDiv = function(selectedTitle) {
+
+        var id = "#"+selectedTitle;
+        $scope.hiddenVizDivArray.push(selectedTitle);
+        $scope.hiddenVizDivArray = _.uniq($scope.hiddenVizDivArray);
+        $(id).hide();
+
+    }
+
+
+
 
     $scope.getClassForMetricsDropDown= function(selectedTitle){
 

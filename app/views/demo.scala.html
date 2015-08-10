@@ -152,12 +152,12 @@
             </div>
             <div class="row" id="viz-place-holder" >
 
-              <div class="box box-success">
+              <div class="box box-success" id="impression-viz-div">
                 <div class="box-header with-border">
                   <h3 class="box-title">Impression</h3>
                   <div class="box-tools pull-right">
                     <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('impression-viz-div')"><i class="fa fa-times"></i></button>
                   </div>
                 </div>
                 <div class="box-body">
@@ -167,12 +167,12 @@
                 </div>
               </div><!-- /.box -->
 
-              <div class="box box-success">
+              <div class="box box-success" id="click-viz-div">
                 <div class="box-header with-border">
                   <h3 class="box-title">Click</h3>
                   <div class="box-tools pull-right">
                     <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('click-viz-div')"><i class="fa fa-times"></i></button>
                   </div>
                 </div>
                 <div class="box-body">
@@ -183,12 +183,12 @@
               </div><!-- /.box -->
 
 
-              <div class="box box-success">
+              <div class="box box-success" id="conversion-viz-div">
                 <div class="box-header with-border">
                   <h3 class="box-title">Conversion</h3>
                   <div class="box-tools pull-right">
                     <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('conversion-viz-div')"><i class="fa fa-times"></i></button>
                   </div>
                 </div>
                 <div class="box-body">
