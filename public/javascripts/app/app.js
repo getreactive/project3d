@@ -532,6 +532,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
     $scope.hiddenVizDivArray = [];
     $scope.hideVizDiv = function(selectedTitle) {
 
+        console.log("hideVizDiv -->",selectedTitle);
         var id = "#"+selectedTitle;
         $scope.hiddenVizDivArray.push(selectedTitle);
         $scope.hiddenVizDivArray = _.uniq($scope.hiddenVizDivArray);
@@ -539,8 +540,27 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
 
     }
 
+    $scope.vizToggel = function(selectedTitle){
+
+       console.log("vizToggel -->",selectedTitle);
+       var id= selectedTitle.toLowerCase()+"-viz-div";
+       var _id = "#"+id
+       if(_.indexOf($scope.hiddenVizDivArray,id) != -1){
+
+            $(_id).show();
+            $scope.hiddenVizDivArray = _.without($scope.hiddenVizDivArray,id)
+
+       }else {
+
+            $(_id).hide();
+            $scope.hiddenVizDivArray.push(id);
+            $scope.hiddenVizDivArray = _.uniq($scope.hiddenVizDivArray);
+       }
+
+       console.log(" vizToggel $scope.hiddenVizDivArray -->",$scope.hiddenVizDivArray)
 
 
+    };
 
     $scope.getClassForMetricsDropDown= function(selectedTitle){
 

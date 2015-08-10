@@ -111,7 +111,7 @@
                             {{metric.title}}
                           </div>
                           <div class="col-xs-7 btn-group ">
-                            <button class="btn btn-default"><i class="fa fa-line-chart"></i></button>
+                            <button id="viz-{{metric.title}}" class="btn btn-default" ng-click="vizToggel(metric.title)"><i class="fa fa-line-chart"></i></button>
                             <button id="stats-{{metric.title}}" ng-class="getClassForMetricsDropDown(metric.title)" ng-click="statsToggel(metric.title)"><i class="fa fa-table"></i></button>
                           </div>
                         </div>
