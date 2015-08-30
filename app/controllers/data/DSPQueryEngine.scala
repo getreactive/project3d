@@ -1,11 +1,13 @@
 package controllers.data
 
+import java.io.File
 import java.sql.{ResultSet, SQLException}
 import java.util.Random
 
 import org.h2.api.Aggregate
 
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created by rahul on 02/07/15.
@@ -24,21 +26,20 @@ object DSPQueryEngine {
 
     // def getGlobalBrowserStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val d = getGlobalBrowserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
-    val e = getGlobalDeviceStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
-    val f = getGlobalSiteStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
-    val g = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
-    val h = getGlobalCountryStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
-    val i = getGlobalAdvertiserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
-    val j = getGlobalCampaignStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+   // val d = getGlobalBrowserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+   // val e = getGlobalDeviceStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+   // val f = getGlobalSiteStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+   // val g = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+   // val h = getGlobalCountryStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+   // val i = getGlobalAdvertiserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+   // val j = getGlobalCampaignStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    val k =getCurrentDataDownload("",Array("HK"),Array("IE"),Array(),Array(),Array(),Array(),Array("1433117400","1435708800"),Array("impression","click","conversion"))
+
    /*  val d = getGlobalBrowserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
      val e = getGlobalSiteStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
      val f = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))*/
-    println(d)
-    println(e)
-    println(f)
-    println(g)
-    println(h)
+    println(k)
+
   //  println(b)
   //  println(c)
 /*    println(d)
@@ -85,7 +86,7 @@ object DSPQueryEngine {
 
   def getTimeRangeString(name:String,data:Array[String]): String = {
 
-    println("CartMan "+data(0)+" "+data(1))
+    //println("CartMan "+data(0)+" "+data(1))
     var finalqueryStr = ""
     var _starttime = ""
     var _endtime =""
@@ -94,14 +95,14 @@ object DSPQueryEngine {
       _starttime = data(0)
       _endtime = data(1)
       finalqueryStr = " timestamp>="+_starttime+" and timestamp<="+_endtime+" "
-      println("In if statement "+finalqueryStr)
+      //println("In if statement "+finalqueryStr)
     }else {
       _starttime = globalstarttime
       _endtime = globalendtime
       finalqueryStr = " timestamp>="+_starttime+" and timestamp<="+_endtime+" "
-      println("In else statement "+finalqueryStr)
+      //println("In else statement "+finalqueryStr)
     }
-    println("Outside "+finalqueryStr)
+    //println("Outside "+finalqueryStr)
     finalqueryStr
   }
 
@@ -131,7 +132,7 @@ object DSPQueryEngine {
         str = str +" ("+e+") and "
 
       }
-      println(str)
+      //println(str)
       str = str.dropRight(4)
     queryParam = " where "+timerangeStr+" and "+str //_tmp.mkString(" and ")
     }else{
@@ -192,7 +193,7 @@ object DSPQueryEngine {
     var t2 = _timerange(1).toLong
 
     var diff = t2 - t1;
-    println("GOGOGGO--> "+diff)
+    //println("GOGOGGO--> "+diff)
 
     var queryString = ""
     if(diff>=96400){
@@ -200,7 +201,7 @@ object DSPQueryEngine {
     }else {
       queryString = "select timestamp,day,sum(impressioncount) as impression from demofinal " + whereclouse + " group by timestamp"
     }
-    println("###### "+queryString)
+    //println("###### "+queryString)
     //SELECT date,sum(revenue) as revenue from finaldemo where country='IN' and device='PC' and browser='IE' group by date;
 
     val rs = stmt.executeQuery(queryString)
@@ -298,6 +299,16 @@ object DSPQueryEngine {
 
     returnData
   };
+
+  def getDataDownloadFinalResult(rs: ResultSet)={
+
+    while(rs.next()) {
+
+
+
+    }
+
+  }
 
 
   def getStatsFinalResult(selectedColumn: String,rs: ResultSet) = {
@@ -404,10 +415,11 @@ object DSPQueryEngine {
       rs = stmt.executeQuery("select browser from demofinal " + whereclouse + " group by browser")
     }else {
        rs = stmt.executeQuery("select browser, " + aggMetricsList + " from demofinal " + whereclouse + " group by browser")
+      println("select browser, " + aggMetricsList + " from demofinal " + whereclouse + " group by browser")
     }
     returnData = getStatsFinalResult("browser",rs)
 
-    println("getGlobalBrowserStats returnData--> "+returnData)
+    //println("getGlobalBrowserStats returnData--> "+returnData)
     connection.close()
     returnData
   }
@@ -450,7 +462,7 @@ object DSPQueryEngine {
     }
     returnData = getStatsFinalResult("device",rs)
 
-    println("getGlobalDeviceStats returnData--> "+returnData)
+    //println("getGlobalDeviceStats returnData--> "+returnData)
 
     connection.close()
     returnData
@@ -465,7 +477,7 @@ object DSPQueryEngine {
     var rs:ResultSet = null
     //select country,count(country) from demofinal group by country;
     val query = "select "+dimention+" as name ,count("+dimention+") as value from demofinal  group by "+dimention;
-    println("Bla Bla "+query);
+    //println("Bla Bla "+query);
     rs = stmt.executeQuery(query);
     while (rs.next()) {
       val name = rs.getString("name")
@@ -517,7 +529,7 @@ object DSPQueryEngine {
     }
     returnData = getStatsFinalResult("country",rs)
 
-    println("getGlobalCountryStats returnData--> "+returnData)
+    //println("getGlobalCountryStats returnData--> "+returnData)
 
     connection.close()
 
@@ -559,7 +571,7 @@ object DSPQueryEngine {
     }
     returnData = getStatsFinalResult("site",rs)
 
-    println("getGlobalSiteStats returnData--> "+returnData)
+    //println("getGlobalSiteStats returnData--> "+returnData)
 
     connection.close()
 
@@ -600,7 +612,7 @@ object DSPQueryEngine {
       rs = stmt.executeQuery("select campaign, " + aggMetricsList + " from demofinal " + whereclouse + " group by campaign")
     }
     returnData = getStatsFinalResult("campaign",rs)
-    println("getGlobalCampaignStats returnData--> "+returnData)
+    //println("getGlobalCampaignStats returnData--> "+returnData)
     connection.close()
 
     returnData
@@ -808,6 +820,73 @@ object DSPQueryEngine {
     connection.close()
 
     returnData
+  }
+
+  def getCurrentDataDownload(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):String ={
+
+    /*var returnData = mutable.ArrayBuffer[Map[String,String]]()*/
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _aggregate = aggregate
+    var _countryCode = countryCode
+    val _browser = browser
+    val _device = device
+    val _site = site
+    val _campaign = campaign
+    val _creative = creative
+    val _timerange = timerange
+    if(_aggregate==null && _countryCode==null){
+      _aggregate = "count"
+    }else{
+      _aggregate = aggregate
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
+
+    var rs:ResultSet = null
+
+    var query = "select country, browser, device, site, creative, campaign, " +
+      " sum(impressioncount) as impressioncount,sum(clickcount) as clickcount,sum(conversioncount) as conversioncount" +
+      " from demofinal " + whereclouse + " group by country, browser, device, site, creative, campaign";
+
+    println("Query -->"+query);
+
+      rs = stmt.executeQuery("select country, browser, device, site, creative, campaign, " +
+        " sum(impressioncount) as impressioncount,sum(clickcount) as clickcount,sum(conversioncount) as conversioncount" +
+        " from demofinal " + whereclouse + " group by country, browser, device, site, creative, campaign")
+
+    //var returnData = getDataDownloadFinalResult(rs)
+    var header = "country,browser,device,site,creative,campaign,impression,click,conversion\n";
+    var str =""
+    //var listdata = Seq()
+
+    var finalcsvdata = List[List[String]]()
+
+    while (rs.next()) {
+      var listdata = new ListBuffer[String]()
+      listdata += rs.getString("country")
+      listdata += rs.getString("browser")
+      listdata += rs.getString("device")
+      listdata += rs.getString("site")
+      listdata += rs.getString("creative")
+      listdata += rs.getString("campaign")
+      listdata += rs.getString("impressioncount")
+      listdata += rs.getString("clickcount")
+      listdata += rs.getString("conversioncount")
+     // finalcsvdata :::= listdata
+     str = str + rs.getString("country") +","+ rs.getString("browser") +","+ rs.getString("device") +","+ rs.getString("site") +","+ rs.getString("creative")+","+ rs.getString("campaign")+","+ rs.getString("impressioncount")+","+ rs.getString("clickcount")+","+ rs.getString("conversioncount")+"\n"
+
+    }
+
+    var finaldata = header+str
+
+    println("List data "+finalcsvdata)
+
+    connection.close()
+
+    finaldata
+
   }
 
 

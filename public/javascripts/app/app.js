@@ -8,7 +8,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
     $scope.selectCounter = {};
     $scope.graphTemp = [];
     $scope.tableTemp = [];
-
+    $scope.dataDownload = {};
     $scope.multiselectCountry = [];
     $scope.multiselectSite = [];
     $scope.multiselectBrowser = [];
@@ -154,6 +154,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
 
         var req = $scope.paramObj;
 
+        $scope.dataDownload = req;
         localStorageService.set("centraldashboardobj",null);
 
         console.log("Init function --> ",req);
@@ -545,16 +546,19 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
        console.log("vizToggel -->",selectedTitle);
        var id= selectedTitle.toLowerCase()+"-viz-div";
        var _id = "#"+id
-       if(_.indexOf($scope.hiddenVizDivArray,id) != -1){
 
+       if(_.indexOf($scope.hiddenVizDivArray,id) != -1){
             $(_id).show();
             $scope.hiddenVizDivArray = _.without($scope.hiddenVizDivArray,id)
 
+            console.log("#viz-"+selectedTitle);
+            $("#viz-"+selectedTitle).addClass("btn-clicked");
        }else {
 
             $(_id).hide();
             $scope.hiddenVizDivArray.push(id);
             $scope.hiddenVizDivArray = _.uniq($scope.hiddenVizDivArray);
+            $("#viz-"+selectedTitle).removeClass("btn-clicked")
        }
 
        console.log(" vizToggel $scope.hiddenVizDivArray -->",$scope.hiddenVizDivArray)
@@ -1069,8 +1073,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
 
          }).error(function(){
          });
-
-
      };
      $scope.callDSPDeviceStats = function(parmdata){
 
@@ -1284,6 +1286,42 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
     };
 
 
+    $scope.dashboardDataDownload = function() {
+
+        console.log($scope.dataDownload);
+        var _paramdata = $scope.dataDownload;
+        //datadownload
+                _paramdata.metrics="count";
+                var req = {
+                    method: 'POST',
+                    url: '/datadownload',
+                    headers: {
+                        'Content-Type': 'text/json'
+                    },
+                    data: _paramdata
+                };
+
+                $http(req).success(function(data){
+
+                    console.log("download data ",data);
+                   // var csvString = data.join("\n")
+                   var csvString = data;
+                   var a = document.createElement('a');
+                   a.href     = 'data:attachment/csv,' + csvString;
+                   a.target   ='_blank';
+                   a.download = encodeURIComponent(csvString); ;
+                   //a.innerHTML = "Click me to download the file.";
+                   a.innerHTML = "Click me to download the file.";
+                   document.body.appendChild(a);
+
+                }).error(function(){
+                });
+
+
+
+
+
+    };
 
     $scope.callClickStats = function(parmdata){
 
@@ -1337,7 +1375,7 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
 
     $scope.updateStats = function(param) {
         var req = param;
-
+        $scope.dataDownload = param;
 
         $scope.callClickStats(req);
         $scope.callConversionStats(req);

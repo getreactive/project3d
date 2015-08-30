@@ -1,0 +1,241 @@
+@main("Welcome to Play") {
+<section ng-app="retailApp">
+<header class="main-header">
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-fixed-top navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/demo" class="navbar-brand">
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><img src='@routes.Assets.versioned("images/Sigmoid-logo.png")' style="height: 42px;padding-bottom: 5px;"></span>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+</header>
+<section id="main-section" ng-controller="retailAppCtrl" ng-init="init()">
+
+    <div><!-- Main content -->
+        <section class="content">
+            <!-- Info boxes -->
+            <div class="row main_header ">
+                <div class="row">
+                    @*            <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">Dashboard</li>
+                </ol>*@
+                    &nbsp;
+                </div>
+                <div class="clearfix visible-sm-block"></div>
+            </div><!-- /.row -->
+
+            <div class="row">
+
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <center>
+                            <div class="info-box-number-footer">Total Stores</div>
+                <span class="info-box-number">
+              {{totalstorecount}}
+                </span>
+
+                        </center>
+                    </div>
+
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <center>
+                            <div class="info-box-number-footer">Total Quantity</div>
+              <span class="info-box-number">
+            {{totalitemquantity}}
+                </span>
+
+                        </center>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="info-box">
+
+                        <center>
+                            <div class="info-box-number-footer">Total Sales</div>
+              <span class="info-box-number">
+            ${{totalsales}}
+                </span>
+                        </center>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" tagholder row">
+                @* <h5>Selected Filters </h5>*@
+                <br>
+                <div class="panel tags" ng-repeat="tag in parentTag track by $index"><b>{{tag}}</b>
+                    <button class=" btn-warning " ng-click="closeTag(tag)"><span class="glyphicon glyphicon-remove"></span>
+                    </button></div>
+            </div>
+
+            <div class="time-metrics-filter row">
+                <!-- Timestamp filtering Start //-->
+                <div class="col-md-6">
+
+                    <div id="reportrange" class="selectbox pull-right" style="background: #fff; cursor: pointer;
+                                                    padding: 5px 10px; border: 1px solid #ccc">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        <span></span> <b class="caret"></b>
+                    </div>
+                </div>
+                <!-- Timestamp filtering End //-->
+                <!-- Metrics filtering Start //-->
+                <div class="col-md-6">
+                    <div class="pull-right">
+                        <ul class="options nav nav-pills">
+                            <li class="dropdown">
+                                <a href="javascript:void(0)" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                                   style="padding-top: 2px;padding-bottom: 4px;">Metrics<span class="caret"></span></a>
+                                <ul class="dropdown-menu metrics-dropdown">
+                                    <li ng-repeat="metric in graphDataArr">
+                                        <div class="row metricWrap">
+                                            <div class="col-xs-5">
+                                                {{metric.title}}
+                                            </div>
+                                            <div class="col-xs-7 btn-group ">
+                                                <button id="viz-{{metric.title}}" class="btn btn-default" ng-click="vizToggel(metric.title)"><i class="fa fa-line-chart"></i></button>
+                                                <button id="stats-{{metric.title}}" ng-class="getClassForMetricsDropDown(metric.title)" ng-click="statsToggel(metric.title)"><i class="fa fa-table"></i></button>
+                                            </div>
+                                        </div>
+                                        <hr class="metric-division">
+                                    </li>
+                                    <li>
+                                        <div class="row metricWrap">
+                                            <div class="col-xs-5">
+                                                All
+                                            </div>
+                                            <div class="col-xs-7 btn-group ">
+                                                <button id="viz-All" class="btn btn-default" ng-click="vizToggel('All')"><i class="fa fa-line-chart"></i></button>
+                                                <button id="stats-All" class="btn btn-stats btn-default" ng-click="statsToggel('All')"><i class="fa fa-table"></i></button>
+                                            </div>
+                                        </div>
+                                        <hr class="metric-division">
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="datadownload" ng-click="dashboardDataDownload()" role="presentation"><a class="btn btn-default" href="javascript:void(0)" style="
+                  padding-top: 2px;
+                  padding-bottom: 4px;
+                  ">Download</a></li>
+                        </ul>
+                    </div>
+                    @*<br>*@
+                </div>
+                <!-- Metrics filtering End //-->
+            </div>
+            <!-- Main row -->
+            <div class="row" ng-init="getLayoutTemplate()">
+                <!-- Left Chart Section -->
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="metric_head col-md-3">
+                            @* <h2>Metrics</h2>*@
+                        </div>
+                    </div>
+                    <div class="row" id="viz-place-holder" >
+
+                        <div class="box box-success" id="impression-viz-div">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Impression</h3>
+                                <div class="box-tools pull-right">
+                                    <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
+                                    <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('impression-viz-div')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <div id="conversion" height="60"></div>
+                                </div>
+                            </div>
+                        </div><!-- /.box -->
+
+                        <div class="box box-success" id="click-viz-div">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Click</h3>
+                                <div class="box-tools pull-right">
+                                    <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
+                                    <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('click-viz-div')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <div id="clickcount" height="60"></div>
+                                </div>
+                            </div>
+                        </div><!-- /.box -->
+
+
+                        <div class="box box-success" id="conversion-viz-div">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Conversion</h3>
+                                <div class="box-tools pull-right">
+                                    <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
+                                    <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('conversion-viz-div')"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <div id="impressioncount" height="60"></div>
+                                </div>
+                            </div>
+                        </div><!-- /.box -->
+                    </div>
+                </div><!-- /.col -->
+
+                <div class="col-md-6">
+                    @*<h2>Dimensions</h2>*@
+                    <div class="row" id="table-place-holder" >
+                        <div class="col-md-6" ng-repeat="table in tableDataArr"
+                             ng-include="'@routes.Assets.versioned("templates/tableTemplate.html")'">
+                    </div>
+                </div>
+            </div><!-- /.col -->
+    </div><!-- /.row -->
+
+
+    <div class="row">
+        <div class="col-md-12" id="parking-house">
+
+        </div>
+    </div>
+</section><!-- /.content -->
+    </div>
+
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>&copy;&nbsp;Sigmoid</b>&nbsp; 1.0&nbsp;&nbsp;
+        </div>
+    </footer>
+
+    <!-- Templates -->
+
+    <script type="text/ng-template" id="firstDialogId">
+        <div class="ngdialog-message">
+
+            <h1>{{multiselectdialogdata}}</h1>
+        </div>
+    </script>
+
+</section>
+</section>
+
+}

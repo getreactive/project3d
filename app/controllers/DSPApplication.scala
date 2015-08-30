@@ -1,5 +1,7 @@
 package controllers
 
+import java.io.File
+
 import akka.actor.{PoisonPill, ActorRef, Actor, Props}
 import akka.util.Timeout
 import scala.concurrent.duration._
@@ -356,7 +358,6 @@ class DSPApplication extends Controller{
     )
   };
 
-
   def getImpressionAction = Action(BodyParsers.parse.json) { request =>
 
     val requestParamResult = request.body.validate[DSPRequestParam]
@@ -426,4 +427,32 @@ class DSPApplication extends Controller{
       }
     )
   };
+
+  def downloadDashboardData = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[DSPRequestStatsParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+        val _metrics = requestparam.metrics.toString
+        val _browser = requestparam.browser.toList.toArray
+        val _country = requestparam.country.toList.toArray
+        val _device  = requestparam.device.toList.toArray
+        val _site = requestparam.site.toList.toArray
+        val _campaign = requestparam.campaign.toList.toArray
+        val _creative = requestparam.creative.toList.toArray
+        val _timerange = requestparam.timerange.toList.toArray
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+        val currentValue = getCurrentDataDownload(_metrics,_country,_browser,_device,_site,_campaign,_creative,_timerange,_argmetrics)
+        var myFile = new File(currentValue)
+        Ok.sendFile(myFile)
+        //Ok(currentValue)
+      }
+    )
+  };
+
+
+
 }
