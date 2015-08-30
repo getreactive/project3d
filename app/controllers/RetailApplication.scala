@@ -59,6 +59,63 @@ class RetailApplication extends Controller {
       })
   }
 
+  def getCategoryStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RetailRequestParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        val _state = requestparam.state.toList.toArray
+        val _store = requestparam.store.toList.toArray
+        val _category = requestparam.category.toList.toArray
+        val _timerange = requestparam.timerange.toList.toArray
+
+        val finalResult = getGlobalCategoryStats(_state,_store,_category,_timerange)
+        Ok(Json.toJson(finalResult))
+      })
+  }
+
+  def getTotalSalesStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RetailRequestParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        val _state = requestparam.state.toList.toArray
+        val _store = requestparam.store.toList.toArray
+        val _category = requestparam.category.toList.toArray
+        val _timerange = requestparam.timerange.toList.toArray
+
+        val finalResult = getTotalSalesStats(_state,_store,_category,_timerange)
+        Ok(Json.toJson(finalResult))
+      })
+  }
+
+  def getTotalQuantityStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RetailRequestParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        val _state = requestparam.state.toList.toArray
+        val _store = requestparam.store.toList.toArray
+        val _category = requestparam.category.toList.toArray
+        val _timerange = requestparam.timerange.toList.toArray
+
+        val finalResult = getTotalQuantityStats(_state,_store,_category,_timerange)
+        Ok(Json.toJson(finalResult))
+      })
+  }
+
 
 
 }

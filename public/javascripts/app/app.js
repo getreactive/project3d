@@ -137,7 +137,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
             }
         }, function(start, end, label) {
 
-
             var startDate = new Date(start.toISOString());
             var endDate = new Date(end.toISOString())
            // console.log("Start--> ", startDate.getTime()/1000);

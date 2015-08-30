@@ -153,9 +153,9 @@
                     </div>
                     <div class="row" id="viz-place-holder" >
 
-                        <div class="box box-success" id="impression-viz-div">
+                        <div class="box box-success" id="state-viz-div">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Impression</h3>
+                                <h3 class="box-title">Sales by State</h3>
                                 <div class="box-tools pull-right">
                                     <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
                                     <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('impression-viz-div')"><i class="fa fa-times"></i></button>
@@ -163,14 +163,14 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <div id="conversion" height="60"></div>
+                                    <div id="sale-by-state" height="60"></div>
                                 </div>
                             </div>
                         </div><!-- /.box -->
 
-                        <div class="box box-success" id="click-viz-div">
+                        <div class="box box-success" id="quantity-viz-div">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Click</h3>
+                                <h3 class="box-title">Total Quantity Sale</h3>
                                 <div class="box-tools pull-right">
                                     <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
                                     <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('click-viz-div')"><i class="fa fa-times"></i></button>
@@ -178,23 +178,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <div id="clickcount" height="60"></div>
-                                </div>
-                            </div>
-                        </div><!-- /.box -->
-
-
-                        <div class="box box-success" id="conversion-viz-div">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Conversion</h3>
-                                <div class="box-tools pull-right">
-                                    <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
-                                    <button class="btn btn-box-tool" data-widget="remove" ng-click="hideVizDiv('conversion-viz-div')"><i class="fa fa-times"></i></button>
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="chart">
-                                    <div id="impressioncount" height="60"></div>
+                                    <div id="quantity-sale" height="60"></div>
                                 </div>
                             </div>
                         </div><!-- /.box -->
@@ -205,7 +189,7 @@
                     @*<h2>Dimensions</h2>*@
                     <div class="row" id="table-place-holder" >
                         <div class="col-md-6" ng-repeat="table in tableDataArr"
-                             ng-include="'@routes.Assets.versioned("templates/tableTemplate.html")'">
+                             ng-include="'@routes.Assets.versioned("templates/retailTableTemplate.html")'">
                     </div>
                 </div>
             </div><!-- /.col -->
