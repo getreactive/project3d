@@ -14,7 +14,15 @@ case class RetailRequestParam(state: Array[String],
                            timerange: Array[String],
                            argmetrics: Array[String])
 
+case class MultiSelectParam(id:String,
+                   name: String)
+
 class RetailApplication extends Controller {
+
+  implicit val DSPParaReads: Reads[MultiSelectParam] = (
+    (JsPath \ "id").read[String] and
+      (JsPath \ "name").read[String]
+    )(MultiSelectParam.apply _)
 
   implicit val RetailRequestParamReads: Reads[RetailRequestParam] = (
     (JsPath \ "state").read[Array[String]] and
@@ -124,6 +132,22 @@ class RetailApplication extends Controller {
         val finalResult = getTotalQuantityStats(_state,_store,_category,_timerange)
         Ok(Json.toJson(finalResult))
       })
+  }
+
+  def getMultiSelectDialogData = Action(BodyParsers.parse.json) { request =>
+    val requestParamResult = request.body.validate[MultiSelectParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+        val id = requestparam.id.toString
+        val name = requestparam.name.toString
+
+        var currentValue = getGlobaDataDialog(name)
+        Ok(Json.toJson(currentValue.toSeq))
+      }
+    )
   }
 
 

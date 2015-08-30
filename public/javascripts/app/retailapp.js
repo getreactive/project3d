@@ -11,7 +11,8 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
     $scope.selectedstate = [];
     $scope.selectedcategory = [];
     $scope.selectedmetrics = ['sales'];
-
+    $scope.currentStats = null;
+    $scope.currentslectedDimentionList = [];
     $scope.paramObj = {
             "timerange":[],
             "state":[],
@@ -618,11 +619,121 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
     };
 
-  $scope.mutliselect = function(tabletitle){
+    $scope.multiselectenable = false;
 
-        console.log("Table Title selected ", tabletitle);
+    $scope.mutliselect = function(data) {
 
-  }
+            var _paramdata = {};
+            _paramdata.id=data.toLowerCase();
+            _paramdata.name=data.toLowerCase();
+            $scope.currentStats = data.toLowerCase();
+
+            var req = {
+                        method: 'POST',
+                        url: '/retail/getmultiselectdata',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: _paramdata
+                    };
+
+                    $http(req).success(function(data){
+                    $scope.multiselectdialogdata = data;
+                        //console.log("getmultiselectdata ",$scope.multiselectdialogdata);
+
+                        ngDialog.openConfirm({
+                            template: 'assets/templates/dialogTemplate.html',
+                            className: 'ngdialog-theme-plain',
+                            scope: $scope
+                        });
+
+                        //console.log($scope.user.select)
+
+                    }).error(function(){
+                    });
+
+    };
+
+    $scope.$on('ngDialog.opened', function (event, $dialog) {
+                    $dialog.find('.ngdialog-content').css('width', '400px');
+
+        });
+
+
+        $scope.getMultiFilterDataFromDB = function() {
+
+            $scope.currentslectedDimentionList=[];
+            // Tag entry
+            console.log("$scope.currentStats ",$scope.currentStats)
+            $scope.parentTag.push($scope.currentStats)
+            $scope.parentTag=_.uniq($scope.parentTag);
+            console.log("$scope.paramObj -->",$scope.paramObj);
+
+               var _obj = localStorageService.get("centralretaildashboardobj");
+                        if(_obj != null){
+
+                            console.log("in getMultiFilterDataFromDB ",_obj);
+                            $scope.updateStats(_obj);
+                        }
+
+        }
+
+            $scope.getDimentionSelectedValue = function(data,isSelected){
+
+                    var _tmp = $scope.currentStats;
+
+                    console.log(isSelected);
+
+                    if(_tmp == "state"){
+                        if(isSelected == true){
+                        $scope.currentslectedDimentionList.push(data);
+
+                        }else{
+                        $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                        }
+
+                    }else if(_tmp == "category"){
+
+                        if(isSelected == true){
+                                       $scope.currentslectedDimentionList.push(data);
+                                       }else{
+                                       $scope.currentslectedDimentionList = _.without($scope.currentslectedDimentionList,data);
+                                       }
+
+                    }
+
+                    if(localStorageService.get("centralretaildashboardobj") != null){
+
+                        var _obj = localStorageService.get("centralretaildashboardobj");
+
+                        for(var a=0;a<$scope.currentslectedDimentionList.length;a++){
+
+                            _obj[_tmp].push($scope.currentslectedDimentionList[a]);
+
+                            _obj[_tmp] = _.uniq(_obj[_tmp]);
+                        }
+
+                        localStorageService.set("centralretaildashboardobj",_obj);
+                        console.log("_obj",_obj)
+
+                    }else{
+
+                    var _obj = $scope.paramObj;
+                     for(var a=0;a<$scope.currentslectedDimentionList.length;a++){
+
+                                        _obj[_tmp].push($scope.currentslectedDimentionList[a]);
+
+                                        _obj[_tmp] = _.uniq(_obj[_tmp]);
+                                    }
+
+                                    localStorageService.set("centralretaildashboardobj",_obj);
+                                    console.log("_obj",_obj)
+
+
+                    }
+                    console.log("new data-->",$scope.currentslectedDimentionList);
+                }
+
 
   $scope.drawMetricsGraph = function(location,name,data) {
 
