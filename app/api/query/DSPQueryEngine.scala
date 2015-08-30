@@ -1,7 +1,13 @@
 package api.query
 
+import java.io.File
+import java.sql.{ResultSet, SQLException}
 import java.util.Random
+
+import org.h2.api.Aggregate
+
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import api.data.Datasource
 
 /**
@@ -14,19 +20,32 @@ object DSPQueryEngine {
 
   def main(args: Array[String]) {
     //val a = getRevenueByCountry("IN")
-   //     getGlobalTotalRevenue
-     val a =getConversion("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array())
-     val b =getImpression("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array())
-     val c =getClick("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array())
-   /*  val d = getGlobalCampaignStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
-     val e = getGlobalSiteStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
-     val f = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))*/
-    println(a)
-    println(b)
-    println(c)
-/*    println(d)
-    println(e)
-    println(f)*/
+    //     getGlobalTotalRevenue
+    // val a =getConversion("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array())
+    //  val b =getImpression("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array())
+    // val c =getClick("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array())
+
+    // def getGlobalBrowserStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
+
+    // val d = getGlobalBrowserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    // val e = getGlobalDeviceStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    // val f = getGlobalSiteStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    // val g = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    // val h = getGlobalCountryStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    // val i = getGlobalAdvertiserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    // val j = getGlobalCampaignStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"),Array(globalstarttime,globalendtime),Array("impression","click"))
+    val k =getCurrentDataDownload("",Array("HK"),Array("IE"),Array(),Array(),Array(),Array(),Array("1433117400","1435708800"),Array("impression","click","conversion"))
+
+    /*  val d = getGlobalBrowserStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
+      val e = getGlobalSiteStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))
+      val f = getGlobalCreativeStats("",Array("IN","US"),Array("safari","opera","IE"),Array("Connected TV"),Array("fb.com"),Array(),Array("21314"))*/
+    println(k)
+
+    //  println(b)
+    //  println(c)
+    /*    println(d)
+        println(e)
+        println(f)*/
     /*    getGlobalDeviceStats("revenue")
     getGlobalTotalRevenue(Array(),Array(),Array())
     getGlobalTotalRevenue(Array("IN","US"),Array("safari","opera","IE"),Array())
@@ -34,8 +53,8 @@ object DSPQueryEngine {
     getGlobalTotaleCPM(Array("IN","US"),Array("safari","opera","IE"),Array("PC","Mobile"))
     getGlobalTotaleCPM("US","opera","PC")
     println(a)*/
-    getQueryParam(Array("IN","US"),Array("safari","opera","IE"),Array(),Array(),Array(),Array(),Array())
-    getQueryParam(Array(),Array(),Array(),Array(),Array(),Array(),Array())
+    //    getQueryParam(Array("IN","US"),Array("safari","opera","IE"),Array(),Array(),Array(),Array(),Array())
+    //  getQueryParam(Array(),Array(),Array(),Array(),Array(),Array(),Array())
   }
 
 
@@ -65,9 +84,10 @@ object DSPQueryEngine {
 
     finalqueryStr
   }
+
   def getTimeRangeString(name:String,data:Array[String]): String = {
 
-    println("CartMan "+data(0)+" "+data(1))
+    //println("CartMan "+data(0)+" "+data(1))
     var finalqueryStr = ""
     var _starttime = ""
     var _endtime =""
@@ -76,14 +96,14 @@ object DSPQueryEngine {
       _starttime = data(0)
       _endtime = data(1)
       finalqueryStr = " timestamp>="+_starttime+" and timestamp<="+_endtime+" "
-      println("In if statement "+finalqueryStr)
+      //println("In if statement "+finalqueryStr)
     }else {
       _starttime = globalstarttime
       _endtime = globalendtime
       finalqueryStr = " timestamp>="+_starttime+" and timestamp<="+_endtime+" "
-      println("In else statement "+finalqueryStr)
+      //println("In else statement "+finalqueryStr)
     }
-    println("Outside "+finalqueryStr)
+    //println("Outside "+finalqueryStr)
     finalqueryStr
   }
 
@@ -105,13 +125,53 @@ object DSPQueryEngine {
     result ::= campaignStr
     result ::= creativeStr
     val _tmp = result.filter(_.nonEmpty)
-    println("_tmp ",_tmp)
+    // println("_tmp ",_tmp)
     if(_tmp.length != 0){
-    queryParam = " where "+timerangeStr+" and "+_tmp.mkString(" and ")
+      var str = ""
+      _tmp.foreach{ e=>
+        //println(e)
+        str = str +" ("+e+") and "
+
+      }
+      //println(str)
+      str = str.dropRight(4)
+      queryParam = " where "+timerangeStr+" and "+str //_tmp.mkString(" and ")
     }else{
       queryParam=" where "+timerangeStr+" "
     }
     queryParam
+  };
+
+  def getAggMetrics(metrics:Array[String]): String ={
+
+    var result  = List[String]()
+    var queryParam = ""
+
+    //sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue
+
+    if(metrics.length != 0){
+
+      var result  = List[String]()
+      for(item <- metrics){
+        var _tmp = ""
+        if(item=="impression") {
+          _tmp = "value"
+          var _t = item+"count"
+          queryParam = queryParam + "sum("+_t+") as value ,"
+          result ::= queryParam
+        }else{
+          var _t = item+"count"
+          _tmp = item+"value"
+          queryParam = queryParam + "sum("+_t+") as "+_tmp+" ,"
+          result ::= queryParam
+        }
+      }
+
+    } else {
+      queryParam = " "
+    }
+
+    queryParam.dropRight(1)
   }
 
   //Chart : 1
@@ -134,7 +194,7 @@ object DSPQueryEngine {
     var t2 = _timerange(1).toLong
 
     var diff = t2 - t1;
-    println("GOGOGGO--> "+diff)
+    //println("GOGOGGO--> "+diff)
 
     var queryString = ""
     if(diff>=96400){
@@ -142,7 +202,7 @@ object DSPQueryEngine {
     }else {
       queryString = "select timestamp,day,sum(impressioncount) as impression from demofinal " + whereclouse + " group by timestamp"
     }
-    println("###### "+queryString)
+    //println("###### "+queryString)
     //SELECT date,sum(revenue) as revenue from finaldemo where country='IN' and device='PC' and browser='IE' group by date;
 
     val rs = stmt.executeQuery(queryString)
@@ -241,11 +301,95 @@ object DSPQueryEngine {
     returnData
   };
 
+  def getDataDownloadFinalResult(rs: ResultSet)={
+
+    while(rs.next()) {
+
+
+
+    }
+
+  }
+
+
+  def getStatsFinalResult(selectedColumn: String,rs: ResultSet) = {
+    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    while (rs.next()) {
+      // println("Read from DB: " + rs.getString("browser") + "\t"+ rs.getString("value"))
+      try {
+        var rsdata = Map[String,String]()
+        var value = ""
+        var clickvalue = ""
+        var conversionvalue = ""
+        val count = rs.getMetaData.getColumnCount
+        for( index <- 1 to count){
+
+          if (rs.getMetaData.getColumnName(index).equals("value")){
+            value = rs.getString("value")
+            rsdata += "value" -> value
+
+          }
+          if (rs.getMetaData.getColumnName(index).equals("clickvalue")){
+            clickvalue = rs.getString("clickvalue")
+            rsdata += "clickvalue" -> clickvalue
+          }
+          if (rs.getMetaData.getColumnName(index).equals("conversionvalue")){
+            conversionvalue = rs.getString("conversionvalue")
+            rsdata += "conversionvalue" -> conversionvalue
+          }
+          if (rs.getMetaData.getColumnName(index).equals("browser")){
+            val browser = rs.getString("browser")
+            rsdata += "id" -> browser
+            rsdata += "name" -> browser
+          }
+          if (rs.getMetaData.getColumnName(index).equals("site")){
+            val site = rs.getString("site")
+            rsdata += "id" -> site
+            rsdata += "name" -> site
+          }
+          if (rs.getMetaData.getColumnName(index).equals("device")){
+            val device = rs.getString("device")
+            rsdata += "id" -> device
+            rsdata += "name" -> device
+          }
+          if (rs.getMetaData.getColumnName(index).equals("country")){
+            val country = rs.getString("country")
+            rsdata += "id" -> country
+            rsdata += "name" -> country
+          }
+          if (rs.getMetaData.getColumnName(index).equals("creative")){
+            val creative = rs.getString("creative")
+            rsdata += "id" -> creative
+            rsdata += "name" -> creative
+          }
+          if (rs.getMetaData.getColumnName(index).equals("campaign")){
+            val campaign = rs.getString("campaign")
+            rsdata += "id" -> campaign
+            rsdata += "name" -> campaign
+          }
+          if (rs.getMetaData.getColumnName(index).equals("advertiser")){
+            val advertiser = rs.getString("advertiser")
+            rsdata += "id" -> advertiser
+            rsdata += "name" -> advertiser
+          }
+        }
+        //val revenueByCountry = Map("id"->browser,"name"->browser,"value"->value,"clickvalue"->clickvalue,"conversionvalue"->conversionvalue)
+        returnData+=rsdata
+
+      }catch {
+        case e: SQLException => println("oee oee oee")
+      }
+
+    }
+
+    returnData
+  }
 
   // Table : 1
-  def getGlobalBrowserStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalBrowserStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
+
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     var _aggregate = aggregate
@@ -263,29 +407,29 @@ object DSPQueryEngine {
     }
 
     val whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
+    val aggMetricsList = getAggMetrics(aggmetrics)
+    val finalMetricsquery = aggMetricsList//.mkString(" , ")
 
-    println("select browser, count(browser) as value from demofinal "+whereclouse+" group by browser")
-
-    val rs = stmt.executeQuery("select browser, count(browser) as value from demofinal "+whereclouse+" group by browser")
-
-    while (rs.next()) {
-     // println("Read from DB: " + rs.getString("browser") + "\t"+ rs.getString("value"))
-
-      val browser = rs.getString("browser")
-      val value = rs.getString("value")
-      val revenueByCountry = Map("id"->browser,"name"->browser,"value"->value)
-      returnData+=revenueByCountry
+    var rs:ResultSet = null
+    println("select browser, "+aggMetricsList+" from demofinal "+whereclouse+" group by browser")
+    if(aggMetricsList.length == 0){
+      rs = stmt.executeQuery("select browser from demofinal " + whereclouse + " group by browser")
+    }else {
+      rs = stmt.executeQuery("select browser, " + aggMetricsList + " from demofinal " + whereclouse + " group by browser")
+      println("select browser, " + aggMetricsList + " from demofinal " + whereclouse + " group by browser")
     }
+    returnData = getStatsFinalResult("browser",rs)
 
+    //println("getGlobalBrowserStats returnData--> "+returnData)
     connection.close()
     returnData
   }
 
 
   // Table : 2
-  def getGlobalDeviceStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalDeviceStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     var _aggregate = aggregate
@@ -306,15 +450,40 @@ object DSPQueryEngine {
 
     val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select device, count(device) as value from demofinal "+whereclouse+" group by device")
+    val aggMetricsList = getAggMetrics(aggmetrics)
 
-    val rs = stmt.executeQuery("select device, count(device) as value from demofinal "+whereclouse+" group by device")
+    // println("select device, sum(impressioncount) as value, sum(clickcount) as clickvalue, sum(conversioncount) as conversionvalue from demofinal "+whereclouse+" group by device")
 
+    var rs:ResultSet = null
+    println("select device, "+aggMetricsList+" from demofinal "+whereclouse+" group by device")
+    if(aggMetricsList.length == 0){
+      rs = stmt.executeQuery("select device from demofinal " + whereclouse + " group by device")
+    }else {
+      rs = stmt.executeQuery("select device, " + aggMetricsList + " from demofinal " + whereclouse + " group by device")
+    }
+    returnData = getStatsFinalResult("device",rs)
+
+    //println("getGlobalDeviceStats returnData--> "+returnData)
+
+    connection.close()
+    returnData
+  }
+
+
+  def getGlobaDataDialog(dimention: String):mutable.Seq[Map[String,String]]={
+
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var rs:ResultSet = null
+    //select country,count(country) from demofinal group by country;
+    val query = "select "+dimention+" as name ,count("+dimention+") as value from demofinal  group by "+dimention;
+    //println("Bla Bla "+query);
+    rs = stmt.executeQuery(query);
     while (rs.next()) {
-      //println("Read from DB: " + rs.getString("device") + "\t"+ rs.getString("value"))
-      val device = rs.getString("device")
+      val name = rs.getString("name")
       val value = rs.getString("value")
-      val revenueByCountry = Map("id"->device,"name"->device,"value"->value)
+      val revenueByCountry = Map("name"->name,"value"->value)
       returnData+=revenueByCountry
     }
 
@@ -322,10 +491,12 @@ object DSPQueryEngine {
     returnData
   }
 
-  //Table : 3
-  def getGlobalCountryStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+
+  //Table : 3
+  def getGlobalCountryStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
+
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     var _aggregate = aggregate
@@ -346,17 +517,20 @@ object DSPQueryEngine {
 
     val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select country, count(country) as value from demofinal "+whereclouse+" group by country")
+    val aggMetricsList = getAggMetrics(aggmetrics)
 
-    val rs = stmt.executeQuery("select country, count(country) as value from demofinal "+whereclouse+" group by country")
+    //println("select country, count(country) as value from demofinal "+whereclouse+" group by country")
 
-    while (rs.next()) {
-      //println("Read from DB: " + rs.getString("country") + "\t"+ rs.getString("value"))
-      val country = rs.getString("country")
-      val value = rs.getString("value")
-      val revenueByCountry = Map("id"->country,"name"->country,"value"->value)
-      returnData+=revenueByCountry
+    var rs:ResultSet = null
+    println("select country, "+aggMetricsList+" from demofinal "+whereclouse+" group by country")
+    if(aggMetricsList.length == 0){
+      rs = stmt.executeQuery("select country from demofinal " + whereclouse + " group by country")
+    }else {
+      rs = stmt.executeQuery("select country, " + aggMetricsList + " from demofinal " + whereclouse + " group by country")
     }
+    returnData = getStatsFinalResult("country",rs)
+
+    //println("getGlobalCountryStats returnData--> "+returnData)
 
     connection.close()
 
@@ -364,9 +538,9 @@ object DSPQueryEngine {
   }
 
   //Table : 4
-  def getGlobalSiteStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalSiteStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     var _aggregate = aggregate
@@ -387,20 +561,18 @@ object DSPQueryEngine {
 
     val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select site, count(site) as value from demofinal "+whereclouse+" group by site")
+    val aggMetricsList = getAggMetrics(aggmetrics)
 
-    val rs = stmt.executeQuery("select site, count(site) as value from demofinal "+whereclouse+" group by site")
-
-    while (rs.next()) {
-      //println("Read from DB: " + rs.getString("site") + "\t"+ rs.getString("value"))
-      val site = rs.getString("site")
-      val value = rs.getString("value")
-      var randomno = new Random()
-      var aa = value.toInt + randomno.nextInt(10000)
-      var _val = aa.toString
-      val revenueByCountry = Map("id"->site,"name"->site,"value"->_val)
-      returnData+=revenueByCountry
+    var rs:ResultSet = null
+    println("select site, "+aggMetricsList+" from demofinal "+whereclouse+" group by site")
+    if(aggMetricsList.length == 0){
+      rs = stmt.executeQuery("select site from demofinal " + whereclouse + " group by site")
+    }else {
+      rs = stmt.executeQuery("select site, " + aggMetricsList + " from demofinal " + whereclouse + " group by site")
     }
+    returnData = getStatsFinalResult("site",rs)
+
+    //println("getGlobalSiteStats returnData--> "+returnData)
 
     connection.close()
 
@@ -408,9 +580,9 @@ object DSPQueryEngine {
   }
 
   //Table : 5
-  def getGlobalCampaignStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalCampaignStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     var _aggregate = aggregate
@@ -431,27 +603,26 @@ object DSPQueryEngine {
 
     val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
+    val aggMetricsList = getAggMetrics(aggmetrics)
 
-    val rs = stmt.executeQuery("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
-
-    while (rs.next()) {
-      //println("Read from DB: " + rs.getString("campaign") + "\t"+ rs.getString("value"))
-      val campaign = rs.getString("campaign")
-      val value = rs.getString("value")
-      val revenueByCountry = Map("id"->campaign,"name"->campaign,"value"->value)
-      returnData+=revenueByCountry
+    var rs:ResultSet = null
+    println("select campaign, "+aggMetricsList+" from demofinal "+whereclouse+" group by campaign")
+    if(aggMetricsList.length == 0){
+      rs = stmt.executeQuery("select campaign from demofinal " + whereclouse + " group by campaign")
+    }else {
+      rs = stmt.executeQuery("select campaign, " + aggMetricsList + " from demofinal " + whereclouse + " group by campaign")
     }
-
+    returnData = getStatsFinalResult("campaign",rs)
+    //println("getGlobalCampaignStats returnData--> "+returnData)
     connection.close()
 
     returnData
   }
 
   //Table : 6
-  def getGlobalAdvertiserStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalAdvertiserStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     var _aggregate = aggregate
@@ -472,17 +643,18 @@ object DSPQueryEngine {
 
     val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select creative, count(creative) as value from demofinal "+whereclouse+" group by creative")
+    val aggMetricsList = getAggMetrics(aggmetrics)
 
-    val rs = stmt.executeQuery("select creative, count(creative) as value from demofinal "+whereclouse+" group by creative")
-
-    while (rs.next()) {
-      //println("Read from DB: " + rs.getString("creative") + "\t"+ rs.getString("value"))
-      val creative = rs.getString("creative")
-      val value = rs.getString("value")
-      val revenueByCountry = Map("id"->creative,"name"->creative,"value"->value)
-      returnData+=revenueByCountry
+    var rs:ResultSet = null
+    println("select advertiser, "+aggMetricsList+" from demofinal "+whereclouse+" group by advertiser")
+    if(aggMetricsList.length == 0){
+      rs = stmt.executeQuery("select advertiser from demofinal " + whereclouse + " group by advertiser")
+    }else {
+      rs = stmt.executeQuery("select advertiser, " + aggMetricsList + " from demofinal " + whereclouse + " group by advertiser")
     }
+    returnData = getStatsFinalResult("advertiser",rs)
+
+    println("getGlobalAdvertiserStats returnData--> "+returnData)
 
     connection.close()
 
@@ -490,9 +662,9 @@ object DSPQueryEngine {
   }
 
   //Table : 7
-  def getGlobalCreativeStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalCreativeStats(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
-    val returnData = mutable.ArrayBuffer[Map[String,String]]()
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     var _aggregate = aggregate
@@ -512,17 +684,18 @@ object DSPQueryEngine {
 
     val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
 
-    println("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
+    val aggMetricsList = getAggMetrics(aggmetrics)
 
-    val rs = stmt.executeQuery("select campaign, count(campaign) as value from demofinal "+whereclouse+" group by campaign")
-
-    while (rs.next()) {
-      //println("Read from DB: " + rs.getString("campaign") + "\t"+ rs.getString("value"))
-      val campaign = rs.getString("campaign")
-      val value = rs.getString("value")
-      val revenueByCountry = Map("id"->campaign,"name"->campaign,"value"->value)
-      returnData+=revenueByCountry
+    var rs:ResultSet = null
+    println("select creative, "+aggMetricsList+" from demofinal "+whereclouse+" group by creative")
+    if(aggMetricsList.length == 0){
+      rs = stmt.executeQuery("select creative from demofinal " + whereclouse + " group by creative")
+    }else {
+      rs = stmt.executeQuery("select creative, " + aggMetricsList + " from demofinal " + whereclouse + " group by creative")
     }
+    returnData = getStatsFinalResult("creative",rs)
+
+    println("getGlobalCreativeStats returnData--> "+returnData)
 
     connection.close()
 
@@ -598,7 +771,7 @@ object DSPQueryEngine {
     val rs = stmt.executeQuery("select sum(clickcount) as value from demofinal "+whereclouse)
 
     while (rs.next()) {
-     // println("Read from DB: " + rs.getString("value"))
+      // println("Read from DB: " + rs.getString("value"))
       val value = rs.getString("value")
       val revenueByCountry = Map("id"->"clickcount","name"->"clickcount","value"->value)
       returnData+=revenueByCountry
@@ -648,6 +821,73 @@ object DSPQueryEngine {
     connection.close()
 
     returnData
+  }
+
+  def getCurrentDataDownload(aggregate: String,countryCode: Array[String],browser: Array[String],device: Array[String],site: Array[String],campaign: Array[String],creative: Array[String],timerange: Array[String],aggmetrics: Array[String]):String ={
+
+    /*var returnData = mutable.ArrayBuffer[Map[String,String]]()*/
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    var _aggregate = aggregate
+    var _countryCode = countryCode
+    val _browser = browser
+    val _device = device
+    val _site = site
+    val _campaign = campaign
+    val _creative = creative
+    val _timerange = timerange
+    if(_aggregate==null && _countryCode==null){
+      _aggregate = "count"
+    }else{
+      _aggregate = aggregate
+      _countryCode = countryCode
+    }
+
+    val  whereclouse = getQueryParam(_countryCode,_browser,_device,_site,_campaign,_creative,_timerange)
+
+    var rs:ResultSet = null
+
+    var query = "select country, browser, device, site, creative, campaign, " +
+      " sum(impressioncount) as impressioncount,sum(clickcount) as clickcount,sum(conversioncount) as conversioncount" +
+      " from demofinal " + whereclouse + " group by country, browser, device, site, creative, campaign";
+
+    println("Query -->"+query);
+
+    rs = stmt.executeQuery("select country, browser, device, site, creative, campaign, " +
+      " sum(impressioncount) as impressioncount,sum(clickcount) as clickcount,sum(conversioncount) as conversioncount" +
+      " from demofinal " + whereclouse + " group by country, browser, device, site, creative, campaign")
+
+    //var returnData = getDataDownloadFinalResult(rs)
+    var header = "country,browser,device,site,creative,campaign,impression,click,conversion\n";
+    var str =""
+    //var listdata = Seq()
+
+    var finalcsvdata = List[List[String]]()
+
+    while (rs.next()) {
+      var listdata = new ListBuffer[String]()
+      listdata += rs.getString("country")
+      listdata += rs.getString("browser")
+      listdata += rs.getString("device")
+      listdata += rs.getString("site")
+      listdata += rs.getString("creative")
+      listdata += rs.getString("campaign")
+      listdata += rs.getString("impressioncount")
+      listdata += rs.getString("clickcount")
+      listdata += rs.getString("conversioncount")
+      // finalcsvdata :::= listdata
+      str = str + rs.getString("country") +","+ rs.getString("browser") +","+ rs.getString("device") +","+ rs.getString("site") +","+ rs.getString("creative")+","+ rs.getString("campaign")+","+ rs.getString("impressioncount")+","+ rs.getString("clickcount")+","+ rs.getString("conversioncount")+"\n"
+
+    }
+
+    var finaldata = header+str
+
+    println("List data "+finalcsvdata)
+
+    connection.close()
+
+    finaldata
+
   }
 
 

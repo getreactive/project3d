@@ -1380,7 +1380,6 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
         $scope.callConversionStats(req);
         $scope.callImpressionStats(req);
 
-
         $scope.callDSPBrowserStats(req);
         $scope.callDSPDeviceStats(req);
         $scope.callDSPAdvertiserStats(req);
