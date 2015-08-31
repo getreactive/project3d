@@ -11,6 +11,7 @@ import play.api.libs.functional.syntax._
 case class RetailRequestParam(state: Array[String],
                            store: Array[String],
                            category: Array[String],
+                           item: Array[String],
                            timerange: Array[String],
                            argmetrics: Array[String])
 
@@ -28,6 +29,7 @@ class RetailApplication extends Controller {
     (JsPath \ "state").read[Array[String]] and
       (JsPath \ "store").read[Array[String]] and
       (JsPath \ "category").read[Array[String]] and
+      (JsPath \ "item").read[Array[String]] and
       (JsPath \ "timerange").read[Array[String]]and
       (JsPath \ "argmetrics").read[Array[String]]
     )(RetailRequestParam.apply _)
@@ -48,8 +50,9 @@ class RetailApplication extends Controller {
         val _state = requestparam.state.toList.toArray
         val _store = requestparam.store.toList.toArray
         val _category = requestparam.category.toList.toArray
+        val _item = requestparam.item.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
-        val finalResult = getGlobalStats(_state,_store,_category,_timerange)
+        val finalResult = getGlobalStats(_state,_store,_category,_item,_timerange)
         Ok(Json.toJson(finalResult))
   })
   }
@@ -66,10 +69,11 @@ class RetailApplication extends Controller {
         val _state = requestparam.state.toList.toArray
         val _store = requestparam.store.toList.toArray
         val _category = requestparam.category.toList.toArray
+        val _item = requestparam.item.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
         val _argmetrics = requestparam.argmetrics.toList.toArray
 
-        val finalResult = getGlobalStateStats(_state,_store,_category,_timerange,_argmetrics)
+        val finalResult = getGlobalStateStats(_state,_store,_category,_item,_timerange,_argmetrics)
         Ok(Json.toJson(finalResult))
       })
   }
@@ -86,10 +90,11 @@ class RetailApplication extends Controller {
         val _state = requestparam.state.toList.toArray
         val _store = requestparam.store.toList.toArray
         val _category = requestparam.category.toList.toArray
+        val _item = requestparam.item.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
         val _argmetrics = requestparam.argmetrics.toList.toArray
 
-        val finalResult = getGlobalCategoryStats(_state,_store,_category,_timerange,_argmetrics)
+        val finalResult = getGlobalCategoryStats(_state,_store,_category,_item,_timerange,_argmetrics)
         Ok(Json.toJson(finalResult))
       })
   }
@@ -107,10 +112,32 @@ class RetailApplication extends Controller {
         val _state = requestparam.state.toList.toArray
         val _store = requestparam.store.toList.toArray
         val _category = requestparam.category.toList.toArray
+        val _item = requestparam.item.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
         val _argmetrics = requestparam.argmetrics.toList.toArray
 
-        val finalResult = getGlobalStoreStats(_state,_store,_category,_timerange,_argmetrics)
+        val finalResult = getGlobalStoreStats(_state,_store,_category,_item,_timerange,_argmetrics)
+        Ok(Json.toJson(finalResult))
+      })
+  }
+
+  def getItemStatsAction = Action(BodyParsers.parse.json) { request =>
+
+    val requestParamResult = request.body.validate[RetailRequestParam]
+    requestParamResult.fold(
+      errors => {
+        BadRequest(Json.obj("status" ->"KO", "message" -> JsError.toJson(errors)))
+      },
+      requestparam => {
+
+        val _state = requestparam.state.toList.toArray
+        val _store = requestparam.store.toList.toArray
+        val _category = requestparam.category.toList.toArray
+        val _item = requestparam.item.toList.toArray
+        val _timerange = requestparam.timerange.toList.toArray
+        val _argmetrics = requestparam.argmetrics.toList.toArray
+
+        val finalResult = getGlobalItemStats(_state,_store,_category,_item,_timerange,_argmetrics)
         Ok(Json.toJson(finalResult))
       })
   }
@@ -127,10 +154,11 @@ class RetailApplication extends Controller {
         val _state = requestparam.state.toList.toArray
         val _store = requestparam.store.toList.toArray
         val _category = requestparam.category.toList.toArray
+        val _item = requestparam.item.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
         val _argmetrics = requestparam.argmetrics.toList.toArray
 
-        val finalResult = getTotalSalesStats(_state,_store,_category,_timerange)
+        val finalResult = getTotalSalesStats(_state,_store,_category,_item,_timerange)
         Ok(Json.toJson(finalResult))
       })
   }
@@ -147,10 +175,11 @@ class RetailApplication extends Controller {
         val _state = requestparam.state.toList.toArray
         val _store = requestparam.store.toList.toArray
         val _category = requestparam.category.toList.toArray
+        val _item = requestparam.item.toList.toArray
         val _timerange = requestparam.timerange.toList.toArray
         val _argmetrics = requestparam.argmetrics.toList.toArray
 
-        val finalResult = getTotalQuantityStats(_state,_store,_category,_timerange)
+        val finalResult = getTotalQuantityStats(_state,_store,_category,_item,_timerange)
         Ok(Json.toJson(finalResult))
       })
   }

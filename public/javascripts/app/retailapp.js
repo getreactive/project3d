@@ -11,6 +11,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
     $scope.selectedstate = [];
     $scope.selectedcategory = [];
     $scope.selectedstore = [];
+    $scope.selecteditem = [];
     $scope.selectedmetrics = ['sales'];
     $scope.currentStats = null;
     $scope.currentslectedDimentionList = [];
@@ -19,6 +20,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
             "state":[],
             "store":[],
             "category":[],
+            "item":[],
             "argmetrics":['sales']
     };
     $scope.tableDataArr =[{
@@ -37,7 +39,13 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                          "title": "Store",
                          "data": []
 
-                    }];
+                    },
+                     {
+                          "id": "item",
+                          "title": "Item",
+                          "data": []
+
+                     }];
 
 
     $scope.graphDataArr = [
@@ -89,7 +97,8 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                                                 var req = $scope.paramObj;
             $scope.getStateStats(req);
             $scope.getCategoryStats(req);
-
+            $scope.getStoreStats(req);
+            $scope.getItemStats(req);
         }else if(data == "Quantity" && $(id).hasClass("btn-clicked")){
 
                         if($scope.selectedmetrics.length==2 && $("#stats-All").hasClass("btn-clicked")){
@@ -109,6 +118,8 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                                                 var req = $scope.paramObj;
                                                             $scope.getStateStats(req);
                                                             $scope.getCategoryStats(req);
+                                                            $scope.getStoreStats(req);
+                                                            $scope.getItemStats(req);
 
 
 
@@ -119,11 +130,13 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
         $("#stats-Quantity").removeClass("btn-clicked");
         //console.log("Show All Data !!")
         $scope.selectedmetrics = $.unique($scope.selectedmetrics);
-                        $scope.paramObj.argmetrics = $scope.selectedmetrics;
+        $scope.paramObj.argmetrics = $scope.selectedmetrics;
 
-                                            var req = $scope.paramObj;
-                                                $scope.getStateStats(req);
-                                                $scope.getCategoryStats(req);
+        var req = $scope.paramObj;
+        $scope.getStateStats(req);
+        $scope.getCategoryStats(req);
+        $scope.getStoreStats(req);
+        $scope.getItemStats(req);
 
 
         }else {
@@ -150,6 +163,8 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                                                 var req = $scope.paramObj;
                                                        $scope.getStateStats(req);
                                                        $scope.getCategoryStats(req);
+                                                       $scope.getStoreStats(req);
+                                                       $scope.getItemStats(req);
 
         }
 
@@ -265,6 +280,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
         $scope.getStateStats(paramdata);
         $scope.getCategoryStats(paramdata);
         $scope.getStoreStats(paramdata);
+        $scope.getItemStats(paramdata);
         $scope.getTotalSalesStats(paramdata);
         $scope.getTotalQuantityStats(paramdata);
         $scope.datetimecheck();
@@ -282,6 +298,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
             $scope.getStateStats(req);
             $scope.getCategoryStats(req);
             $scope.getStoreStats(req);
+            $scope.getItemStats(req);
             $scope.getTotalSalesStats(req);
             $scope.getTotalQuantityStats(req);
 
@@ -400,6 +417,35 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
             };
 
+            $scope.getItemStats = function(paramdata){
+
+                        var _paramdata = paramdata;
+                        var req = {
+                            method: 'POST',
+                            url: '/retail/getitemstats',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            data: _paramdata
+                        };
+
+                        $http(req).success(function(data){
+
+                            console.log("getItemStats --> ",data)
+
+
+                             $.each($scope.tableDataArr,function(i,v){
+
+                                 if(v.id=="item"){
+                                     v.data=data;
+                                 }
+                             });
+
+                        }).error(function(){
+                        });
+
+                };
+
     $scope.getTotalSalesStats = function(paramdata){
 
                         var _paramdata = paramdata;
@@ -451,8 +497,10 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
         console.log("selected --> ",selected);
 
         if(parent == "state" && selected==true){
-                    var _localobj = localStorageService.get("centralretaildashboardobj")
-                    for(i=0;i<selectedValue.length;i++){
+
+              var _localobj = localStorageService.get("centralretaildashboardobj")
+
+                 for(i=0;i<selectedValue.length;i++){
 
                     $scope.selectedstate.push(selectedValue[i]);
                     if(_localobj != null){
@@ -538,7 +586,35 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                                   }
                                   $scope.selectedstore = _.without($scope.selectedstore,selectedValue)
 
-                                 }else if(parent == "datetime" && selected==true){
+                                 }else if(parent == "item" && selected==true){
+
+                                                                     var _localobj = localStorageService.get("centralretaildashboardobj")
+                                                                                for(i=0;i<selectedValue.length;i++){
+
+                                                                                $scope.selecteditem.push(selectedValue[i])
+                                                                                if(_localobj != null){
+                                                                                _localobj["item"].push(selectedValue[i]);
+                                                                                }
+                                                                                }
+                                                                                $scope.selecteditem = $.unique($scope.selecteditem);
+                                                                                if(_localobj != null){
+                                                                                _localobj["item"] = $.unique(_localobj["item"]);
+                                                                                localStorageService.set("centralretaildashboardobj",_localobj);
+                                                                                }
+                                                                   }else if(parent == "item" && selected==false){
+
+                                                                    var _localobj = localStorageService.get("centralretaildashboardobj")
+                                                                               for(i=0;i<selectedValue.length;i++){
+                                                                   if(_localobj != null){
+                                                                               _localobj["item"]= _.without(_localobj["item"],selectedValue[i]);
+                                                                               }
+                                                                               }
+                                                                               if(_localobj != null){
+                                                                    localStorageService.set("centralretaildashboardobj",_localobj);
+                                                                    }
+                                                                    $scope.selecteditem = _.without($scope.selecteditem,selectedValue)
+
+                                                                   }else if(parent == "datetime" && selected==true){
 
                     var timerange = [];
                     timerange.push($scope.starttime.toString());
@@ -554,6 +630,8 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
                 $scope.paramObj.state = $scope.selectedstate;
                 $scope.paramObj.category = $scope.selectedcategory;
+                $scope.paramObj.store = $scope.selectedstore;
+                $scope.paramObj.item = $scope.selecteditem;
 
                 var timerange = [];
                 timerange.push($scope.starttime.toString());
@@ -600,18 +678,31 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                         var _obj = localStorageService.get("centralretaildashboardobj");
                         _obj.category = [];
                         localStorageService.set("centralretaildashboardobj",_obj);
-        }
+        }if(tag=="store"){
+                     $scope.paramObj.store = [];
+                                 var _obj = localStorageService.get("centralretaildashboardobj");
+                                 _obj.store = [];
+                                 localStorageService.set("centralretaildashboardobj",_obj);
+                 }if(tag=="item"){
+                              $scope.paramObj.item = [];
+                                          var _obj = localStorageService.get("centralretaildashboardobj");
+                                          _obj.item = [];
+                                          localStorageService.set("centralretaildashboardobj",_obj);
+                          }
 
         var _pram = $scope.paramObj;
-
 
         if($scope.parentTag.length == 0){
 
             $scope.selectedstate = [];
             $scope.selectedcategory = [];
+            $scope.selectedstore = [];
+            $scope.selecteditem = [];
 
             $scope.paramObj.state = [];
             $scope.paramObj.category = [];
+            $scope.paramObj.store = [];
+            $scope.paramObj.item = [];
 
             var paramdata = $scope.paramObj;
             localStorageService.set("centralretaildashboardobj",paramdata);

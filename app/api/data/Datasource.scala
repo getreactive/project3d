@@ -30,7 +30,7 @@ object Datasource {
   }
   connectionPool.setDriverClassName("com.mysql.jdbc.Driver")
   connectionPool.setUrl(dbUrl)
-  connectionPool.setInitialSize(3)
+  connectionPool.setInitialSize(6)
 
   def main(args: Array[String]) {
    // println(dbUri.getUserInfo.split(":")(0))

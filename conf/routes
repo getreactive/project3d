@@ -91,6 +91,8 @@ POST       /retail/getmultiselectdata  controllers.RetailApplication.getMultiSel
 
 POST       /retail/getstorestats  controllers.RetailApplication.getStoreStatsAction
 
+POST       /retail/getitemstats  controllers.RetailApplication.getItemStatsAction
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file            controllers.Assets.versioned(path="/public", file: Asset)

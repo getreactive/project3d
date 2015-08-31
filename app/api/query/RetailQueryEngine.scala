@@ -14,15 +14,17 @@ object RetailQueryEngine {
   val globalstarttime = "1433117400"
   val globalendtime = "1435708800"
 
+
+  //Query string
   def giveMeQueryString(name:String,data:Array[String]): String ={
 
     var result  = List[String]()
     var finalqueryStr = ""
     if(data.length != 0){
 
-      for(item <- data){
+      for(currentitem <- data){
 
-        result ::= name+"='"+item+"'"
+        result ::= name+"='"+currentitem+"'"
       }
       finalqueryStr = result.mkString(" or ")
     } else {
@@ -31,6 +33,8 @@ object RetailQueryEngine {
 
     finalqueryStr
   }
+
+  //Time Range
   def getTimeRangeString(name:String,data:Array[String]): String = {
 
     //println("CartMan "+data(0)+" "+data(1))
@@ -53,17 +57,20 @@ object RetailQueryEngine {
     finalqueryStr
   }
 
-  def getQueryParam(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String]):String ={
+  //Query Parameter creator
+  def getQueryParam(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String]):String ={
 
     var queryParam = " "
     val stateStr = giveMeQueryString("state",state)
     val categoryStr = giveMeQueryString("category",category)
     val storeStr = giveMeQueryString("store",store)
+    val itemStr = giveMeQueryString("item",item)
     val timerangeStr = getTimeRangeString("timestamp",timerange)
     var result  = List[String]()
     result ::= stateStr
     result ::= categoryStr
     result ::= storeStr
+    result ::= itemStr
     val _tmp = result.filter(_.nonEmpty)
     if(_tmp.length != 0){
       var str = ""
@@ -113,17 +120,17 @@ object RetailQueryEngine {
   //1. Total Sales by time
   //2. Total Quantity sale by time
 
-  def getTotalSalesStats(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getTotalSalesStats(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
 
     var returnData = mutable.ArrayBuffer[Map[String,String]]()
-
     val connection = Datasource.connectionPool.getConnection
     val stmt = connection.createStatement()
     val _state = state
     val _store = store
     val _category = category
+    val _item = item
     val _timerange = timerange
-    val whereclouse = getQueryParam(_state,_store,_category,_timerange)
+    val whereclouse = getQueryParam(_state,_store,_category,_item,_timerange)
 
     var rs:ResultSet = null
 
@@ -151,7 +158,7 @@ object RetailQueryEngine {
     returnData
   }
 
-  def getTotalQuantityStats(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getTotalQuantityStats(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String]):mutable.Seq[Map[String,String]] ={
 
     var returnData = mutable.ArrayBuffer[Map[String,String]]()
 
@@ -160,8 +167,9 @@ object RetailQueryEngine {
     val _state = state
     val _store = store
     val _category = category
+    val _item = item
     val _timerange = timerange
-    val whereclouse = getQueryParam(_state,_store,_category,_timerange)
+    val whereclouse = getQueryParam(_state,_store,_category,_item,_timerange)
 
     var rs:ResultSet = null
 
@@ -189,7 +197,7 @@ object RetailQueryEngine {
     returnData
   }
 
-  def getGlobalStateStats(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalStateStats(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
     var returnData = mutable.ArrayBuffer[Map[String,String]]()
 
@@ -198,9 +206,10 @@ object RetailQueryEngine {
     val _state = state
     val _store = store
     val _category = category
+    val _item = item
     val _timerange = timerange
     val aggMetricsList = getAggMetrics(aggmetrics)
-    val whereclouse = getQueryParam(_state,_store,_category,_timerange)
+    val whereclouse = getQueryParam(_state,_store,_category,_item,_timerange)
 
     var rs:ResultSet = null
 
@@ -238,14 +247,13 @@ object RetailQueryEngine {
 
       returnData += rsdata
     }
-
     //println("getGlobalBrowserStats returnData--> "+returnData)
     connection.close()
     returnData
   }
 
 
-  def getGlobalStoreStats(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalStoreStats(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
     var returnData = mutable.ArrayBuffer[Map[String,String]]()
 
@@ -254,9 +262,10 @@ object RetailQueryEngine {
     val _state = state
     val _store = store
     val _category = category
+    val _item = item
     val _timerange = timerange
     val aggMetricsList = getAggMetrics(aggmetrics)
-    val whereclouse = getQueryParam(_state,_store,_category,_timerange)
+    val whereclouse = getQueryParam(_state,_store,_category,_item,_timerange)
 
     var rs:ResultSet = null
 
@@ -302,7 +311,7 @@ object RetailQueryEngine {
 
 
 
-  def getGlobalCategoryStats(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
+  def getGlobalCategoryStats(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
 
     var returnData = mutable.ArrayBuffer[Map[String,String]]()
 
@@ -311,10 +320,11 @@ object RetailQueryEngine {
     val _state = state
     val _store = store
     val _category = category
+    val _item = item
     val _timerange = timerange
 
     val aggMetricsList = getAggMetrics(aggmetrics)
-    val whereclouse = getQueryParam(_state,_store,_category,_timerange)
+    val whereclouse = getQueryParam(_state,_store,_category,_item,_timerange)
 
     var rs:ResultSet = null
 
@@ -359,16 +369,75 @@ object RetailQueryEngine {
   }
 
 
+  def getGlobalItemStats(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
+
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
+
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    val _state = state
+    val _store = store
+    val _category = category
+    val _item = item
+    val _timerange = timerange
+
+    val aggMetricsList = getAggMetrics(aggmetrics)
+    val whereclouse = getQueryParam(_state,_store,_category,_item,_timerange)
+
+    var rs:ResultSet = null
+
+    //select state, sum(sales) as sales, sum(quantity) as quentity from finalretail group by state Order by sales DESC;
+
+    println("select item, "+aggMetricsList+" from finalretail "+whereclouse+" group by item Order by sales DESC")
+
+    if(aggMetricsList.length == 0) {
+      rs = stmt.executeQuery("select item from finalretail" + whereclouse + " group by item Order by sales DESC")
+    }else{
+      rs = stmt.executeQuery("select item, " + aggMetricsList + " from finalretail" + whereclouse + " group by item Order by sales DESC")
+    }
+    var rsdata = Map[String,String]()
+
+    var quantity = ""
+    var sales = ""
+    while (rs.next()) {
+
+      val count = rs.getMetaData.getColumnCount
+      val category = rs.getString("item")
+      for( index <- 1 to count) {
+
+        if (rs.getMetaData.getColumnName(index).equals("quantity")) {
+
+          quantity = rs.getString("quantity")
+          rsdata += "quantity" -> quantity
+
+        }
+        if (rs.getMetaData.getColumnName(index).equals("sales")) {
+          sales = rs.getString("sales")
+          rsdata += "sales" -> sales
+        }
+      }
+      rsdata += "name" -> category
+
+      returnData += rsdata
+    }
+
+    //println("getGlobalBrowserStats returnData--> "+returnData)
+    connection.close()
+    returnData
+  }
+
+
  // Global Stats Total Store, Total quantity, Total Sales
-  def getGlobalStats(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String]):Map[String,String] = {
+  def getGlobalStats(state: Array[String],store: Array[String],category: Array[String],item: Array[String],timerange: Array[String]):Map[String,String] = {
 
 
    val _state = state
    val _store = store
    val _category = category
+   val _item = item
    val _timerange = timerange
 
-   val whereclouse = getQueryParam(_state,_store,_category,_timerange)
+   val whereclouse = getQueryParam(_state,_store,_category,_item,_timerange)
     val queryString = "select count(distinct(store)) as stotecount, sum(quantity) as totalquantity, sum(sales) as totalsales from finalretail "+whereclouse;
 
    // val returnData = mutable.ArrayBuffer[Map[String,String]]()
