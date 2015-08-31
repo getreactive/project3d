@@ -58,10 +58,12 @@ object RetailQueryEngine {
     var queryParam = " "
     val stateStr = giveMeQueryString("state",state)
     val categoryStr = giveMeQueryString("category",category)
+    val storeStr = giveMeQueryString("store",store)
     val timerangeStr = getTimeRangeString("timestamp",timerange)
     var result  = List[String]()
     result ::= stateStr
     result ::= categoryStr
+    result ::= storeStr
     val _tmp = result.filter(_.nonEmpty)
     if(_tmp.length != 0){
       var str = ""
@@ -219,6 +221,62 @@ object RetailQueryEngine {
 
       val count = rs.getMetaData.getColumnCount
       val state = rs.getString("state")
+      for( index <- 1 to count) {
+
+        if (rs.getMetaData.getColumnName(index).equals("quantity")) {
+
+          quantity = rs.getString("quantity")
+          rsdata += "quantity" -> quantity
+
+        }
+        if (rs.getMetaData.getColumnName(index).equals("sales")) {
+          sales = rs.getString("sales")
+          rsdata += "sales" -> sales
+        }
+      }
+      rsdata += "name" -> state
+
+      returnData += rsdata
+    }
+
+    //println("getGlobalBrowserStats returnData--> "+returnData)
+    connection.close()
+    returnData
+  }
+
+
+  def getGlobalStoreStats(state: Array[String],store: Array[String],category: Array[String],timerange: Array[String],aggmetrics: Array[String]):mutable.Seq[Map[String,String]] ={
+
+    var returnData = mutable.ArrayBuffer[Map[String,String]]()
+
+    val connection = Datasource.connectionPool.getConnection
+    val stmt = connection.createStatement()
+    val _state = state
+    val _store = store
+    val _category = category
+    val _timerange = timerange
+    val aggMetricsList = getAggMetrics(aggmetrics)
+    val whereclouse = getQueryParam(_state,_store,_category,_timerange)
+
+    var rs:ResultSet = null
+
+    //select state, sum(sales) as sales, sum(quantity) as quentity from finalretail group by state Order by sales DESC;
+
+    println("select store, "+aggMetricsList+" from finalretail "+whereclouse+" group by store Order by sales DESC")
+
+    if(aggMetricsList.length == 0) {
+      rs = stmt.executeQuery("select store from finalretail" + whereclouse + " group by store Order by sales DESC")
+    }else{
+      rs = stmt.executeQuery("select store, " + aggMetricsList + " from finalretail" + whereclouse + " group by store Order by sales DESC")
+
+    }
+    var rsdata = Map[String,String]()
+    var quantity = ""
+    var sales = ""
+    while (rs.next()) {
+
+      val count = rs.getMetaData.getColumnCount
+      val state = rs.getString("store")
       for( index <- 1 to count) {
 
         if (rs.getMetaData.getColumnName(index).equals("quantity")) {

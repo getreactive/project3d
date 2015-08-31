@@ -10,6 +10,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
     $scope.selectCounter = {};
     $scope.selectedstate = [];
     $scope.selectedcategory = [];
+    $scope.selectedstore = [];
     $scope.selectedmetrics = ['sales'];
     $scope.currentStats = null;
     $scope.currentslectedDimentionList = [];
@@ -29,6 +30,12 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                         "id": "category",
                         "title": "Category",
                         "data": []
+
+                    },
+                    {
+                         "id": "store",
+                         "title": "Store",
+                         "data": []
 
                     }];
 
@@ -185,8 +192,6 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
         };
 
-
-
      $scope.startDate = new Date(1433117400000);
      $scope.endDate = new Date(1435708800000);//null;//
      $scope.starttime = "1433117400";
@@ -259,6 +264,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
         $scope.getGlobalStats(paramdata);
         $scope.getStateStats(paramdata);
         $scope.getCategoryStats(paramdata);
+        $scope.getStoreStats(paramdata);
         $scope.getTotalSalesStats(paramdata);
         $scope.getTotalQuantityStats(paramdata);
         $scope.datetimecheck();
@@ -275,6 +281,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
             $scope.getGlobalStats(req);
             $scope.getStateStats(req);
             $scope.getCategoryStats(req);
+            $scope.getStoreStats(req);
             $scope.getTotalSalesStats(req);
             $scope.getTotalQuantityStats(req);
 
@@ -321,7 +328,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
             $http(req).success(function(data){
 
                 console.log("getStateStats --> ",data)
-
+                //$scope.drawPieChart("#pie-sales",data);
                 $.each($scope.tableDataArr,function(i,v){
 
                      if(v.id=="state"){
@@ -349,6 +356,8 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                 $http(req).success(function(data){
 
                     console.log("getCategoryStats --> ",data)
+
+
                      $.each($scope.tableDataArr,function(i,v){
 
                          if(v.id=="category"){
@@ -361,7 +370,37 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
         };
 
-        $scope.getTotalSalesStats = function(paramdata){
+
+        $scope.getStoreStats = function(paramdata){
+
+                    var _paramdata = paramdata;
+                    var req = {
+                        method: 'POST',
+                        url: '/retail/getstorestats',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: _paramdata
+                    };
+
+                    $http(req).success(function(data){
+
+                        console.log("getStoreStats --> ",data)
+
+
+                         $.each($scope.tableDataArr,function(i,v){
+
+                             if(v.id=="store"){
+                                 v.data=data;
+                             }
+                         });
+
+                    }).error(function(){
+                    });
+
+            };
+
+    $scope.getTotalSalesStats = function(paramdata){
 
                         var _paramdata = paramdata;
                         var req = {
@@ -382,7 +421,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                         });
 
          };
-        $scope.getTotalQuantityStats = function(paramdata){
+    $scope.getTotalQuantityStats = function(paramdata){
 
                                  var _paramdata = paramdata;
                                  var req = {
@@ -469,9 +508,37 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                             if(_localobj != null){
                  localStorageService.set("centralretaildashboardobj",_localobj);
                  }
-                 $scope.selectedcategory = _.without($scope.selectedcategory,selectedValue)
+                 $scope.selectedcategory = _.without($scope.selectedstore,selectedValue)
 
-                }else if(parent == "datetime" && selected==true){
+                }else if(parent == "store" && selected==true){
+
+                                   var _localobj = localStorageService.get("centralretaildashboardobj")
+                                              for(i=0;i<selectedValue.length;i++){
+
+                                              $scope.selectedstore.push(selectedValue[i])
+                                              if(_localobj != null){
+                                              _localobj["store"].push(selectedValue[i]);
+                                              }
+                                              }
+                                              $scope.selectedstore = $.unique($scope.selectedstore);
+                                              if(_localobj != null){
+                                              _localobj["store"] = $.unique(_localobj["store"]);
+                                              localStorageService.set("centralretaildashboardobj",_localobj);
+                                              }
+                                 }else if(parent == "store" && selected==false){
+
+                                  var _localobj = localStorageService.get("centralretaildashboardobj")
+                                             for(i=0;i<selectedValue.length;i++){
+                                 if(_localobj != null){
+                                             _localobj["store"]= _.without(_localobj["store"],selectedValue[i]);
+                                             }
+                                             }
+                                             if(_localobj != null){
+                                  localStorageService.set("centralretaildashboardobj",_localobj);
+                                  }
+                                  $scope.selectedstore = _.without($scope.selectedstore,selectedValue)
+
+                                 }else if(parent == "datetime" && selected==true){
 
                     var timerange = [];
                     timerange.push($scope.starttime.toString());
@@ -654,7 +721,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
     };
 
-    $scope.$on('ngDialog.opened', function (event, $dialog) {
+   $scope.$on('ngDialog.opened', function (event, $dialog) {
                     $dialog.find('.ngdialog-content').css('width', '400px');
 
         });
@@ -678,7 +745,7 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
         }
 
-            $scope.getDimentionSelectedValue = function(data,isSelected){
+   $scope.getDimentionSelectedValue = function(data,isSelected){
 
                     var _tmp = $scope.currentStats;
 
@@ -846,6 +913,67 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
                   .attr("d", line);
 
       };
+
+
+      $scope.drawPieChart = function(location,data){
+
+         var _location = $(location);
+
+          _location.html(" ");
+
+         var margin = {top: 20, right: 20, bottom: 30, left: 50},
+         width = _location.width() - margin.left - margin.right,
+         height = 230 - margin.top - margin.bottom;
+
+         var radius = Math.min(width, height) / 2;
+
+                var color = d3.scale.category20b();
+
+                var svg = d3.select(location)
+                  .append('svg')
+                  .attr('width', width)
+                  .attr('height', height)
+                  .append('g')
+                  .attr('transform', 'translate(' + (width / 2) +
+                    ',' + (height / 2) + ')');
+
+                var arc = d3.svg.arc()
+                  .outerRadius(radius);
+
+                var pie = d3.layout.pie()
+                  .value(function(d) { return d.sales; })
+                  .sort(null);
+
+
+                data.forEach(function(d) {
+
+                                    d.name = d.name;
+                                    d.sales = +parseInt(d.sales);
+                                });
+
+                console.log("YUUYUY --> ",data);
+
+                var path = svg.selectAll('path')
+                  .data(pie(data))
+                  .enter()
+                  .append('path')
+                  .attr('d', arc)
+                  .attr('fill', function(d, i) {
+                    return color(d.data.name);
+                  });
+
+                path.on('mouseover', function(d) {
+
+                    console.log(d)
+                });
+
+                  path.on('mouseout', function() {
+                    console.log("Mouse out")
+                  });
+
+      }
+
+
 
 
           $scope.parkedDiv = [];
