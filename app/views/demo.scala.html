@@ -46,7 +46,7 @@
             <div class="info-box">
               <center>
                 <div class="info-box-number-footer">Impression</div>
-                <span class="info-box-number">
+                <span id="counter-{{impressiondata}}" class="info-box-number">
               {{impressiondata}}
                 </span>
 
@@ -58,7 +58,7 @@
             <div class="info-box">
             <center>
               <div class="info-box-number-footer">Click</div>
-              <span class="info-box-number">
+              <span id="counter-{{clickdata}}" class="info-box-number">
             {{clickdata}}
                 </span>
 
@@ -70,7 +70,7 @@
 
               <center>
                 <div class="info-box-number-footer">Conversion</div>
-              <span class="info-box-number">
+              <span id="counter-{{conversiondata}}" class="info-box-number">
             {{conversiondata}}
                 </span>
               </center>
@@ -101,13 +101,13 @@
           <div class="col-md-6">
               <div class="pull-right">
                 <ul class="options nav nav-pills">
-                  <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                  <li id="metrics-dropdown-list" class="dropdown">
+                    <a id="metrics-dropdown-href" href="javascript:void(0)" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
                      style="padding-top: 2px;padding-bottom: 4px;">Metrics<span class="caret"></span></a>
                     <ul class="dropdown-menu metrics-dropdown">
                       <li ng-repeat="metric in graphDataArr">
                         <div class="row metricWrap">
-                          <div class="col-xs-5">
+                          <div id="list-{{metric.title}}" class="col-xs-5">
                             {{metric.title}}
                           </div>
                           <div class="col-xs-7 btn-group ">

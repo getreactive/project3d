@@ -47,7 +47,6 @@ retailApp.controller('retailAppCtrl',function($scope,$http,$compile,ngDialog,loc
 
                      }];
 
-
     $scope.graphDataArr = [
             {
                 "id": "quantity",

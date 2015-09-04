@@ -47,7 +47,7 @@
                     <div class="info-box">
                         <center>
                             <div class="info-box-number-footer">Total Stores</div>
-                <span class="info-box-number">
+                <span id="counter-{{totalstorecount}}" class="info-box-number">
               {{totalstorecount}}
                 </span>
 
@@ -59,7 +59,7 @@
                     <div class="info-box">
                         <center>
                             <div class="info-box-number-footer">Total Quantity</div>
-              <span class="info-box-number">
+              <span id="counter-{{totalitemquantity}}" class="info-box-number">
             {{totalitemquantity}}
                 </span>
 
@@ -71,7 +71,7 @@
 
                         <center>
                             <div class="info-box-number-footer">Total Sales</div>
-              <span class="info-box-number">
+              <span id="counter-{{totalsales}}" class="info-box-number">
             ${{totalsales}}
                 </span>
                         </center>
@@ -102,13 +102,13 @@
                 <div class="col-md-6">
                     <div class="pull-right">
                         <ul class="options nav nav-pills">
-                            <li class="dropdown">
-                                <a href="javascript:void(0)" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                            <li id="metrics-dropdown-list" class="dropdown">
+                                <a id="metrics-dropdown-href" href="javascript:void(0)" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
                                    style="padding-top: 2px;padding-bottom: 4px;">Metrics<span class="caret"></span></a>
                                 <ul class="dropdown-menu metrics-dropdown">
                                     <li ng-repeat="metric in graphDataArr">
                                         <div class="row metricWrap">
-                                            <div class="col-xs-5">
+                                            <div id="list-{{metric.title}}" class="col-xs-5">
                                                 {{metric.title}}
                                             </div>
                                             <div class="col-xs-7 btn-group ">
