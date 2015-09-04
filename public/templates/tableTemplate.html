@@ -8,7 +8,7 @@
     </div><!-- /.box-header -->
     <div class="box-body">
         <div class="table-responsive" style="height:250px;overflow: scroll;">
-            <table ng-table="tableParams"  class="table stats ng-table-rowselected">
+            <table ng-table="tableParams"  id="tab-{{table.title}}" class="table stats ng-table-rowselected">
                 <tr>
                 <th>Name</th>
                 <th ng-if="table.data[0].hasOwnProperty('value')">

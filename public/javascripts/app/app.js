@@ -882,7 +882,11 @@ project3dApp.controller('demoAppCtrl',function($scope,$http,$compile,ngDialog,lo
 
     $scope.multiselectenable = false;
 
+    $scope.multiselectTableId= "";
+
     $scope.mutliselect = function(data) {
+
+            $scope.multiselectTableId = data;
 
             var _paramdata = {};
             _paramdata.id=data.toLowerCase();
